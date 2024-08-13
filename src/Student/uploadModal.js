@@ -47,7 +47,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
 
       const handleSubmitForm = async () => { 
         setIsLoading(true)
-        
+        console.log("handleSubmitForm",simulation)
       const accessToken = JSON.parse(localStorage.getItem("accessToken"))
       const requestData = new FormData();
         // Append form data
@@ -56,8 +56,8 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
         requestData.append('grade', grade);
         requestData.append("userId", accessToken._id);
         requestData.append('simulationId', simulationId);
-        requestData.append('starttime', simulation.startTime);
-        requestData.append('endTime', moment().format('YYYY-MM-DDTHH:mm:ss'));
+        requestData.append('startTime', simulation.startTime);
+        requestData.append('endTime', moment().subtract(2, 'hours'));
         requestData.append('file', file);
         
         const response = await postSimulationsData(requestData)
@@ -67,10 +67,11 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
           setGrade(null)
           setFile(null)
           setFileName("Upload File...")
-        modalToggle(true)
+          modalToggle(true)
       }else{
           toast.error(response.message)
-          modalToggle()
+          console.log("ERROR",response)
+          // modalToggle()
         }
         setIsLoading(false)
       };

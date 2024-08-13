@@ -28,7 +28,7 @@ const SimulationDetails = () => {
           setUserDetails(response.data.userDetails)
         }else{
           toast.error(response.message)
-        //   navigate("/student/simulation")
+          navigate("/student/simulation")
         }
         setIsLoading(false)
     }
@@ -62,17 +62,18 @@ const SimulationDetails = () => {
         return formattedDate
     }
 
-    const getDurationHandler = (dateString) => {
-        // Parse the given date string into a moment object
-        const givenTime = moment(dateString);
+    const calculateDurationHandler = (dateString) => { 
+        // Create a Date object from the date string
+        const endDate = moment(dateString)
+        const currentDate = moment()
+        const differenceInMinutes = endDate.diff(currentDate, 'minutes') - 120;
+        console.log("calculateDurationHandler",endDate, currentDate, differenceInMinutes)
+        return differenceInMinutes.toFixed(0) + " minutes";
+    }
 
-        // Get the current time as a moment object
-        const currentTime = moment();
-
-        // Calculate the difference in minutes between the given time and the current time
-        const durationInMinutes = moment.duration(currentTime.diff(givenTime)).asMinutes();
-
-        return durationInMinutes.toFixed(0) + " minutes";
+    const getDurationHandler = (dateString) => { 
+        
+        return moment.duration(dateString).asMinutes() + " minutes";
     }
 
     const getFilePathHandler = (filePath) => {
@@ -171,7 +172,7 @@ const SimulationDetails = () => {
                             <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{getFilePathHandler(simulation.filePath)}</a></td>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
-                            <td className="text-center tablePlaceContent">{getDurationHandler(simulation.endTime)}</td>
+                            <td className="text-center tablePlaceContent">{calculateDurationHandler(simulation.endTime)}</td>
                             <td className="text-center tablePlaceContent">{userDetails.gradYear}</td>
                             <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes": "No"}</td>
                         </tr>

@@ -1,3 +1,17 @@
+export function getMinutes(dateString) {
+  // Create a Date object from the date string
+  const date = new Date(dateString);
+
+  // Extract the components
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
+  const day = date.getUTCDate();
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  
+  return minutes;
+}
+
 export function generateRandomCode(length = 8) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';

@@ -62,7 +62,17 @@ const SimulationDetails = () => {
         return formattedDate
     }
 
-    const getDurationHandler = (dateString) => {
+    const calculateDurationHandler = (endDate,startDate) => { 
+        // Create a Date object from the date string
+        const endDateDummy = moment(endDate)
+        const currentDate = moment(startDate)
+        const differenceInMinutes = endDateDummy.diff(currentDate, 'minutes');
+        console.log("calculateDurationHandler",endDateDummy, currentDate, differenceInMinutes)
+        return Math.abs(differenceInMinutes.toFixed(0)) + " minutes";
+    }
+
+    const getDurationHandler = (dateString) => { 
+        
         return moment.duration(dateString).asMinutes() + " minutes";
     }
 
@@ -173,10 +183,10 @@ const SimulationDetails = () => {
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.rank}</a></td>
                                 <td className="text-center tablePlaceContent">{userSimulation.grade}</td>
-                                <td className="text-center tablePlaceContent">{getDurationHandler(userSimulation.duration)}</td>
+                                <td className="text-center tablePlaceContent">{calculateDurationHandler(userSimulation.endTime,userSimulation.startTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
+                                <td className="text-center tablePlaceContent">{userSimulation.userId.university}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.gradYear}</td>
-                                <td className="text-center tablePlaceContent">{userSimulation.userId.race}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes" : "No"}</td>
                                 <td className="text-center tablePlaceContent">{getFilePathHandler(simulation.filePath)}</td>
                             </tr>
