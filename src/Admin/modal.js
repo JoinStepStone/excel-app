@@ -4,8 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomCode } from '../utilities/common';
 import ExcelPreview from "../Components/PreviewExcel";
+import { postSimulationsData } from "../API/Admin";
+import { toast } from 'react-toastify';
+import { Spin } from "antd";
+import moment from 'moment';
 
 const ModalScreen = ({ show, modalToggle }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [code, setCode] = useState(generateRandomCode());
     const [fileName, setFileName] = useState("Upload File...");
     const [file, setFile] = useState(null);
@@ -20,7 +25,6 @@ const ModalScreen = ({ show, modalToggle }) => {
       const fileInput = useRef(null)
 
       useEffect(() => {
-        console.log("USE EFFECT")
       }, [file])
 
       const handleChange = (e) => {
@@ -38,8 +42,41 @@ const ModalScreen = ({ show, modalToggle }) => {
       const handleFileChange = (event) => {
         if (event.target.files.length > 0) {
           setFileName(event.target.files[0].name);
-          setFile(event)
+          setFile(event.target.files[0])
         }
+      };
+
+      const handleSubmitForm = async () => { 
+        setIsLoading(true)
+        
+        const requestData = new FormData();
+        // Append form data
+        requestData.append('category', formData['category']);
+        requestData.append('simulationName', formData["name"]);
+        requestData.append('organizationName', formData["organization"]);
+        requestData.append('startTime', formData["startDateTime"]);
+        requestData.append('endTime', formData["closeDateTime"]);
+        requestData.append('classCode', code);
+        requestData.append('file', file);
+        
+        const response = await postSimulationsData(requestData)
+        if(response.code == 201){
+          toast.success(response.message)
+          setFormData({
+            category: '',
+            name: '',
+            organization: '',
+            startDateTime: '',
+            closeDateTime: '',
+          })
+          setFile(null)
+          setFileName("Upload File...")
+          modalToggle(true)
+        }else{
+          toast.error(response.message)
+          modalToggle()
+        }
+        setIsLoading(false)
       };
 
       return (
@@ -101,13 +138,14 @@ const ModalScreen = ({ show, modalToggle }) => {
                         </div>
                         <div className="col-6 m-auto ">
                             <div 
-                                className={file ? "border border-dark text-center mx-4 w-75 max-height-100 rounded pointer" :
-                                        "border border-dark text-center mx-4 w-75 rounded p-5 pointer"
-                                        }
-                                onClick={file? () => {} : () => fileInput.current.click()}
+                                // className={file ? "border border-dark text-center mx-4 w-75 max-height-100 rounded pointer" :
+                                //         "border border-dark text-center mx-4 w-75 rounded p-5 pointer"
+                                //         }
+                                className="border border-dark text-center mx-4 w-75 rounded p-5 pointer"
+                                onClick={() => fileInput.current.click()}
                                 > 
-                                {file && <ExcelPreview file={file}/>}
-                                {!file && "Upload File"}
+                                {/* {file && <ExcelPreview file={file}/>} */}
+                                {"Upload File"}
                             </div>
                             <input className="d-none" type="file" accept=".csv, .xlsx" ref={fileInput} onChange={handleFileChange}/>
                             <div className="mt-3 d-flex justify-content-around align-items-center">
@@ -129,7 +167,7 @@ const ModalScreen = ({ show, modalToggle }) => {
                 <Button variant="secondary" onClick={modalToggle}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={modalToggle}>
+                <Button variant="primary" onClick={() => handleSubmitForm()}>
                     Save Changes
                 </Button>
             </Modal.Footer>

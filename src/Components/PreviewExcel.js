@@ -7,7 +7,6 @@ const ExcelPreview = ({ file }) => {
   const [columns, setColumns] = useState([]);
 
     useEffect(() => {
-        console.log("FILE")
         handleFileUpload(file)
     }, [file])
 

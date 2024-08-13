@@ -1,24 +1,99 @@
-import { useState, } from "react";
+import { useState, useEffect } from "react";
 import { Table } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
+import { Spin } from "antd";
+import moment from 'moment';
 import ModalUpload from "./uploadModal";
+import { getSimulationDetails } from "../API/Student";
 
-const SimulationDetails = () => { 
+const SimulationDetails = () => {  
     
     const navigate = useNavigate()
-   
+
     const { id } = useParams();
     const [show, setShow] = useState(false);
-    const modalToggle = () => setShow(!show);
+    const [isLoading, setIsLoading] = useState(true);
+    const [userDetails, setUserDetails] = useState({});
+    const [userSimulations, setUserSimulations] = useState([]);
+    const [simulation, setSimulation] = useState({});
+
+    const getAllUserSimulationsHandler = async () => {
+        setIsLoading(true)
+        const response = await getSimulationDetails(id)
+        if(response.code == 201){
+          toast.success(response.message)
+          setSimulation(response.data.simulationDetails)
+          setUserSimulations(response.data.result)
+          setUserDetails(response.data.userDetails)
+        }else{
+          toast.error(response.message)
+        //   navigate("/student/simulation")
+        }
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        getAllUserSimulationsHandler()
+    },[])
+
+    const formatDateTimeHandler = (dateString) => {
+
+        // Create a Date object from the date string
+        const date = new Date(dateString);
+
+        // Extract the components
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
+        const day = date.getUTCDate();
+        let hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const seconds = date.getUTCSeconds();
+
+        // Determine AM/PM
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        // Convert to 12-hour format
+        hours = hours % 12;
+        hours = hours ? hours : 12; // If hour is 0, set it to 12 (for 12 AM)
+
+        // Format the date and time
+        const formattedDate = `${month}/${day}/${year} ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
+        return formattedDate
+    }
+
+    const getDurationHandler = (dateString) => {
+        // Parse the given date string into a moment object
+        const givenTime = moment(dateString);
+
+        // Get the current time as a moment object
+        const currentTime = moment();
+
+        // Calculate the difference in minutes between the given time and the current time
+        const durationInMinutes = moment.duration(currentTime.diff(givenTime)).asMinutes();
+
+        return durationInMinutes.toFixed(0) + " minutes";
+    }
+
+    const getFilePathHandler = (filePath) => {
+        const filePathArray = filePath.split("/")
+        return filePathArray[filePathArray.length - 1]
+    }
+
+    const modalToggle = (loadData=false) => {
+        if(loadData){
+            getAllUserSimulationsHandler()
+        }
+        setShow(!show) 
+    };
 
     return (
       <div className="pt-5 ">
-        <ModalUpload show={show} modalToggle={modalToggle} onClick={() => navigate("/student/simulation")}/>
-        <a className="text-decoeration-underline pointer mx-5">Simulation Home</a>
+        <ModalUpload show={show} modalToggle={modalToggle} onClick={() => navigate("/student/simulation")} simulationId={id} simulation={simulation}/>
+        <a className="underline-offset pointer mx-5" onClick={() => navigate("/student/simulation")}>Simulation Home</a>
         <div className="d-flex justify-content-center align-items-center">
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
-                <h1>{id}</h1>
+                <h1>{simulation.simulationName}</h1>
             </div>
         </div>
         <div className="row mt-3 px-5">
@@ -27,7 +102,7 @@ const SimulationDetails = () => {
                     <h5>Status</h5>
                 </div>
                 <div>
-                    Active
+                    {simulation.status ? "Active": "Inactive"}
                 </div>
             </div>
             <div  className="col-4 d-flex justify-content-between">
@@ -35,7 +110,7 @@ const SimulationDetails = () => {
                     <h5>Date Closed</h5>
                 </div>
                 <div>
-                    7/26/2024 6:15:30 PM
+                    {formatDateTimeHandler(simulation.endTime)}
                 </div>
             </div>
             <div  className="col-4 d-flex justify-content-between">
@@ -43,7 +118,7 @@ const SimulationDetails = () => {
                   <h5>Class Code</h5>
                 </div>
                 <div>
-                    Active
+                    {simulation.classCode}
                 </div>
             </div>
         </div>
@@ -53,7 +128,7 @@ const SimulationDetails = () => {
                   <h5>Organization</h5>
                 </div>
                 <div>
-                    Tamid
+                    {simulation.organizationName}
                 </div>
             </div>
             <div  className="col-4 d-flex justify-content-between">
@@ -61,7 +136,7 @@ const SimulationDetails = () => {
                   <h5>Duration</h5>
                 </div>
                 <div>
-                    60 minutes
+                  {getDurationHandler(simulation.duration)}
                 </div>
             </div>
         </div>
@@ -71,49 +146,40 @@ const SimulationDetails = () => {
                   <h5>Date Administered</h5>
                 </div>
                 <div>
-                    7/26/2024 6:15:30 PM
+                    {formatDateTimeHandler(simulation.startTime)}
                 </div>
             </div>
         </div>
         <div className="mt-5 px-5">
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th className="text-center">Student</th>
-                    <th className="text-center">Simulation Downloads</th>
-                    <th className="text-center">Completed Simulation Upload</th>
-                    <th className="text-center">Time Remaining</th>
-                    <th className="text-center">Grade</th>
-                    <th className="text-center">Sharing Score</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td className="text-center">John Smith</td>
-                    <td className="text-center"><a className="underline-offset pointer">Beginner Simulations 1</a></td>
-                    <td className="text-center"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
-                    <td className="text-center">Harvard University</td>
-                    <td className="text-center">2026</td>
-                    <td className="text-center">Female</td>
-                </tr>
-                <tr>
-                    <td className="text-center">John Smith</td>
-                    <td className="text-center"><a className="underline-offset pointer">Beginner Simulations 1</a></td>
-                    <td className="text-center"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
-                    <td className="text-center">Harvard University</td>
-                    <td className="text-center">2026</td>
-                    <td className="text-center">Female</td>
-                </tr>
-                <tr>
-                    <td className="text-center">John Smith</td>
-                    <td className="text-center"><a className="underline-offset pointer">Beginner Simulations 1</a></td>
-                    <td className="text-center"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
-                    <td className="text-center">Harvard University</td>
-                    <td className="text-center">2026</td>
-                    <td className="text-center">Female</td>
-                </tr>
-                </tbody>
-            </Table>
+            {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
+                <Table striped bordered hover>
+                    <thead>
+                    <tr>
+                        <th className="text-center tablePlaceContent">Student</th>
+                        <th className="text-center tablePlaceContent">Simulation Downloads</th>
+                        <th className="text-center tablePlaceContent">Completed Simulation Upload</th>
+                        <th className="text-center tablePlaceContent">Time Remaining</th>
+                        <th className="text-center tablePlaceContent">Grade</th>
+                        <th className="text-center tablePlaceContent">Sharing Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        userSimulations.length && 
+                        userSimulations.map((userSimulation) =>        
+                        <tr>
+                            <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
+                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{getFilePathHandler(simulation.filePath)}</a></td>
+                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
+                            <td className="text-center tablePlaceContent">{getDurationHandler(simulation.endTime)}</td>
+                            <td className="text-center tablePlaceContent">{userDetails.gradYear}</td>
+                            <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes": "No"}</td>
+                        </tr>
+                        )
+                    }
+                    </tbody>
+                </Table>
+            }
         </div>
       </div>
     );

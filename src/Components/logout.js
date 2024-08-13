@@ -11,7 +11,7 @@ const Logout = () => {
   }
   
   return (
-    <div className="border border-dark rounded text-center p-2 m-2 bg-white" onClick={() => naavigationHandler()}>
+    <div className="border border-dark rounded text-center p-2 m-2 bg-white pointer" onClick={() => naavigationHandler()}>
       Logout
     </div>
   );

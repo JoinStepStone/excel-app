@@ -27,7 +27,6 @@ function App() {
 
   const getSession = async () => {
     try {
-      console.log("getSession")
       const role = JSON.parse(localStorage.getItem("accessToken"))
       setPath(location.pathname)
       if(role){
@@ -42,7 +41,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("useEffect")
     if(path !== location.pathname){
       getSession()
     }

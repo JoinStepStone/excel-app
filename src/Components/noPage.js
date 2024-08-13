@@ -29,7 +29,6 @@ const NoPage = () => {
       if(!role){
         return navigate('/login')
       }
-      console.log("navigationHandler",role)
       navigate('/')
     }
 

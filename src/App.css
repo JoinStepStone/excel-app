@@ -64,3 +64,7 @@ body,
 .custom-spin .ant-spin-dot i {
   background-color: white; /* Your desired color */
 }
+
+.tablePlaceContent {
+  place-content: center;
+}

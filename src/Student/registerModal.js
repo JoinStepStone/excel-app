@@ -3,16 +3,18 @@ import { Modal, Button, Input } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomCode } from '../utilities/common';
+import { Spin } from "antd";
+import { hasEmptyValues } from "../utilities/common";
+import { toast } from 'react-toastify';
+import { getSimulationClassCode, postSimulationClassCodeAndSimulation } from "../API/Student";
 
 const ModalRegister = ({ show, modalToggle }) => {
-    const [code, setCode] = useState(generateRandomCode());
-    const [fileName, setFileName] = useState("Upload File...");
-    const [formData, setFormData] = useState({
-        simulation: '',
-        classCode: ''
-      });
 
-      const fileInput = useRef(null)
+    const [isLoading, setIsLoading] = useState(false);
+    const [simulationDetail, setSimulationDetail] = useState(null);
+    const [formData, setFormData] = useState({
+        classCode: '',
+      });
 
       useEffect(() => {
         const modalContent = document.querySelector('.modal-content');
@@ -29,15 +31,52 @@ const ModalRegister = ({ show, modalToggle }) => {
         }));
       };
       
-      const handleGenerateCode = () => {
-        setCode(generateRandomCode());
-      };
-
-      const handleFileChange = (event) => {
-        if (event.target.files.length > 0) {
-          setFileName(event.target.files[0].name);
+      const submitSearchHandler = async () => {
+        setIsLoading(true)
+        let requestData = {...formData}
+    
+        if(hasEmptyValues(requestData)){
+          setIsLoading(false)
+          return toast.error("There are empty values")
         }
-      };
+        
+        const response = await getSimulationClassCode(requestData)
+        if(response.code == 201){
+          toast.success(response.message)
+          setSimulationDetail(response.data)
+        }else{
+          toast.error(response.message)
+        }
+    
+        setIsLoading(false)
+      }
+
+
+      const submitSimulationHandler = async () => {
+        setIsLoading(true)
+        let requestData = {...simulationDetail}
+
+        if(hasEmptyValues(requestData)){
+          setIsLoading(false)
+          return toast.error("There are empty values")
+        }
+        
+        const response = await postSimulationClassCodeAndSimulation(requestData["_id"])
+        if(response.code == 201){
+          toast.success(response.message)
+          setSimulationDetail(null)
+          setFormData({
+            classCode: '',
+          })
+          modalToggle(true)
+        }else{
+          toast.error(response.message)
+          modalToggle()
+        }
+    
+        setIsLoading(false)
+      }
+
 
       return (
         <Modal show={show} onHide={modalToggle}>
@@ -47,15 +86,7 @@ const ModalRegister = ({ show, modalToggle }) => {
             <Modal.Body>
                 <div className="h-75 row">
                     <div className="col-12">
-                        <input
-                            onChange={(e) => handleChange(e)}
-                            type="text"
-                            className="form-control mb-2"
-                            id="simulation"
-                            name="simulation"
-                            value={formData.simulation}
-                            placeholder="Select your simulation"
-                        />
+                        
                         <input
                             onChange={(e) => handleChange(e)}
                             type="text"
@@ -65,15 +96,24 @@ const ModalRegister = ({ show, modalToggle }) => {
                             value={formData.classCode}
                             placeholder="Enter class code"
                         />
+                        <input
+                            type="text"
+                            disabled={true}
+                            className="form-control mb-2"
+                            id="simulation"
+                            name="simulation"
+                            placeholder="Simulation Name"
+                            value={simulationDetail?.simulationName}
+                        />
                     </div>
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={modalToggle}>
-                    Close
+                <Button variant="secondary" onClick={() => submitSearchHandler()}>
+                    Search
                 </Button>
-                <Button variant="primary" onClick={modalToggle}>
-                    Save Changes
+                <Button variant="primary" onClick={() => submitSimulationHandler()}>
+                    Add to simulation
                 </Button>
             </Modal.Footer>
         </Modal>

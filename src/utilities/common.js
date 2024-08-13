@@ -10,6 +10,10 @@ export function generateRandomCode(length = 8) {
     return result;
   }
 
+export function getRandomNumber(min, max) {
+    return (Math.random() * (max - min) + min).toFixed(2);
+}
+
 function isEmpty(value) {
     return (
       value === null ||
