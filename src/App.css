@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+html,
+body,
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+.bg-purple {
+  background-color: purple;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bg-white {
+  background-color: white;
+}
+
+.modal-content {
+  width: 125% !important ;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.rectangle {
+  width: 300px;
+  height: 150px;
+}
+
+.min-content-width {
+  width: min-content;
+}
+
+.max-height-100 {
+  max-height: 100px;
+  overflow: scroll;
+  scroll-behavior: auto;
+}
+
+.underline-offset {
+  text-decoration: none; /* Remove default underline */
+  border-bottom: 2px solid rgb(13,110,253); /* Custom underline */
+  padding-bottom: 2px; /* Space between text and underline */
+}
+
+#dropdown-ethnicity-button{
+  width: 100%;
+}
+
+#dropdown-race-button{
+  width: 100%;
+}
+
+#dropdown-gender-button{
+  width: 100%;
+}
+
+.custom-spin .ant-spin-dot i {
+  background-color: white; /* Your desired color */
 }
