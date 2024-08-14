@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MetricDisplay from "../Components/metric";
+import MetricDisplay from "../../Components/metric";
 
 const Dashboard = () => {
     return (

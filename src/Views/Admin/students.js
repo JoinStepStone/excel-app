@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Table } from 'react-bootstrap';
-import { getAllStudents } from "../API/Admin";
+import { getAllStudents } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
-import MetricDisplay from "../Components/metric";
+import MetricDisplay from "../../Components/metric";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const Student = () => {
@@ -16,7 +16,7 @@ const Student = () => {
     setIsLoading(true)
     const response = await getAllStudents()
     if(response.code == 201){
-      toast.success(response.message)
+      // toast.success(response.message)
       setStudents(response.data)
     }else{
       toast.error(response.message)
@@ -53,7 +53,7 @@ const Student = () => {
             </thead>
             <tbody>
               {
-                students.length && 
+                students.length ? 
                 students.map((student) =>
                 <tr>
                   <td className="text-center tablePlaceContent">{student.firstName} {student.lastName}</td>
@@ -66,7 +66,7 @@ const Student = () => {
                   <td className="text-center tablePlaceContent">{student.ethnicity}</td>
                 </tr>  
                 )
-                
+                : null
               }
             </tbody>
           </Table>

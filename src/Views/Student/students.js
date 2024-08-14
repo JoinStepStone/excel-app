@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Table } from 'react-bootstrap';
 
-import MetricDisplay from "../Components/metric";
+import MetricDisplay from "../../../Components/metric";
 
 const Student = () => {
     return (

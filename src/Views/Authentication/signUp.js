@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Modal, Button, Input, Dropdown, DropdownButton } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from "../API/Authorization";
+import { signUp } from "../../API/Authorization";
 import { toast } from 'react-toastify';
-import { hasEmptyValues } from "../utilities/common";
+import { hasEmptyValues } from "../../utilities/common";
 import { Spin } from "antd";
 
 

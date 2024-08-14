@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Modal, Button, Input } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
-import { generateRandomCode } from '../utilities/common';
-import ExcelPreview from "../Components/PreviewExcel";
-import { postSimulationsData } from "../API/Admin";
+import { generateRandomCode } from '../../utilities/common';
+import ExcelPreview from "../../Components/PreviewExcel";
+import { postSimulationsData } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
@@ -25,6 +25,7 @@ const ModalScreen = ({ show, modalToggle }) => {
       const fileInput = useRef(null)
 
       useEffect(() => {
+        handleGenerateCode()
       }, [file])
 
       const handleChange = (e) => {
@@ -60,6 +61,7 @@ const ModalScreen = ({ show, modalToggle }) => {
         requestData.append('file', file);
         
         const response = await postSimulationsData(requestData)
+        console.log("setIsLoading",response)
         if(response.code == 201){
           toast.success(response.message)
           setFormData({
@@ -74,8 +76,9 @@ const ModalScreen = ({ show, modalToggle }) => {
           modalToggle(true)
         }else{
           toast.error(response.message)
-          modalToggle()
+          // modalToggle()
         }
+        handleGenerateCode()
         setIsLoading(false)
       };
 

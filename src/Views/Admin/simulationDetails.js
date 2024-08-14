@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAllUserSimulations } from "../API/Admin";
+import { getAllUserSimulations } from "../../API/Admin";
 import ModalScreen from "./modal";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
@@ -23,7 +23,7 @@ const SimulationDetails = () => {
             "simulationId": id
         })
         if(response.code == 201){
-          toast.success(response.message)
+        //   toast.success(response.message)
           setSimulation(response.data.simulationDetails)
           setUserSimulations(response.data.result)
         }else{
@@ -64,10 +64,9 @@ const SimulationDetails = () => {
 
     const calculateDurationHandler = (endDate,startDate) => { 
         // Create a Date object from the date string
-        const endDateDummy = moment(endDate)
-        const currentDate = moment(startDate)
+        const endDateDummy = moment(endDate).subtract(2, 'hours')
+        const currentDate = moment(startDate).subtract(2, 'hours')
         const differenceInMinutes = endDateDummy.diff(currentDate, 'minutes');
-        console.log("calculateDurationHandler",endDateDummy, currentDate, differenceInMinutes)
         return Math.abs(differenceInMinutes.toFixed(0)) + " minutes";
     }
 
@@ -77,8 +76,8 @@ const SimulationDetails = () => {
     }
 
     const getFilePathHandler = (filePath) => {
-        const filePathArray = filePath.split("/")
-        return filePathArray[filePathArray.length - 1]
+        // const filePathArray = filePath.split("/")
+        return filePath
     }
 
     const modalToggle = (loadData = false) => {
@@ -177,7 +176,7 @@ const SimulationDetails = () => {
                     </thead>
                     <tbody>
                         {
-                            userSimulations.length && 
+                            userSimulations.length ? 
                             userSimulations.map((userSimulation) =>               
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
@@ -188,9 +187,10 @@ const SimulationDetails = () => {
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.university}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.gradYear}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes" : "No"}</td>
-                                <td className="text-center tablePlaceContent">{getFilePathHandler(simulation.filePath)}</td>
+                                <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{getFilePathHandler(simulation.fileName)}</a></td>
                             </tr>
                             )
+                            : null
                         }
                     </tbody>
                 </Table>

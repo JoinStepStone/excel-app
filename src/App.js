@@ -5,19 +5,19 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import SidebarAdmin from './Components/adminSidebar';
-import Admin from "./Admin"
-import Student from './Admin/students';
-import Simulations from './Admin/simulations';
-import SimulationDetails from './Admin/simulationDetails';
+import Admin from "./Views/Admin"
+import Student from './Views/Admin/students';
+import Simulations from './Views/Admin/simulations';
+import SimulationDetails from './Views/Admin/simulationDetails';
 import NoPage from './Components/noPage';
 
 import SidebarStudent from './Components/studentSidebar';
-import StudentDashboard from "./Student"
-import SimulationStudents from './Student/simulations';
-import SimulationDetailsStudents from './Student/simulationDetails';
+import StudentDashboard from "./Views/Student"
+import SimulationStudents from './Views/Student/simulations';
+import SimulationDetailsStudents from './Views/Student/simulationDetails';
 
-import Login from './Authentication';
-import SignUP from './Authentication/signUp';
+import Login from './Views/Authentication';
+import SignUP from './Views/Authentication/signUp';
 
 function App() { 
 

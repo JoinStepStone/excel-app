@@ -2,11 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { Modal, Button, Input } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
-import { generateRandomCode } from '../utilities/common';
+import { generateRandomCode, hasEmptyValues } from '../../utilities/common';
 import { Spin } from "antd";
-import { hasEmptyValues } from "../utilities/common";
 import { toast } from 'react-toastify';
-import { getSimulationClassCode, postSimulationClassCodeAndSimulation } from "../API/Student";
+import { getSimulationClassCode, postSimulationClassCodeAndSimulation } from "../../API/Student";
 
 const ModalRegister = ({ show, modalToggle }) => {
 
@@ -71,7 +70,7 @@ const ModalRegister = ({ show, modalToggle }) => {
           modalToggle(true)
         }else{
           toast.error(response.message)
-          modalToggle()
+          // modalToggle()
         }
     
         setIsLoading(false)

@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 
-import { getAllSimulations } from "../API/Student";
-import MetricDisplay from "../Components/metric";
+import { getAllSimulations } from "../../API/Student";
+import MetricDisplay from "../../Components/metric";
 import ModalRegister from "./registerModal";
 
 const SimulationStudents = () => {
@@ -19,7 +19,7 @@ const SimulationStudents = () => {
         setIsLoading(true)
         const response = await getAllSimulations()
         if(response.code == 201){
-          toast.success(response.message)
+        //   toast.success(response.message)
           setSimulations(response.data)
         }else{
           toast.error(response.message)
@@ -33,27 +33,14 @@ const SimulationStudents = () => {
 
     const formatDateTimeHandler = (dateString) => {
 
-        // Create a Date object from the date string
-        const date = new Date(dateString);
+        // Parse the date string using moment
+        const date = moment(dateString).subtract(2, 'hours');
 
-        // Extract the components
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
-        const day = date.getUTCDate();
-        let hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const seconds = date.getUTCSeconds();
+        // Format the result to display the updated time
+        const updatedDate = date.format("M/D/YYYY h:mm:ss A");
 
-        // Determine AM/PM
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        // Convert to 12-hour format
-        hours = hours % 12;
-        hours = hours ? hours : 12; // If hour is 0, set it to 12 (for 12 AM)
-
-        // Format the date and time
-        const formattedDate = `${month}/${day}/${year} ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
-        return formattedDate
+        console.log("formatDateTimeHandler", dateString, date, updatedDate)
+        return updatedDate
     }
 
     const getDurationHandler = (dateString) => {
@@ -92,7 +79,7 @@ const SimulationStudents = () => {
                     </thead>
                     <tbody>
                         {
-                            simulations.length && 
+                            simulations.length ? 
                             simulations.map((simulation) =>
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset pointer" href={`/student/simulation/detail/${simulation._id}`}>{simulation.simulationName}</a></td>
@@ -105,6 +92,7 @@ const SimulationStudents = () => {
                                 <td className="text-center tablePlaceContent"><a className="underline-offset pointer">Start</a></td>
                             </tr>
                         )
+                        : null
                         }
                     </tbody>
                 </Table>

@@ -38,10 +38,11 @@ export async function getAllUserSimulations(data) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${accessToken.token}`,
             },
+            responseType: 'blob',
         }
     );
 
-      return response.data
+      return response
 }
 
 export async function postSimulationsData(data) {
@@ -53,6 +54,23 @@ export async function postSimulationsData(data) {
         {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+        }
+    );
+
+      return response.data
+}
+
+export async function downloadFileAPI(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(
+        `${BASE_URL}/admin/downloadSimulationFile`,
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${accessToken.token}`,
             },
         }

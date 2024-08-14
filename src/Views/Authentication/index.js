@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Modal, Button, Input } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { hasEmptyValues } from "../utilities/common";
+import { hasEmptyValues } from "../../utilities/common";
 import { Spin } from "antd";
 import { toast } from 'react-toastify';
-import { signIn } from "../API/Authorization";
+import { signIn } from "../../API/Authorization";
 
 const Login = () => {
 

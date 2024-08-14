@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import MetricDisplay from "../Components/metric";
+import MetricDisplay from "../../Components/metric";
+import { useNavigate } from 'react-router-dom';
 import ModalScreen from "./modal";
 import { Table } from 'react-bootstrap';
-import { getAllSimulations } from "../API/Admin";
+import { getAllSimulations, downloadFileAPI } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 
 const Simulations = () => {
 
+    const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [simulations, setSimulations] = useState([]);
@@ -16,8 +18,9 @@ const Simulations = () => {
     const getAllSimulationsHandler = async () => {
         setIsLoading(true)
         const response = await getAllSimulations()
+        console.log("setIsLoading",response)
         if(response.code == 201){
-          toast.success(response.message)
+        //   toast.success(response.message)
           setSimulations(response.data)
         }else{
           toast.error(response.message)
@@ -30,31 +33,17 @@ const Simulations = () => {
     },[])
 
     const formatDateTimeHandler = (dateString) => {
+        // Parse the date string using moment
+        const date = moment(dateString).subtract(2, 'hours');
 
-        // Create a Date object from the date string
-        const date = new Date(dateString);
+        // Format the result to display the updated time
+        const updatedDate = date.format("M/D/YYYY h:mm:ss A");
 
-        // Extract the components
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
-        const day = date.getUTCDate();
-        let hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const seconds = date.getUTCSeconds();
-
-        // Determine AM/PM
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        // Convert to 12-hour format
-        hours = hours % 12;
-        hours = hours ? hours : 12; // If hour is 0, set it to 12 (for 12 AM)
-
-        // Format the date and time
-        const formattedDate = `${month}/${day}/${year} ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
-        return formattedDate
+        return updatedDate
     }
 
-    const getDurationHandler = (dateString) => {
+    const getDurationHandler = (dateString) => { 
+        
         return moment.duration(dateString).asMinutes() + " minutes";
     }
 
@@ -65,6 +54,32 @@ const Simulations = () => {
         setShow(!show)
     };
     
+    const downloadFile = (id) => {
+        // Open a new window
+        const downloadWindow = window.open(
+          "http://127.0.0.1:5000/admin/downloadSimulationFile/"+id,
+          "_blank"
+        );
+    
+        // Check if the window opened successfully
+        if (downloadWindow) {
+          // Poll the window for its 'closed' status
+          const interval = setInterval(() => {
+            // If the window is closed, clear the interval
+            if (downloadWindow.closed) {
+              clearInterval(interval);
+            }
+          }, 1000);
+    
+          // Close the window after a brief delay (assuming the download has started)
+          setTimeout(() => {
+            downloadWindow.close();
+          }, 3000); // 3000ms (3 seconds) is usually enough time for the download to start
+        } else {
+          console.error("Failed to open the download window.");
+        }
+      };
+
     return (
       <div className="pt-5 ">
         <ModalScreen show={show} modalToggle={modalToggle}/>
@@ -87,23 +102,26 @@ const Simulations = () => {
                         <th className="text-center tablePlaceContent">Date Closed</th>
                         <th className="text-center tablePlaceContent">Duration</th>
                         <th className="text-center tablePlaceContent">Student Participated</th>
+                        <th className="text-center tablePlaceContent">Download File</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        simulations.length && 
+                        simulations.length ? 
                         simulations.map((simulation) =>
                         <tr>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{simulation.category}</a></td>
-                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" href={`/admin/simulation/detail/${simulation.id}`}>{simulation.simulationName}</a></td>
+                            <td className="text-center tablePlaceContent" onClick={() => navigate("/admin/simulation/detail/"+simulation.id)}><a className="underline-offset pointer">{simulation.simulationName}</a></td>
                             <td className="text-center tablePlaceContent">{simulation.status ? "Active" : "Inactive"}</td>
                             <td className="text-center tablePlaceContent">{simulation.organizationName}</td>
                             <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.startTime)}</td>
                             <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.endTime)}</td>
                             <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
                             <td className="text-center tablePlaceContent">{simulation.participants}</td>
+                            <td className="text-center tablePlaceContent" onClick={() => downloadFile(simulation.fileId)}><a className="underline-offset pointer">{simulation.fileName}</a></td>
                         </tr>
                         )
+                        : null
                     }
                     </tbody>
                 </Table>
