@@ -1,12 +1,11 @@
 
 import axios from "axios"
-
-const BASE_URL = "http://127.0.0.1:5000"
+import { BASE_URL } from ".";
 
 export async function signUp(data) {
 
     const response = await axios.post(`${BASE_URL}/signUp`, {
-        Headers: {
+        headers: {
             "Content-Type": "application/json"
         },
         data,
@@ -17,11 +16,12 @@ export async function signUp(data) {
 
 export async function signIn(data) {
 
-    const response = await axios.post(`${BASE_URL}/login`, {
-        Headers: {
+    const response = await axios.post(`${BASE_URL}/login`, 
+    data,
+    {
+        headers: {
             "Content-Type": "application/json"
         },
-        data,
       });
 
       return response.data
