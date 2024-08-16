@@ -88,14 +88,14 @@ const SignUP = () => {
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
     
-      // const response = await signUp(formData)
-      // if(response.code == 201){
-      //   toast.success(response.message)
-      //   setIsFormSubmitted(false)
-      //   navigate('/login')
-      // }else{
-      //   toast.error(response.message)
-      // }
+      const response = await signUp(formData)
+      if(response.code == 201){
+        toast.success(response.message)
+        setIsFormSubmitted(false)
+        navigate('/login')
+      }else{
+        toast.error(response.message)
+      }
       
     }
 
