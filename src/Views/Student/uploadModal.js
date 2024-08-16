@@ -47,9 +47,8 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
 
       const handleSubmitForm = async () => { 
         setIsLoading(true)
-        console.log("handleSubmitForm",simulation)
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"))
-      const requestData = new FormData();
+        const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+        const requestData = new FormData();
         // Append form data
         requestData.append('status', "true");
         requestData.append('sharingScore', sharingScore);
@@ -61,6 +60,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
         requestData.append('file', file);
         
         const response = await postSimulationsData(requestData)
+        console.log("ERROR",response)
         if(response.code == 201){
           toast.success(response.message)
           setSharingScore(false)
@@ -70,7 +70,6 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
           modalToggle(true)
       }else{
           toast.error(response.message)
-          console.log("ERROR",response)
           // modalToggle()
         }
         setIsLoading(false)

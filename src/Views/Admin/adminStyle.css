@@ -1,0 +1,8 @@
+.no-focus-outline:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .icon-color {
+    color: red;
+}

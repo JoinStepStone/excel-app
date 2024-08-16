@@ -34,9 +34,9 @@ const ModalRegister = ({ show, modalToggle }) => {
         setIsLoading(true)
         let requestData = {...formData}
     
-        if(hasEmptyValues(requestData)){
+        if(requestData.classCode == null || requestData.classCode == ""){
           setIsLoading(false)
-          return toast.error("There are empty values")
+          return toast.error("Please provide class code")
         }
         
         const response = await getSimulationClassCode(requestData)
@@ -55,9 +55,9 @@ const ModalRegister = ({ show, modalToggle }) => {
         setIsLoading(true)
         let requestData = {...simulationDetail}
 
-        if(hasEmptyValues(requestData)){
+        if(requestData.classCode == null || requestData.classCode == ""){
           setIsLoading(false)
-          return toast.error("There are empty values")
+          return toast.error("Please provide class code")
         }
         
         const response = await postSimulationClassCodeAndSimulation(requestData["_id"])

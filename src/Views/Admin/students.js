@@ -5,12 +5,17 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import MetricDisplay from "../../Components/metric";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import EditModalScreen from "./editModal";
 
 const Student = () => {
 
+  const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [students, setStudents] = useState([]);
-  const count = useRef(0)
+
+  const selectedId = useRef(null);
 
   const getAllStudentsHandler = async () => {
     setIsLoading(true)
@@ -25,12 +30,20 @@ const Student = () => {
   }
 
   useEffect(() => {
-    count.current += 1; 
     getAllStudentsHandler()
   },[])
 
+  const modalToggle = (loadData = false, id = null) => {
+    selectedId.current = id
+    if(loadData){
+      getAllStudentsHandler()
+    }
+    setShow(!show)
+};
+
   return (
     <div className="pt-5 ">
+      {show && <EditModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId}/>}
       <div className="d-flex justify-content-center">
         <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
           <h1>All Students</h1>
@@ -49,6 +62,7 @@ const Student = () => {
                 <th className="text-center tablePlaceContent">Gender</th>
                 <th className="text-center tablePlaceContent">Race</th>
                 <th className="text-center tablePlaceContent">Ethnicity</th>
+                <th className="text-center tablePlaceContent">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -64,6 +78,10 @@ const Student = () => {
                   <td className="text-center tablePlaceContent">{student.gender}</td>
                   <td className="text-center tablePlaceContent">{student.race}</td>
                   <td className="text-center tablePlaceContent">{student.ethnicity}</td>
+                  <td className="d-flex text-center tablePlaceContent">
+                    <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => modalToggle(false, student.id)}/> 
+                    <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer"/> 
+                  </td>
                 </tr>  
                 )
                 : null

@@ -1,0 +1,16 @@
+.no-focus-outline:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+.form-border-color {
+    border-color: #dee2e6;
+}
+
+.form-border-error-color {
+    border-color: rgb(249, 96, 96) !important;
+}
+
+.icon-color {
+    color: red;
+}

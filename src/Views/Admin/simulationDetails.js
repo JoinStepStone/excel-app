@@ -6,6 +6,7 @@ import ModalScreen from "./modal";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
+import { downloadFile } from "../../utilities/common";
 
 const SimulationDetails = () => {
     
@@ -22,13 +23,14 @@ const SimulationDetails = () => {
         const response = await getAllUserSimulations({
             "simulationId": id
         })
+        console.log("GET ALL", response)
         if(response.code == 201){
         //   toast.success(response.message)
           setSimulation(response.data.simulationDetails)
           setUserSimulations(response.data.result)
         }else{
           toast.error(response.message)
-          navigate("/admin/students")
+        //   navigate("/admin/simulation")
         }
         setIsLoading(false)
     }
@@ -187,7 +189,7 @@ const SimulationDetails = () => {
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.university}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.gradYear}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes" : "No"}</td>
-                                <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{getFilePathHandler(simulation.fileName)}</a></td>
+                                <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(userSimulation.fileId)}>{getFilePathHandler(userSimulation.fileName)}</a></td>
                             </tr>
                             )
                             : null

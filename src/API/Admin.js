@@ -3,6 +3,80 @@ import axios from "axios"
 
 const BASE_URL = "http://127.0.0.1:5000"
 
+export async function getSimulationById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/getSimulationById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
+export async function updateStudentById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/updateStudentById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
+export async function updateAdminById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/updateStudentById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
+export async function getAdminById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.get(`${BASE_URL}/admin/getAdminById`, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
+export async function getStudentById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/getStudentById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
 export async function getAllStudents() {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))
@@ -38,11 +112,27 @@ export async function getAllUserSimulations(data) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${accessToken.token}`,
             },
-            responseType: 'blob',
         }
     );
 
-      return response
+      return response.data
+}
+
+export async function updateSimulationsData(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(
+        `${BASE_URL}/admin/update/uploadFile`,
+        data, 
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+        }
+    );
+
+      return response.data
 }
 
 export async function postSimulationsData(data) {

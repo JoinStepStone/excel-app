@@ -6,6 +6,7 @@ import { Spin } from "antd";
 import moment from 'moment';
 import ModalUpload from "./uploadModal";
 import { getSimulationDetails } from "../../API/Student";
+import { downloadFile } from "../../utilities/common";
 
 const SimulationDetails = () => {  
     
@@ -22,13 +23,13 @@ const SimulationDetails = () => {
         setIsLoading(true)
         const response = await getSimulationDetails(id)
         if(response.code == 201){
-        //   toast.success(response.message)
-          setSimulation(response.data.simulationDetails)
-          setUserSimulations(response.data.result)
-          setUserDetails(response.data.userDetails)
+            //   toast.success(response.message)
+            setSimulation(response.data.simulationDetails)
+            setUserSimulations(response.data.result)
+            setUserDetails(response.data.userDetails)
         }else{
-          toast.error(response.message)
-          navigate("/student/simulation")
+            toast.error(response.message)
+            navigate("/student/simulation")
         }
         setIsLoading(false)
     }
@@ -67,10 +68,6 @@ const SimulationDetails = () => {
         const endDate = moment(dateString)
         const currentDate = moment().add(2,"hours")
         const differenceInMinutes = endDate.diff(currentDate, 'minutes')
-        console.log("dateString",dateString)
-        console.log("endDate",endDate)
-        console.log("currentDate",currentDate)
-        console.log("differenceInMinutes",differenceInMinutes)
         return differenceInMinutes.toFixed(0) + " minutes";
     }
 
@@ -80,7 +77,6 @@ const SimulationDetails = () => {
     }
 
     const getFilePathHandler = (filePath) => {
-        console.log("getFilePathHandler", filePath)
         // const filePathArray = filePath.split("/")
         return filePath
     }
@@ -174,8 +170,18 @@ const SimulationDetails = () => {
                         userSimulations.map((userSimulation) =>        
                         <tr>
                             <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
-                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{getFilePathHandler(simulation.fileName)}</a></td>
-                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => modalToggle()}>Upload Here</a></td>
+                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(simulation.fileId)}>{getFilePathHandler(simulation.fileName)}</a></td>
+                            <td className="text-center tablePlaceContent">
+                                <a className="underline-offset pointer" onClick={() => modalToggle()}>
+                                    {userSimulation.fileName ?
+                                        <>
+                                            {userSimulation.fileName} <br/> Upload Here
+                                        </>
+                                        :
+                                        "Upload Here"
+                                    }
+                                </a>
+                            </td>
                             <td className="text-center tablePlaceContent">{calculateDurationHandler(simulation.endTime)}</td>
                             <td className="text-center tablePlaceContent">{userDetails.gradYear}</td>
                             <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes": "No"}</td>
