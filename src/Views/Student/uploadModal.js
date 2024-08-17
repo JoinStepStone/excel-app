@@ -60,7 +60,6 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
         requestData.append('file', file);
         
         const response = await postSimulationsData(requestData)
-        console.log("ERROR",response)
         if(response.code == 201){
           toast.success(response.message)
           setSharingScore(false)

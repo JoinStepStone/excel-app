@@ -59,7 +59,6 @@ export const formValidationHandler = (data) => {
     const hasUpperCase = /[A-Z]/;
     const hasNumber = /\d/;
     if(data.firstName == null || data.firstName == ""){
-      console.log("FORM VALIATION", data.firstName)
       return { key: "firstName", msg: "First name is empty"}
     }
     else if(data.lastName == null || data.lastName == ""){
@@ -107,7 +106,6 @@ export const formValidationHandler = (data) => {
       const hasUpperCase = /[A-Z]/;
       const hasNumber = /\d/;
       if(data.firstName == null || data.firstName == ""){
-        console.log("FORM VALIATION", data.firstName)
         return { key: "firstName", msg: "First name is empty"}
       }
       else if(data.lastName == null || data.lastName == ""){

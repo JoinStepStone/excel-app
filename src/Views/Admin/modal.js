@@ -145,7 +145,6 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     requestData.append('participants', formData["participants"]);
     requestData.append('file', file);
     
-    console.log("handleUpdateSubmitForm",formData)
     const error = registerModalalidationHandler(formData)
     if(error){
       setErrorKey(error)

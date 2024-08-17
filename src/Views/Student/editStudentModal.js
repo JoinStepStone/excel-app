@@ -67,7 +67,6 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
     const fetchData = async () => {
       try {
         const response = await getMeById();
-        console.log("RESPONSE",response.data)
         if (response.code === 201) {
           response.data["confirmPassword"] = response.data["password"]
           setFormData({

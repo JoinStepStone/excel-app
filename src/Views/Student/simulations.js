@@ -39,7 +39,6 @@ const SimulationStudents = () => {
         // Format the result to display the updated time
         const updatedDate = date.format("M/D/YYYY h:mm:ss A");
 
-        console.log("formatDateTimeHandler", dateString, date, updatedDate)
         return updatedDate
     }
 

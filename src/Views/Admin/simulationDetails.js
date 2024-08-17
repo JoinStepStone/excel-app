@@ -23,7 +23,6 @@ const SimulationDetails = () => {
         const response = await getAllUserSimulations({
             "simulationId": id
         })
-        console.log("GET ALL", response)
         if(response.code == 201){
         //   toast.success(response.message)
           setSimulation(response.data.simulationDetails)
