@@ -183,7 +183,7 @@ const SimulationDetails = () => {
                                 </a>
                             </td>
                             <td className="text-center tablePlaceContent">{calculateDurationHandler(simulation.endTime)}</td>
-                            <td className="text-center tablePlaceContent">{userDetails.gradYear}</td>
+                            <td className="text-center tablePlaceContent">{userSimulation.grade}</td>
                             <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes": "No"}</td>
                         </tr>
                         )

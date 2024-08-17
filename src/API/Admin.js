@@ -2,6 +2,36 @@
 import axios from "axios"
 import { BASE_URL } from ".";
 
+export async function deleteSimulationById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/deleteSimulationById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
+export async function deleteStudentById(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(`${BASE_URL}/admin/deleteStudentById`, 
+        data, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
 export async function getSimulationById(data) {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))

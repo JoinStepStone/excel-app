@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Table } from 'react-bootstrap';
-import { getAllStudents } from "../../API/Admin";
+import { getAllStudents, deleteStudentById } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import MetricDisplay from "../../Components/metric";
@@ -39,7 +39,21 @@ const Student = () => {
       getAllStudentsHandler()
     }
     setShow(!show)
-};
+  };
+
+  const deleteStudentHandler = async (id = null) => {
+    
+    const response = await deleteStudentById({
+      "userId": id
+    })
+    if(response.code == 201){
+      toast.success(response.message)
+      getAllStudentsHandler()
+    }else{
+      toast.error(response.message)
+    }
+    
+  };
 
   return (
     <div className="pt-5 ">
@@ -80,7 +94,7 @@ const Student = () => {
                   <td className="text-center tablePlaceContent">{student.ethnicity}</td>
                   <td className="d-flex text-center tablePlaceContent">
                     <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => modalToggle(false, student.id)}/> 
-                    <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer"/> 
+                    <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer"onClick={() => deleteStudentHandler(student.id)}/> 
                   </td>
                 </tr>  
                 )

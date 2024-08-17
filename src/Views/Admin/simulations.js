@@ -3,7 +3,7 @@ import MetricDisplay from "../../Components/metric";
 import { useNavigate } from 'react-router-dom';
 import ModalScreen from "./modal";
 import { Table } from 'react-bootstrap';
-import { getAllSimulations, downloadFileAPI } from "../../API/Admin";
+import { getAllSimulations, downloadFileAPI, deleteSimulationById,  } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
@@ -58,7 +58,17 @@ const Simulations = () => {
         setShow(!show)
     };
     
-    
+    const deleteSimulationHandler = async (id = null) => {
+        const response = await deleteSimulationById({
+            "simulationId": id
+        })
+        if(response.code == 201){
+            toast.success(response.message)
+            getAllSimulationsHandler()
+        }else{
+          toast.error(response.message)
+        }
+    };
 
     return (
       <div className="pt-5 ">
@@ -102,7 +112,7 @@ const Simulations = () => {
                             <td className="text-center tablePlaceContent" onClick={() => downloadFile(simulation.fileId)}><a className="underline-offset pointer">{simulation.fileName}</a></td>
                             <td className="text-center tablePlaceContent">
                                 <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => modalToggle(false, simulation.id)} /> 
-                                <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer"/> 
+                                <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer" onClick={() => deleteSimulationHandler(simulation.id)} /> 
                             </td>
                         </tr>
                         )
