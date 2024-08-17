@@ -4,15 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomCode } from '../../utilities/common';
 import ExcelPreview from "../../Components/PreviewExcel";
-import { updateAdminById, getAdminById } from "../../API/Admin";
+import { updateMeById, getMeById } from "../../API/Student";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 import { Tooltop } from "../../Components/tooltip";
-import { updateAdminFormValidationHandler } from "../../utilities/common";
+import { formValidationHandler } from "../../utilities/common";
 import { useNavigate } from 'react-router-dom';
 
-const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
+const EditStudentModalScreen = ({ show, modalToggle }) => {
   
   const navigate = useNavigate();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -26,13 +26,26 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
     "email":null,
     "password":null,
     "confirmPassword":null,
-    // "university":null,
-    // "gradYear":null,
-    // "ethnicity":"Select Ethnicity",
-    // "race": "Select the races you identify with",
+    "university":null,
+    "gradYear":null,
+    "ethnicity":"Select Ethnicity",
+    "race": "Select the races you identify with",
     "gender": "Select Gender",
   });
 
+  const handleSelectEthnicity = (eventKey) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      "ethnicity": eventKey
+    }));
+  };
+
+  const handleSelectRace = (eventKey) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      "race": eventKey
+    }));
+  };
 
   const handleSelectGender = (eventKey) => {
     setFormData((prevData) => ({
@@ -53,10 +66,12 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAdminById();
+        const response = await getMeById();
+        console.log("RESPONSE",response.data)
         if (response.code === 201) {
+          response.data["confirmPassword"] = response.data["password"]
           setFormData({
-            ...response.data[0],
+            ...response.data,
           });
         } else {
           toast.error(response.message);
@@ -71,7 +86,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
 
   useEffect(() => {
     if(isFormSubmitted){
-      const error = updateAdminFormValidationHandler(formData)
+      const error = formValidationHandler(formData)
       if(error){
         if(error.msg !== errorKey.msg){
           setErrorKey(error)
@@ -86,7 +101,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
     setIsLoading(true)
     setIsFormSubmitted(true)
 
-    const error = updateAdminFormValidationHandler(formData)
+    const error = formValidationHandler(formData)
     if(error){
       setErrorKey(error)
       setIsLoading(false)
@@ -95,7 +110,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
     
-      const response = await updateAdminById(formData)
+      const response = await updateMeById(formData)
       if(response.code == 201){
         toast.success(response.message)
         setIsFormSubmitted(false)
@@ -113,7 +128,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
   return (
     <Modal show={show} onHide={modalToggle}>
         <Modal.Header closeButton>
-            <Modal.Title>Admin Detail</Modal.Title>
+            <Modal.Title>Student Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="m-0 overflow-auto" style={{height: "500px"}}> 
@@ -188,7 +203,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                       { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                       <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}/> 
                     </div>
-                    {/* <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
                         type="text"
@@ -237,7 +252,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                       <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
                       <Dropdown.Item eventKey="White">White</Dropdown.Item>
                       <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
-                    </DropdownButton> */}
+                    </DropdownButton>
                     <DropdownButton 
                       id="dropdown-gender-button" 
                       className="my-2" 
@@ -283,4 +298,4 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
     );
   };
   
-  export default EditAdminModalScreen;
+  export default EditStudentModalScreen;
