@@ -27,7 +27,7 @@ const SignUP = () => {
     "university":null,
     "gradYear":null,
     "ethnicity":"Select Ethnicity",
-    "race": "Select the races you identify with",
+    "race": "Select the Race(s) You Identify With",
     "gender": "Select Gender",
   });
 
@@ -89,6 +89,7 @@ const SignUP = () => {
       delete formData.confirmPassword;
     
       const response = await signUp(formData)
+      console.log("RESPONSE",response)
       if(response.code == 201){
         toast.success(response.message)
         setIsFormSubmitted(false)
@@ -153,7 +154,7 @@ const SignUP = () => {
                     id="password"
                     name="password"
                     autocomplete="off" 
-                    placeholder="Enter your password"
+                    placeholder="Password"
                   />
                   { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 
@@ -166,7 +167,7 @@ const SignUP = () => {
                     id="confirmPassword"
                     name="confirmPassword"
                     autocomplete="off" 
-                    placeholder="Enter your Confirm Password"
+                    placeholder="Confirm Password"
                   />
                   { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                   <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}/> 
@@ -196,23 +197,23 @@ const SignUP = () => {
                   { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                 </div>
                 <DropdownButton 
-                  id="dropdown-ethnicity-button" 
+                  id={errorKey.key === "ethnicity" ? "dropdown-ethnicity-button" : "dropdown-ethnicity-button-purple"} 
                   className="my-2" 
-                  variant={errorKey.key == "ethnicity" ? "danger" : "primary"} 
+                  variant={errorKey.key === "ethnicity" ? "danger" : undefined} 
                   title={formData.ethnicity} 
                   onSelect={handleSelectEthnicity}
                 >
                   <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
-                  <Dropdown.Item eventKey="Latin">Latin</Dropdown.Item>
+                  <Dropdown.Item eventKey="Latin">Latino</Dropdown.Item>
                 </DropdownButton>
                 <DropdownButton 
-                  id="dropdown-race-button" 
+                  id={errorKey.key === "race" ? "dropdown-race-button" : "dropdown-race-button-purple"} 
                   className="my-2" 
                   variant={errorKey.key == "race" ? "danger" : "primary"} 
                   title={formData.race} 
                   onSelect={handleSelectRace}
                 >
-                  <Dropdown.Item eventKey="Indian">American Indian or Alaska Nativ</Dropdown.Item>
+                  <Dropdown.Item eventKey="Indian">American Indian or Alaska Native</Dropdown.Item>
                   <Dropdown.Item eventKey="Asian">Asian</Dropdown.Item>
                   <Dropdown.Item eventKey="Black">Black or African American</Dropdown.Item>
                   <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
@@ -220,7 +221,7 @@ const SignUP = () => {
                   <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
                 </DropdownButton>
                 <DropdownButton 
-                  id="dropdown-gender-button" 
+                  id={errorKey.key === "gender" ? "dropdown-gender-button" : "dropdown-gender-button-purple"} 
                   className="my-2" 
                   variant={errorKey.key == "gender" ? "danger" : "primary"} 
                   title={formData.gender} 

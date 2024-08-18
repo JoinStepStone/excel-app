@@ -4,11 +4,13 @@ import { BASE_URL } from ".";
 
 export async function signUp(data) {
 
-    const response = await axios.post(`${BASE_URL}/signUp`, {
+    const response = await axios.post(`${BASE_URL}/signUp`, 
+    data,
+    {
         headers: {
             "Content-Type": "application/json"
         },
-        data,
+        
       });
 
       return response.data

@@ -65,12 +65,15 @@ const Student = () => {
       </div>
       <div className="mt-5 px-5">
         {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive style={{ width: "150%" }}>
             <thead>
               <tr>
-                <th className="text-center tablePlaceContent">Name</th>
+                <th className="text-center tablePlaceContent">First Name</th>
+                <th className="text-center tablePlaceContent">Last Name</th>
+                <th className="text-center tablePlaceContent">Email</th>
                 <th className="text-center tablePlaceContent">Exams Taken</th>
                 <th className="text-center tablePlaceContent">Average Score</th>
+                <th className="text-center tablePlaceContent">Max Score</th>
                 <th className="text-center tablePlaceContent">University</th>
                 <th className="text-center tablePlaceContent">Graduation Year</th>
                 <th className="text-center tablePlaceContent">Gender</th>
@@ -84,8 +87,11 @@ const Student = () => {
                 students.length ? 
                 students.map((student) =>
                 <tr>
-                  <td className="text-center tablePlaceContent">{student.firstName} {student.lastName}</td>
+                  <td className="text-center tablePlaceContent">{student.firstName}</td>
+                  <td className="text-center tablePlaceContent">{student.lastName}</td>
+                  <td className="text-center tablePlaceContent">{student.email}</td>
                   <td className="text-center tablePlaceContent">{student.examTaken}</td>
+                  <td className="text-center tablePlaceContent">{student.avgScore}</td>
                   <td className="text-center tablePlaceContent">{student.avgScore}</td>
                   <td className="text-center tablePlaceContent">{student.university}</td>
                   <td className="text-center tablePlaceContent">{student.gradYear}</td>

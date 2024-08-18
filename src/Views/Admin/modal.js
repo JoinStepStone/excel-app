@@ -13,7 +13,7 @@ import moment from 'moment-timezone';
 const ModalScreen = ({ show, modalToggle, selectedId }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [code, setCode] = useState(generateRandomCode());
+  const [code, setCode] = useState(null);
   const [errorKey, setErrorKey] = useState({ key: null, msg: ""});
   const [fileName, setFileName] = useState("Upload File...");
   const [file, setFile] = useState(null);
@@ -49,6 +49,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
   
       fetchData();
     }
+    setCode(generateRandomCode())
   }, [])
 
   useEffect(() => {
@@ -154,17 +155,17 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       const response = await updateSimulationsData(requestData)
       if(response.code == 201){
         toast.success(response.message)
-        // setIsFormSubmitted(false)
-        // setFormData({
-        //   category: '',
-        //   name: '',
-        //   organization: '',
-        //   startDateTime: '',
-        //   closeDateTime: '',
-        // })
-        // setFile(null)
-        // setFileName("Upload File...")
-        // modalToggle(true)
+        setIsFormSubmitted(false)
+        setFormData({
+          category: '',
+          name: '',
+          organization: '',
+          startDateTime: '',
+          closeDateTime: '',
+        })
+        setFile(null)
+        setFileName("Upload File...")
+        modalToggle(true)
       }else{
         toast.error(response.message)
         // modalToggle()
@@ -176,86 +177,107 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
   };
 
   return (
-    <Modal show={show} onHide={modalToggle}>
+    <Modal show={show} onHide={modalToggle} >
         <Modal.Header closeButton>
             <Modal.Title>Simulation Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div>
-                <div className="h-75 row">
-                    <div className="col-6 d-flex justify-content-center">
-                        <div>
-                            <input
-                                onChange={(e) => handleChange(e)}
-                                type="text"
-                                className="form-control mb-2"
-                                id="category"
-                                name="category"
-                                value={formData.category}
-                                placeholder="Enter your category"
-                            />
-                            <input
-                                onChange={(e) => handleChange(e)}
-                                type="text"
-                                className="form-control mb-2"
-                                id="simulationName"
-                                name="simulationName"
-                                value={formData.simulationName}
-                                placeholder="Enter name"
-                            />
-                            <input
-                                onChange={(e) => handleChange(e)}
-                                type="text"
-                                className="form-control mb-2"
-                                id="organizationName"
-                                name="organizationName"
-                                value={formData.organizationName}
-                                placeholder="Enter organization name"
-                            />
-                            <input
-                                onChange={(e) => handleChange(e)}
-                                type="datetime-local"
-                                className="form-control mb-2"
-                                id="startTime"
-                                name="startTime"
-                                value={selectedId && formData.startTime?  moment.tz(formData.startTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.startTime}
-                                placeholder="Enter Start Date/Time"
-                            />
-                            <input
-                                onChange={(e) => handleChange(e)}
-                                type="datetime-local"
-                                className="form-control mb-2"
-                                id="endTime"
-                                name="endTime"
-                                value={selectedId && formData.endTime?  moment.tz(formData.endTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.endTime}
-                                placeholder="Enter Close Date/Time"
-                            />
-                        </div>
+            <div >
+                <div className="h-75 row" >
+                    <div className="col-12 p-4">
+                        
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                      <span className="mb-2 mx-2">Category: </span>
+                      <input
+                          style={{ width: "50%" }}
+                          onChange={(e) => handleChange(e)}
+                          type="text"
+                          className="form-control mb-2"
+                          id="category"
+                          name="category"
+                          value={formData.category}
+                          placeholder="Enter your category"
+                      />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                      <span className="mb-2 mx-2">Simulation(s): </span>
+                      <input
+                          style={{ width: "50%" }}
+                          onChange={(e) => handleChange(e)}
+                          type="text"
+                          className="form-control mb-2"
+                          id="simulationName"
+                          name="simulationName"
+                          value={formData.simulationName}
+                          placeholder="Enter name"
+                      />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                      <span className="mb-2 mx-2">Organization: </span>
+                      <input
+                          style={{ width: "50%" }}
+                          onChange={(e) => handleChange(e)}
+                          type="text"
+                          className="form-control mb-2"
+                          id="organizationName"
+                          name="organizationName"
+                          value={formData.organizationName}
+                          placeholder="Enter organization name"
+                      />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                      <span className="mb-2 mx-2">Start Time: </span>
+                      <input
+                          style={{ width: "50%" }}
+                          onChange={(e) => handleChange(e)}
+                          type="datetime-local"
+                          className="form-control mb-2"
+                          id="startTime"
+                          name="startTime"
+                          value={selectedId && formData.startTime?  moment.tz(formData.startTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.startTime}
+                          placeholder="Enter Start Date/Time"
+                      />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                      <span className="mb-2 mx-2">End Time: </span>
+                      <input
+                          style={{ width: "50%" }}
+                          onChange={(e) => handleChange(e)}
+                          type="datetime-local"
+                          className="form-control mb-2"
+                          id="endTime"
+                          name="endTime"
+                          value={selectedId && formData.endTime?  moment.tz(formData.endTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.endTime}
+                          placeholder="Enter Close Date/Time"
+                      />
+                      </div>
+                    
                     </div>
-                    <div className="col-6 m-auto ">
-                        <div 
-                            // className={file ? "border border-dark text-center mx-4 w-75 max-height-100 rounded pointer" :
-                            //         "border border-dark text-center mx-4 w-75 rounded p-5 pointer"
-                            //         }
-                            className="border border-dark text-center mx-4 w-75 rounded p-5 pointer"
-                            onClick={() => fileInput.current.click()}
-                            > 
-                            {/* {file && <ExcelPreview file={file}/>} */}
-                            {"Upload File"}
-                        </div>
-                        <input className="d-none" type="file" accept=".csv, .xlsx" ref={fileInput} onChange={handleFileChange}/>
-                        <div className="mt-3 d-flex justify-content-around align-items-center">
-                            <span className="mx-3 w-75">File Name: {fileName} </span>
-                            <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => setFileName("")}/> 
-                        </div>                            
-                    </div>
-
                 </div>
-                <div className="h-25 mt-25 ">
-                    <div className="mt-3 d-flex justify-content-around align-items-center w-50">
+                <div className="h-25 row mt-25 ">
+                  <div className="col-6 ">
+                    <div className="d-flex justify-content-around align-items-center">
                         <span className="mx-3 ">Class Code: {code}</span>
                         <FontAwesomeIcon icon={faSync} className="pointer" onClick={() => { handleGenerateCode()}}/> 
-                    </div>   
+                    </div>  
+                  </div>
+                  <div className="col-6 m-auto ">
+                      <div 
+                          // className={file ? "border border-dark text-center mx-4 w-75 max-height-100 rounded pointer" :
+                          //         "border border-dark text-center mx-4 w-75 rounded p-5 pointer"
+                          //         }
+                          className="border border-dark text-center mx-4 w-75 rounded p-5 pointer"
+                          onClick={() => fileInput.current.click()}
+                          > 
+                          {/* {file && <ExcelPreview file={file}/>} */}
+                          {"Upload File"}
+                      </div>
+                      <input className="d-none" type="file" accept=".csv, .xlsx" ref={fileInput} onChange={handleFileChange}/>
+                      <div className="mt-3 d-flex justify-content-around align-items-center">
+                          <span className="mx-3 w-75">File Name: {fileName} </span>
+                          <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => setFileName("")}/> 
+                      </div>                            
+                  </div>
                 </div>
             </div>
         </Modal.Body>

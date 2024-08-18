@@ -85,7 +85,7 @@ const Login = () => {
                   name="email"
                   value={formData["email"]}
                   autocomplete="off" 
-                  placeholder="Enter your email"
+                  placeholder="Email"
                 />
                 { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
               </div>
@@ -97,7 +97,7 @@ const Login = () => {
                   id="password"
                   name="password"
                   autocomplete="off" 
-                  placeholder="Enter your password"
+                  placeholder="Password"
                 />
                 { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                 <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 

@@ -7,6 +7,12 @@ body,
   width: 100%;
 }
 
+body {
+  font-family: 'Poppins', sans-serif !important;
+  /* Or you can use Roboto */
+  /* font-family: 'Roboto', sans-serif; */
+}
+
 .triangle {
   width: 0;
   height: 0;
@@ -66,14 +72,34 @@ body,
   width: 100%;
 }
 
+#dropdown-ethnicity-button-purple{
+  width: 100%;
+  background-color: purple ;
+  color: white ;
+  border-color: purple ;
+}
+
 #dropdown-race-button{
   width: 100%;
+}
+
+#dropdown-race-button-purple{
+  width: 100%;
+  background-color: purple ;
+  color: white ;
+  border-color: purple ;
 }
 
 #dropdown-gender-button{
   width: 100%;
 }
 
+#dropdown-gender-button-purple{
+  width: 100%;
+  background-color: purple ;
+  color: white ;
+  border-color: purple ;
+}
 .custom-spin .ant-spin-dot i {
   background-color: white; /* Your desired color */
 }

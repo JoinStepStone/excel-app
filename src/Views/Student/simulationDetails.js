@@ -153,7 +153,7 @@ const SimulationDetails = () => {
         </div>
         <div className="mt-5 px-5">
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
-                <Table striped bordered hover>
+                <Table striped bordered responsive hover style={{ width: "150%" }}>
                     <thead>
                     <tr>
                         <th className="text-center tablePlaceContent">Student</th>

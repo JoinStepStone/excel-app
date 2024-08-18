@@ -12,7 +12,7 @@ const Student = () => {
           </div>
         </div>
         <div className="mt-5 px-5">
-          <Table striped bordered hover>
+          <Table striped bordered responsive hover style={{ width: "150%" }}>
             <thead>
               <tr>
                 <th className="text-center">Name</th>

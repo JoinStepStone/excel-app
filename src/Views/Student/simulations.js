@@ -63,7 +63,7 @@ const SimulationStudents = () => {
         </div>
         <div className="mt-5 px-5">
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
-                <Table striped bordered hover>
+                <Table striped bordered responsive hover style={{ width: "120%" }}>
                     <thead>
                     <tr>
                         <th className="text-center tablePlaceContent">Simulations</th>
@@ -73,7 +73,7 @@ const SimulationStudents = () => {
                         <th className="text-center tablePlaceContent">Date Closed</th>
                         <th className="text-center tablePlaceContent">Duration</th>
                         <th className="text-center tablePlaceContent">Student Participated</th>
-                        <th className="text-center tablePlaceContent"></th>
+                        {/* <th className="text-center tablePlaceContent"></th> */}
                     </tr>
                     </thead>
                     <tbody>
@@ -88,7 +88,7 @@ const SimulationStudents = () => {
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.endTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
                                 <td className="text-center tablePlaceContent">{simulation.participants}</td>
-                                <td className="text-center tablePlaceContent"><a className="underline-offset pointer">Start</a></td>
+                                {/* <td className="text-center tablePlaceContent"><a className="underline-offset pointer">Start</a></td> */}
                             </tr>
                         )
                         : null

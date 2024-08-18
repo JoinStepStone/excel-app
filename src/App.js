@@ -50,15 +50,17 @@ function App() {
     <div className="app">
       {userRole == "Admin" && <SidebarAdmin/> }
       {userRole == "Student" && <SidebarStudent/> }
-      <main className="content">
         {userRole == "Not" &&
+          <main className="content">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUP />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
+          </main>
         }
         {userRole == "Admin" &&
+          <main className="content" style={{ width: "75%" }}>
           <Routes>
             <Route path="/" element={<Admin />} />
             <Route path="/admin/students" element={<Student />} />
@@ -66,16 +68,18 @@ function App() {
             <Route path="/admin/simulation/detail/:id" element={<SimulationDetails />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
+          </main>
         }
         {userRole == "Student" &&
+          <main className="content" style={{ width: "75%" }}>
           <Routes>
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student/simulation" element={<SimulationStudents />} />
             <Route path="/student/simulation/detail/:id" element={<SimulationDetailsStudents />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
+          </main>
         }
-      </main>
     </div>
   );
 }
