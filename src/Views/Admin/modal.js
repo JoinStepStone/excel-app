@@ -35,6 +35,8 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
             "simulationId": selectedId
           });
           if (response.code === 201) {
+            response.data["startTime"] = moment.tz(response.data["startTime"], "Etc/GMT-0").format('YYYY-MM-DDTHH:mm')
+            response.data["endTime"] = moment.tz(response.data["endTime"], "Etc/GMT-0").format('YYYY-MM-DDTHH:mm')
             setFormData({
               ...response.data,
             });
@@ -153,6 +155,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       toast.error(error.msg)
     }else{
       const response = await updateSimulationsData(requestData)
+      console.log("RESPONSE", response)
       if(response.code == 201){
         toast.success(response.message)
         setIsFormSubmitted(false)
@@ -172,7 +175,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       }
     }
 
-    handleGenerateCode()
+    // handleGenerateCode()
     setIsLoading(false)
   };
 
@@ -234,7 +237,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           className="form-control mb-2"
                           id="startTime"
                           name="startTime"
-                          value={selectedId && formData.startTime?  moment.tz(formData.startTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.startTime}
+                          value={formData.startTime}
                           placeholder="Enter Start Date/Time"
                       />
                       </div>
@@ -247,7 +250,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           className="form-control mb-2"
                           id="endTime"
                           name="endTime"
-                          value={selectedId && formData.endTime?  moment.tz(formData.endTime, "Etc/GMT-0").format('YYYY-MM-DDTHH:mm') : formData.endTime}
+                          value={formData.endTime}
                           placeholder="Enter Close Date/Time"
                       />
                       </div>
