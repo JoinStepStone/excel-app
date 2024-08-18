@@ -198,13 +198,13 @@ const SignUP = () => {
                 </div>
                 <DropdownButton 
                   id={errorKey.key === "ethnicity" ? "dropdown-ethnicity-button" : "dropdown-ethnicity-button-purple"} 
-                  className="my-2" 
+                  className="my-2 p-0" 
                   variant={errorKey.key === "ethnicity" ? "danger" : undefined} 
                   title={formData.ethnicity} 
                   onSelect={handleSelectEthnicity}
                 >
-                  <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
-                  <Dropdown.Item eventKey="Latin">Latino</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Hispanic">Hispanic</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Latin">Latino</Dropdown.Item>
                 </DropdownButton>
                 <DropdownButton 
                   id={errorKey.key === "race" ? "dropdown-race-button" : "dropdown-race-button-purple"} 
@@ -213,12 +213,12 @@ const SignUP = () => {
                   title={formData.race} 
                   onSelect={handleSelectRace}
                 >
-                  <Dropdown.Item eventKey="Indian">American Indian or Alaska Native</Dropdown.Item>
-                  <Dropdown.Item eventKey="Asian">Asian</Dropdown.Item>
-                  <Dropdown.Item eventKey="Black">Black or African American</Dropdown.Item>
-                  <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
-                  <Dropdown.Item eventKey="White">White</Dropdown.Item>
-                  <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Indian">American Indian or Alaska Native</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Asian">Asian</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Black">Black or African American</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="White">White</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Other">Other</Dropdown.Item>
                 </DropdownButton>
                 <DropdownButton 
                   id={errorKey.key === "gender" ? "dropdown-gender-button" : "dropdown-gender-button-purple"} 
@@ -227,9 +227,9 @@ const SignUP = () => {
                   title={formData.gender} 
                   onSelect={handleSelectGender}
                 >
-                  <Dropdown.Item eventKey="Female">Female</Dropdown.Item>
-                  <Dropdown.Item eventKey="Not Disclosed">I do not wish to disclose</Dropdown.Item>
-                  <Dropdown.Item eventKey="Male">Male</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Female">Female</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Not Disclosed">I do not wish to disclose</Dropdown.Item>
+                  <Dropdown.Item className="custom-dropdown-item" eventKey="Male">Male</Dropdown.Item>
                 </DropdownButton>
               </div>
             </div>

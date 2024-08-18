@@ -119,3 +119,16 @@ body {
   visibility: visible;
   transition-delay: 0s; 
 }
+
+.custom-dropdown-item {
+  background-color: rgb(235, 193, 235) !important; /* Replace with your desired background color */
+}
+
+.custom-dropdown-item:hover {
+  background-color: #e9ecef; /* Replace with your desired hover background color */
+}
+
+.dropdown-menu {
+  padding: 0 !important; /* Removes all padding */
+  margin: 0 !important;  /* Optionally, you can remove the margin too */
+}
