@@ -15,9 +15,11 @@ import SidebarStudent from './Components/studentSidebar';
 import StudentDashboard from "./Views/Student"
 import SimulationStudents from './Views/Student/simulations';
 import SimulationDetailsStudents from './Views/Student/simulationDetails';
+import UpComingEvent from './Views/Student/upComingEvent';
 
 import Login from './Views/Authentication';
 import SignUP from './Views/Authentication/signUp';
+
 
 function App() { 
 
@@ -76,6 +78,7 @@ function App() {
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student/simulation" element={<SimulationStudents />} />
             <Route path="/student/simulation/detail/:id" element={<SimulationDetailsStudents />} />
+            <Route path="/student/upComingEvents" element={<UpComingEvent />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
           </main>

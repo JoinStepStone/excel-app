@@ -35,7 +35,7 @@ const Simulations = () => {
         getAllSimulationsHandler()
     },[])
 
-    const formatDateTimeHandler = (dateString) => {
+    const formatDateTimeHandler = (dateString) => { 
         // Parse the date string using moment
         const date = moment(dateString).subtract(2, 'hours');
 

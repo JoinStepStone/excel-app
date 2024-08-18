@@ -38,29 +38,15 @@ const SimulationDetails = () => {
         getAllUserSimulationsHandler()
     },[])
 
-    const formatDateTimeHandler = (dateString) => {
+    const formatDateTimeHandler = (dateString) => { 
 
-        // Create a Date object from the date string
-        const date = new Date(dateString);
+        // Parse the date string using moment
+        const date = moment(dateString).subtract(2, 'hours');
 
-        // Extract the components
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Months are zero-based, so add 1
-        const day = date.getUTCDate();
-        let hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const seconds = date.getUTCSeconds();
+        // Format the result to display the updated time
+        const updatedDate = date.format("M/D/YYYY h:mm:ss A");
 
-        // Determine AM/PM
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        // Convert to 12-hour format
-        hours = hours % 12;
-        hours = hours ? hours : 12; // If hour is 0, set it to 12 (for 12 AM)
-
-        // Format the date and time
-        const formattedDate = `${month}/${day}/${year} ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
-        return formattedDate
+        return updatedDate
     }
 
     const calculateDurationHandler = (endDate,startDate) => { 
@@ -159,7 +145,7 @@ const SimulationDetails = () => {
                 </div>
             </div>
         </div>
-        <div className="mt-5 px-5">
+        <div className="mt-5 px-5" style={{ width: "100%", overflow: "auto" }}>
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
                 <Table striped bordered hover responsiveness style={{ width: "150%" }}>
                     <thead>
