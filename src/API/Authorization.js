@@ -2,6 +2,25 @@
 import axios from "axios"
 import { BASE_URL } from ".";
 
+export async function checkAuth(data) {
+    try {
+        const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+        const response = await axios.get(`${BASE_URL}/checkAuth`, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+            
+        });
+
+        return response.data
+            
+    } catch (error) {
+        return {data: "", code: 400, Message: "No Token"}
+    }
+}
+
 export async function signUp(data) {
 
     const response = await axios.post(`${BASE_URL}/signUp`, 

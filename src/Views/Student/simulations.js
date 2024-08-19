@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 import { getAllSimulations } from "../../API/Student";
 import MetricDisplay from "../../Components/metric";
@@ -14,6 +15,7 @@ const SimulationStudents = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [userSimulations, setUserSimulations] = useState([]);
     const [simulations, setSimulations] = useState([]);
+    const [simulationsToShow, setSimulationsToShow] = useState([]);
 
     const getAllSimulationsHandler = async () => {
         setIsLoading(true)
@@ -21,6 +23,7 @@ const SimulationStudents = () => {
         if(response.code == 201){
         //   toast.success(response.message)
           setSimulations(response.data)
+          setSimulationsToShow(response.data)
         }else{
           toast.error(response.message)
         }
@@ -52,6 +55,47 @@ const SimulationStudents = () => {
         }
         setShow(!show)
     };
+
+    const onChangeHandler = (e) => {
+        let filteredSimulations;
+        let { name, value } = e.target ? e.target : e;
+        if(!value){
+            return setSimulationsToShow(simulations)
+        }
+        
+        if(name == "participants"){
+          filteredSimulations = simulations.filter((simulation) => simulation[name] == value );
+        }else if(name == "status"){
+            filteredSimulations = simulations.filter((simulation) => simulation[name].toString() == value );
+        }else if(name == "duration"){
+            filteredSimulations = simulations.filter((simulation) => getDurationHandler(simulation[name]).toLowerCase().includes(value.toLowerCase()) );
+        }else if(name == "startTime" || name == "endTime"){
+            // Filter function using moment.js
+            filteredSimulations = simulations.filter(simulation => {
+                return moment(simulation.startTime).isSame(value, 'day');
+            });
+        }else{
+          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().includes(value.toLowerCase()) );
+        }
+
+        setSimulationsToShow(filteredSimulations)
+    }
+
+    const onChangeMinMaxHandler = (e) => {
+        let { name, value } = e;
+        if(value == "Highest"){
+            const highestScoreStudent = simulations.reduce((prev, current) => {
+                return (current[name] > prev[name]) ? current : prev;
+            }, simulations[0]);
+            setSimulationsToShow([highestScoreStudent])
+        }else{
+            const lowestScoreStudent = simulations.reduce((prev, current) => {
+                return (current[name] < prev[name]) ? current : prev;
+            }, simulations[0]);
+            setSimulationsToShow([lowestScoreStudent])
+        }
+    }
+
     return (
       <div className="pt-5 ">
         <ModalRegister show={show} modalToggle={modalToggle}/>
@@ -65,6 +109,39 @@ const SimulationStudents = () => {
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
                 <Table striped bordered responsive hover style={{ width: "120%" }}> 
                     <thead>
+
+                    <tr>
+                        <th className="text-center tablePlaceContent"><input name="simulationName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Simulation Name"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-status-button"} 
+                                title={"Status"} 
+                                onSelect={(props) => onChangeHandler({name: "status", value: props})}
+                            >
+                                <Dropdown.Item eventKey={true}>Active</Dropdown.Item>
+                                <Dropdown.Item eventKey={false}>Inactive</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-grade-button"} 
+                                title={"Grade"} 
+                                onSelect={(props) => onChangeMinMaxHandler({name: "status", value: props})}
+                            >
+                                <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
+                                <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent"><input name="startTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Start Time"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="endTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"End Time"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
+                        {/* <th className="text-center tablePlaceContent">
+                            Reset
+                            <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setSimulationsToShow(simulations)}/> 
+                        </th> */}
+                    </tr>
+
                     <tr>
                         <th className="text-center tablePlaceContent">Simulations</th>
                         <th className="text-center tablePlaceContent">Status</th>
@@ -75,11 +152,13 @@ const SimulationStudents = () => {
                         <th className="text-center tablePlaceContent">Student Participated</th>
                         {/* <th className="text-center tablePlaceContent"></th> */}
                     </tr>
+
                     </thead>
+
                     <tbody>
                         {
-                            simulations.length ? 
-                            simulations.map((simulation) =>
+                            simulationsToShow.length ? 
+                            simulationsToShow.map((simulation) =>
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset pointer" href={`/student/simulation/detail/${simulation._id}`}>{simulation.simulationName}</a></td>
                                 <td className="text-center tablePlaceContent">{simulation.status ? "Active" : "Inactive"}</td>
@@ -94,6 +173,7 @@ const SimulationStudents = () => {
                         : null
                         }
                     </tbody>
+
                 </Table>
             }
         </div>

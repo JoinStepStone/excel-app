@@ -20,6 +20,8 @@ import UpComingEvent from './Views/Student/upComingEvent';
 import Login from './Views/Authentication';
 import SignUP from './Views/Authentication/signUp';
 
+import { checkAuth } from "./API/Authorization"
+import { toast } from 'react-toastify';
 
 function App() { 
 
@@ -29,13 +31,19 @@ function App() {
 
   const getSession = async () => {
     try {
-      const role = JSON.parse(localStorage.getItem("accessToken"))
-      setPath(location.pathname)
-      if(role){
-        setUserRole(role.role)
-      }else{
-        setUserRole("Not")
-      }
+      // const response = await checkAuth()
+      // if(response.code == 201){
+        const role = JSON.parse(localStorage.getItem("accessToken"))
+        setPath(location.pathname)
+        if(role){
+          setUserRole(role.role)
+        }else{
+          setUserRole("Not")
+        }
+      // }else{
+      //   // toast.error(response.message)
+      //   setUserRole("Not")
+      // }
       
     } catch (error) {
       console.log(error);
@@ -62,7 +70,7 @@ function App() {
           </main>
         }
         {userRole == "Admin" &&
-          <main className="content" style={{ width: "75%" }}>
+          <main className="content" style={{ width: "85%" }}>
           <Routes>
             <Route path="/" element={<Admin />} />
             <Route path="/admin/students" element={<Student />} />
@@ -73,7 +81,7 @@ function App() {
           </main>
         }
         {userRole == "Student" &&
-          <main className="content" style={{ width: "75%" }}>
+          <main className="content" style={{ width: "85%" }}>
           <Routes>
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student/simulation" element={<SimulationStudents />} />

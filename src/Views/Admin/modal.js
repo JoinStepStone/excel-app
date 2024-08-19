@@ -4,11 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomCode } from '../../utilities/common';
 import ExcelPreview from "../../Components/PreviewExcel";
-import { postSimulationsData, getSimulationById, updateSimulationsData } from "../../API/Admin";
+import { postSimulationsData, getSimulationById, updateSimulationsData, getSuggestionLists } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import { registerModalalidationHandler } from "../../utilities/common";
 import moment from 'moment-timezone';
+import SuggestionLists from "../../Components/suggestionLists";
 
 const ModalScreen = ({ show, modalToggle, selectedId }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -24,15 +25,23 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       startTime: '',
       endTime: '',
     });
+  const [suggestions, setSuggestions] = useState({});
+  const [suggestionLists, setSuggestionLists] = useState({});
 
   const fileInput = useRef(null)
 
   useEffect(() => {
-    if(selectedId){
-      const fetchData = async () => {
-        try {
+    const fetchData = async () => {
+      try {
+        const suggList = await getSuggestionLists();
+        if (suggList.code === 201) {
+          setSuggestionLists(suggList.data)
+        } else {
+          toast.error(suggList.message);
+        }
+        if(selectedId){
           const response = await getSimulationById({
-            "simulationId": selectedId
+          "simulationId": selectedId
           });
           if (response.code === 201) {
             response.data["startTime"] = moment.tz(response.data["startTime"], "Etc/GMT-0").format('YYYY-MM-DDTHH:mm')
@@ -44,14 +53,14 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
           } else {
             toast.error(response.message);
           }
-        } catch (error) {
-          toast.error('An error occurred while fetching the data.');
+        }else{
+          setCode(generateRandomCode())
         }
-      };
-  
-      fetchData();
+      } catch (error) {
+        toast.error('An error occurred while fetching the data.');
+      }
     }
-    setCode(generateRandomCode())
+    fetchData();
   }, [])
 
   useEffect(() => {
@@ -73,6 +82,18 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       ...prevData,
       [name]: value
     }));
+    // Filter suggestions based on input
+    if (value) {
+      const filteredSuggestions = suggestionLists[name]?.filter((category) =>
+        category.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions((prevData) =>({
+        ...prevData,
+        [name] : filteredSuggestions
+      }));
+    } else {
+      setSuggestions({});
+    }
   };
   
   const handleGenerateCode = () => {
@@ -155,7 +176,6 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       toast.error(error.msg)
     }else{
       const response = await updateSimulationsData(requestData)
-      console.log("RESPONSE", response)
       if(response.code == 201){
         toast.success(response.message)
         setIsFormSubmitted(false)
@@ -179,6 +199,15 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     setIsLoading(false)
   };
 
+  const handleSuggestionClick = (key, value) => {
+    console.log("handleSuggestionClick", key, value)
+    setFormData((prevData) => ({
+      ...prevData,
+      [key]: value
+    }));
+    setSuggestions({});
+  };
+
   return (
     <Modal show={show} onHide={modalToggle} >
         <Modal.Header closeButton>
@@ -191,42 +220,51 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                         
                       <div className="d-flex align-items-center justify-content-between px-3">
                       <span className="mb-2 mx-2">Category: </span>
-                      <input
-                          style={{ width: "50%" }}
-                          onChange={(e) => handleChange(e)}
-                          type="text"
-                          className="form-control mb-2"
-                          id="category"
-                          name="category"
-                          value={formData.category}
-                          placeholder="Enter your category"
-                      />
+                      <div className="position-relative" style={{ width: "50%" }}>
+                        <input
+                            onChange={(e) => handleChange(e)}
+                            type="text"
+                            className="form-control mb-2"
+                            id="category"
+                            name="category"
+                            value={formData.category}
+                            placeholder="Enter your category"
+                            autocomplete="off" 
+                        />
+                        {suggestions.category?.length > 0 && <SuggestionLists name={"category"} list={suggestions.category} handleSuggestionClick={handleSuggestionClick}/>}
+                      </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
                       <span className="mb-2 mx-2">Simulation(s): </span>
+                      <div className="position-relative" style={{ width: "50%" }}>
                       <input
-                          style={{ width: "50%" }}
                           onChange={(e) => handleChange(e)}
                           type="text"
                           className="form-control mb-2"
                           id="simulationName"
                           name="simulationName"
                           value={formData.simulationName}
+                          autocomplete="off" 
                           placeholder="Enter name"
                       />
+                      {suggestions.simulationName?.length > 0 && <SuggestionLists name={"simulationName"} list={suggestions.simulationName} handleSuggestionClick={handleSuggestionClick}/>}
+                      </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
                       <span className="mb-2 mx-2">Organization: </span>
+                      <div className="position-relative" style={{ width: "50%" }}>
                       <input
-                          style={{ width: "50%" }}
                           onChange={(e) => handleChange(e)}
                           type="text"
                           className="form-control mb-2"
                           id="organizationName"
                           name="organizationName"
                           value={formData.organizationName}
+                          autocomplete="off" 
                           placeholder="Enter organization name"
                       />
+                      {suggestions.organizationName?.length > 0 && <SuggestionLists name={"organizationName"} list={suggestions.organizationName} handleSuggestionClick={handleSuggestionClick}/>}
+                      </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
                       <span className="mb-2 mx-2">Start Time: </span>

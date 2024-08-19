@@ -1,6 +1,7 @@
 import { Modal, Button, Input } from 'react-bootstrap';
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { checkAuth } from '../API/Authorization';
 
 const NoPage = () => {
     
@@ -24,12 +25,17 @@ const NoPage = () => {
       };
     }, []); 
 
-    const navigationHandler = () => {
-      const role = JSON.parse(localStorage.getItem("accessToken"))
-      if(!role){
-        return navigate('/login')
-      }
-      navigate('/')
+    const navigationHandler = async () => {
+      // const response = await checkAuth()
+      // if(response.code == 201){
+        const role = JSON.parse(localStorage.getItem("accessToken"))
+        if(!role){
+          return navigate('/login')
+        }
+        navigate('/')
+      // }else{
+      //   return navigate('/login')
+      // }
     }
 
     return (

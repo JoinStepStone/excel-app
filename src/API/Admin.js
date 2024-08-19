@@ -32,6 +32,21 @@ export async function deleteStudentById(data) {
       return response.data
 }
 
+
+export async function getSuggestionLists(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.get(`${BASE_URL}/admin/getSuggestionLists`, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+      });
+
+      return response.data
+}
+
 export async function getSimulationById(data) {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))

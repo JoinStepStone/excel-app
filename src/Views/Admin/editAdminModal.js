@@ -29,7 +29,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
     // "university":null,
     // "gradYear":null,
     // "ethnicity":"Select Ethnicity",
-    // "race": "Select the races you identify with",
+    // "race": "Select the Race(s) You Identify With",
     "gender": "Select Gender",
   });
 
@@ -116,7 +116,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
             <Modal.Title>Admin Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="m-0 overflow-auto" style={{height: "500px"}}> 
+          <div className="m-0 overflow-auto" > 
             <div class="h-75">
               <div className="row">
                 <div className="col-6 mx-auto">
@@ -222,7 +222,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                       onSelect={handleSelectEthnicity}
                     >
                       <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
-                      <Dropdown.Item eventKey="Latin">Latin</Dropdown.Item>
+                      <Dropdown.Item eventKey="Latino">Latino</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton 
                       id="dropdown-race-button" 
@@ -231,10 +231,10 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                       title={formData.race} 
                       onSelect={handleSelectRace}
                     >
-                      <Dropdown.Item eventKey="Indian">American Indian or Alaska Nativ</Dropdown.Item>
+                      <Dropdown.Item eventKey="American Indian or Alaska Native">American Indian or Alaska Native</Dropdown.Item>
                       <Dropdown.Item eventKey="Asian">Asian</Dropdown.Item>
-                      <Dropdown.Item eventKey="Black">Black or African American</Dropdown.Item>
-                      <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
+                      <Dropdown.Item eventKey="Black or African American">Black or African American</Dropdown.Item>
+                      <Dropdown.Item eventKey="Native Hawaiian or other Pacific Islander">Native Hawaiian or other Pacific Islander</Dropdown.Item>
                       <Dropdown.Item eventKey="White">White</Dropdown.Item>
                       <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
                     </DropdownButton> */}

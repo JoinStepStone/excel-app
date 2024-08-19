@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import MetricDisplay from "../../Components/metric";
 import { useNavigate } from 'react-router-dom';
 import ModalScreen from "./modal";
 import { Table } from 'react-bootstrap';
-import { getAllSimulations, downloadFileAPI, deleteSimulationById,  } from "../../API/Admin";
+import { getAllSimulations, deleteSimulationById,  } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 import { downloadFile } from "../../utilities/common";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const Simulations = () => {
 
@@ -17,6 +17,7 @@ const Simulations = () => {
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [simulations, setSimulations] = useState([]);
+    const [simulationsToShow, setSimulationsToShow] = useState([]);
     const selectedId = useRef(null)
 
     const getAllSimulationsHandler = async () => {
@@ -25,6 +26,7 @@ const Simulations = () => {
         if(response.code == 201){
         //   toast.success(response.message)
           setSimulations(response.data)
+          setSimulationsToShow(response.data)
         }else{
           toast.error(response.message)
         }
@@ -70,6 +72,30 @@ const Simulations = () => {
         }
     };
 
+    const onChangeHandler = (e) => {
+        let filteredSimulations;
+        let { name, value } = e.target ? e.target : e;
+        if(!value){
+            return setSimulationsToShow(simulations)
+        }
+
+        if(name == "participants"){
+          filteredSimulations = simulations.filter((simulation) => simulation[name] == value );
+        }else if(name == "status"){
+            filteredSimulations = simulations.filter((simulation) => simulation[name].toString() == value );
+        }else if(name == "duration"){
+            filteredSimulations = simulations.filter((simulation) => getDurationHandler(simulation[name]).toLowerCase().includes(value.toLowerCase()) );
+        }else if(name == "startTime" || name == "endTime"){
+            // Filter function using moment.js
+            filteredSimulations = simulations.filter(simulation => {
+                return moment(simulation.startTime).isSame(value, 'day');
+            });
+        }else{
+          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().includes(value.toLowerCase()) );
+        }
+        setSimulationsToShow(filteredSimulations)
+    }
+
     return (
       <div className="pt-5 ">
         {show && <ModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId.current}/>}
@@ -84,10 +110,35 @@ const Simulations = () => {
                 <Table striped bordered hover responsive style={{ width: "150%" }}>
                     <thead>
                     <tr>
+                        <th className="text-center tablePlaceContent"><input name="category" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Category"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="simulationName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Simulation Name"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-status-button"} 
+                                title={"Status"} 
+                                onSelect={(props) => onChangeHandler({name: "status", value: props})}
+                            >
+                                <Dropdown.Item eventKey={true}>Active</Dropdown.Item>
+                                <Dropdown.Item eventKey={false}>Inactive</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent"><input name="organizationName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Organization Name"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="startTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Start Time"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="endTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"End Time"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="fileName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"File Name"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            Reset
+                            <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setSimulationsToShow(simulations)}/> 
+                        </th>
+                    </tr>
+
+                    <tr>
                         <th className="text-center tablePlaceContent">Category</th>
                         <th className="text-center tablePlaceContent">Simulations</th>
                         <th className="text-center tablePlaceContent">Status</th>
-                        <th className="text-center tablePlaceContent">Organization</th>
+                        <th className="text-center tablePlaceContent">Organization Name</th>
                         <th className="text-center tablePlaceContent">Date Administered</th>
                         <th className="text-center tablePlaceContent">Date Closed</th>
                         <th className="text-center tablePlaceContent">Duration</th>
@@ -95,11 +146,12 @@ const Simulations = () => {
                         <th className="text-center tablePlaceContent">Download File</th>
                         <th className="text-center tablePlaceContent">Actions</th>
                     </tr>
+
                     </thead>
                     <tbody> 
                     {
-                        simulations.length ? 
-                        simulations.map((simulation) =>
+                        simulationsToShow.length ? 
+                        simulationsToShow.map((simulation) =>
                         <tr>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{simulation.category}</a></td>
                             <td className="text-center tablePlaceContent" onClick={() => navigate("/admin/simulation/detail/"+simulation.id)}><a className="underline-offset pointer">{simulation.simulationName}</a></td>

@@ -29,7 +29,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
     "university":null,
     "gradYear":null,
     "ethnicity":"Select Ethnicity",
-    "race": "Select the races you identify with",
+    "race": "Select the Race(s) You Identify With",
     "gender": "Select Gender",
   });
 
@@ -64,11 +64,22 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => { 
       try {
         const response = await getStudentById({
           "studentId": selectedId.current
-      });
+        });
+
+        if(!response.data[0]["ethnicity"]){
+          response.data[0]["ethnicity"] = "Select Ethnicity"
+        }
+        if(!response.data[0]["race"]){
+          response.data[0]["race"] = "Select the Race(s) You Identify With"
+        }
+        if(!response.data[0]["gender"]){
+          response.data[0]["gender"] =  "Select Gender"
+        }
+
         if (response.code === 201) {
           setFormData({
             ...response.data[0],
@@ -131,8 +142,8 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
             <Modal.Title>Student Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="m-0 overflow-auto" style={{height: "500px"}}> 
-            <div class="h-75">
+          <div className="m-auto overflow-auto" > 
+            <div class="">
               <div className="row">
                 <div className="col-6 mx-auto">
                   <div className="d-flex flex-column justify-content-around">
@@ -235,7 +246,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                       onSelect={handleSelectEthnicity}
                     >
                       <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
-                      <Dropdown.Item eventKey="Latin">Latin</Dropdown.Item>
+                      <Dropdown.Item eventKey="Latino">Latino</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton 
                       id="dropdown-race-button" 
@@ -244,10 +255,10 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                       title={formData.race} 
                       onSelect={handleSelectRace}
                     >
-                      <Dropdown.Item eventKey="Indian">American Indian or Alaska Nativ</Dropdown.Item>
+                      <Dropdown.Item eventKey="American Indian or Alaska Native">American Indian or Alaska Native</Dropdown.Item>
                       <Dropdown.Item eventKey="Asian">Asian</Dropdown.Item>
-                      <Dropdown.Item eventKey="Black">Black or African American</Dropdown.Item>
-                      <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
+                      <Dropdown.Item eventKey="Black or African American">Black or African American</Dropdown.Item>
+                      <Dropdown.Item eventKey="Native Hawaiian or other Pacific Islander">Native Hawaiian or other Pacific Islander</Dropdown.Item>
                       <Dropdown.Item eventKey="White">White</Dropdown.Item>
                       <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
                     </DropdownButton>
@@ -265,7 +276,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                   </div>
                 </div>
               </div>
-              <div className="row ">
+              {/* <div className="row ">
                 <div className="my-2 col-12 mx-auto">
                   <div className="d-flex justify-content-around">
                       <Button variant="secondary" className="w-50" onClick={() => handleSubmitForm()}>
@@ -280,7 +291,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                       </Button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </Modal.Body>

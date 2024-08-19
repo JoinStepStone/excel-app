@@ -6,7 +6,7 @@ import { signUp } from "../../API/Authorization";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { Tooltop } from "../../Components/tooltip";
 import { formValidationHandler } from "../../utilities/common";
 
@@ -87,9 +87,16 @@ const SignUP = () => {
     }else{
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
-    
+      if(formData.ethnicity == "Select Ethnicity"){
+        delete formData.ethnicity;
+      }
+      if(formData.race == "Select the Race(s) You Identify With"){
+        delete formData.race;
+      }
+      if(formData.gender ==  "Select Gender"){
+        delete formData.gender;
+      }
       const response = await signUp(formData)
-      console.log("RESPONSE",response)
       if(response.code == 201){
         toast.success(response.message)
         setIsFormSubmitted(false)
@@ -105,151 +112,204 @@ const SignUP = () => {
   };
 
   return (
-      <div className="pt-5 h-100 m-0 d-flex justify-content-center  align-items-center"> 
-        <div class="w-50 h-75">
-          <div className="row">
-            <div className="col-6 mx-auto">
-              <div className="d-flex flex-column justify-content-around">
-              <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "firstName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type="text"
-                    className="form-control border-0 no-focus-outline"
-                    id="firstName"
-                    name="firstName"
-                    autocomplete="off" 
-                    placeholder="Enter your First Name"
-                  />
-                  { errorKey.key == "firstName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+      <div className="h-100 m-0 d-flex justify-content-center align-items-center"> 
+        <div class="w-75 h-75">
+          <div className="row" style={{ marginTop: "-50px" }}>
+            <div className="col-5 mx-auto">
+              
+
+                <div className="d-flex justify-content-between mb-1">
+                  <div className="">
+                    <span>First Name: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "firstName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline"
+                        id="firstName"
+                        name="firstName"
+                        autocomplete="off" 
+                        placeholder="First Name"
+                      />
+                      { errorKey.key == "firstName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                  </div>
+                  <div className="">
+                    <span>Last Name: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "lastName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline w-100"
+                        id="lastName"
+                        name="lastName"
+                        autocomplete="off" 
+                        placeholder="Last Name"
+                      />
+                      { errorKey.key == "lastName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "lastName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type="text"
-                    className="form-control border-0 no-focus-outline"
-                    id="lastName"
-                    name="lastName"
-                    autocomplete="off" 
-                    placeholder="Enter your Last Name"
-                  />
-                  { errorKey.key == "lastName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+
+                <div className=" my-1">
+                  <span>Email: </span>
+                  <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "email" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type="text"
+                      className="form-control border-0 no-focus-outline"
+                      id="email"
+                      name="email"
+                      autocomplete="off" 
+                      placeholder="Email"
+                    />
+                    { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "email" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type="text"
-                    className="form-control border-0 no-focus-outline"
-                    id="email"
-                    name="email"
-                    autocomplete="off" 
-                    placeholder="Enter your Email"
-                  />
-                  { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+
+                <div className="">
+                  <span>Password: </span>
+                  <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "password" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type={showPassword ? "text" : "password"}
+                      className="form-control border-0 no-focus-outline"
+                      id="password"
+                      name="password"
+                      autocomplete="off" 
+                      placeholder="Password"
+                    />
+                    { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "password" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type={showPassword ? "text" : "password"}
-                    className="form-control border-0 no-focus-outline"
-                    id="password"
-                    name="password"
-                    autocomplete="off" 
-                    placeholder="Password"
-                  />
-                  { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 
+                <div className="">
+                  <span>Confirm Password: </span>
+                  <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="form-control border-0 no-focus-outline"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      autocomplete="off" 
+                      placeholder="Confirm Password"
+                    />
+                    { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}/> 
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type={showConfirmPassword ? "text" : "password"}
-                    className="form-control border-0 no-focus-outline"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    autocomplete="off" 
-                    placeholder="Confirm Password"
-                  />
-                  { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
-                  <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}/> 
+
+                <div className=" my-1 d-flex justify-content-between align-items-center">
+                  <div>
+                    <span>University Name: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline"
+                        id="university"
+                        name="university"
+                        autocomplete="off" 
+                        placeholder="Enter your University"
+                      />
+                      { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                  </div>
+                  <div>
+                    <span>Graduation Year: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gradYear" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline"
+                        id="gradYear"
+                        name="gradYear"
+                        autocomplete="off" 
+                        placeholder="Enter your Graduation Year"
+                      />
+                      { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type="text"
-                    className="form-control border-0 no-focus-outline"
-                    id="university"
-                    name="university"
-                    autocomplete="off" 
-                    placeholder="Enter your University"
-                  />
-                  { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+
+                <div className=" my-1">
+                  <span>Select Ethnicity: </span>
+                  <div className="d-flex align-items-center">
+                    <DropdownButton 
+                      style={{ width: "95%" }}
+                      id={errorKey.key === "ethnicity" ? "dropdown-ethnicity-button" : "dropdown-ethnicity-button-purple"} 
+                      className="my-2 p-0" 
+                      variant={errorKey.key === "ethnicity" ? "danger" : undefined} 
+                      title={formData.ethnicity} 
+                      onSelect={handleSelectEthnicity}
+                    >
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Hispanic">Hispanic</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Latino">Latino</Dropdown.Item>
+                    </DropdownButton>
+                    <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setFormData((prevData) => ({...prevData, "ethnicity": "Select Ethnicity"}))}/> 
+                  </div>
                 </div>
-                <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gradYear" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                  <input
-                    onChange={(e) => handleChange(e)}
-                    type="text"
-                    className="form-control border-0 no-focus-outline"
-                    id="gradYear"
-                    name="gradYear"
-                    autocomplete="off" 
-                    placeholder="Enter your Graduation Year"
-                  />
-                  { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                <div className=" my-1">
+                  <span>Select the Race(s) You Identify With: </span>
+                  <div className="d-flex align-items-center">
+                    <DropdownButton 
+                      style={{ width: "95%" }}
+                      id={errorKey.key === "race" ? "dropdown-race-button" : "dropdown-race-button-purple"} 
+                      className="my-2 " 
+                      variant={errorKey.key == "race" ? "danger" : "primary"} 
+                      title={formData.race} 
+                      onSelect={handleSelectRace}
+                    >
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="American Indian or Alaska Native">American Indian or Alaska Native</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Asian">Asian</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Black or African American">Black or African American</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Native Hawaiian or other Pacific Islander">Native Hawaiian or other Pacific Islander</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="White">White</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Other">Other</Dropdown.Item>
+                    </DropdownButton>
+                    <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setFormData((prevData) => ({...prevData, "race": "Select the Race(s) You Identify With"}))}/> 
+                  </div>
                 </div>
-                <DropdownButton 
-                  id={errorKey.key === "ethnicity" ? "dropdown-ethnicity-button" : "dropdown-ethnicity-button-purple"} 
-                  className="my-2 p-0" 
-                  variant={errorKey.key === "ethnicity" ? "danger" : undefined} 
-                  title={formData.ethnicity} 
-                  onSelect={handleSelectEthnicity}
-                >
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Hispanic">Hispanic</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Latin">Latino</Dropdown.Item>
-                </DropdownButton>
-                <DropdownButton 
-                  id={errorKey.key === "race" ? "dropdown-race-button" : "dropdown-race-button-purple"} 
-                  className="my-2" 
-                  variant={errorKey.key == "race" ? "danger" : "primary"} 
-                  title={formData.race} 
-                  onSelect={handleSelectRace}
-                >
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Indian">American Indian or Alaska Native</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Asian">Asian</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Black">Black or African American</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="White">White</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Other">Other</Dropdown.Item>
-                </DropdownButton>
-                <DropdownButton 
-                  id={errorKey.key === "gender" ? "dropdown-gender-button" : "dropdown-gender-button-purple"} 
-                  className="my-2" 
-                  variant={errorKey.key == "gender" ? "danger" : "primary"} 
-                  title={formData.gender} 
-                  onSelect={handleSelectGender}
-                >
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Female">Female</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Not Disclosed">I do not wish to disclose</Dropdown.Item>
-                  <Dropdown.Item className="custom-dropdown-item" eventKey="Male">Male</Dropdown.Item>
-                </DropdownButton>
-              </div>
+                <div className=" my-1">
+                    <span>Select Gender: </span>
+                    <div className="d-flex align-items-center">
+                      <DropdownButton 
+                        style={{ width: "95%" }}
+                        id={errorKey.key === "gender" ? "dropdown-gender-button" : "dropdown-gender-button-purple"} 
+                        className="my-2 w-100" 
+                        variant={errorKey.key == "gender" ? "danger" : "primary"} 
+                        title={formData.gender} 
+                        onSelect={handleSelectGender}
+                      >
+                        <Dropdown.Item className="custom-dropdown-item" eventKey="Female">Female</Dropdown.Item>
+                        <Dropdown.Item className="custom-dropdown-item" eventKey="Not Disclosed">I do not wish to disclose</Dropdown.Item>
+                        <Dropdown.Item className="custom-dropdown-item" eventKey="Male">Male</Dropdown.Item>
+                      </DropdownButton>
+                      <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setFormData((prevData) => ({...prevData, "gender": "Select Gender"}))}/> 
+                    </div>
+                </div>
+
             </div>
           </div>
-          <div className="row ">
-            <div className="my-2 col-12 mx-auto">
+          <div className="row">
+            <div className="my-2 col-6 mx-auto">
               <div className="d-flex justify-content-around">
                   <Button variant="secondary" className="w-50" onClick={() => handleSubmitForm()}>
                     {isLoading ? <Spin size="small" className="custom-spin"/> : "Sign Up"}
                   </Button> 
               </div>
             </div>
-            <div className="col-12 mx-auto">
-              <div className="d-flex justify-content-around">
-                  <Button variant="secondary" className="w-50"  onClick={() => navigate('/login')}>
-                    Login
-                  </Button>
+          </div>
+          <div className="row ">
+              <div className="my-2 col-6 mx-auto">
+                <div className="d-flex justify-content-around">
+                    <Button variant="secondary" className="w-50"  onClick={() => navigate('/login')}>
+                      Login
+                    </Button>
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     );

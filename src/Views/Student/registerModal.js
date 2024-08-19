@@ -45,6 +45,10 @@ const ModalRegister = ({ show, modalToggle }) => {
           setSimulationDetail(response.data)
         }else{
           toast.error(response.message)
+          setFormData({
+            classCode: '',
+          })       
+          setSimulationDetail(null)
         }
     
         setIsLoading(false)
@@ -53,14 +57,14 @@ const ModalRegister = ({ show, modalToggle }) => {
 
       const submitSimulationHandler = async () => {
         setIsLoading(true)
-        let requestData = {...simulationDetail}
+        let requestData = {...formData}
 
         if(requestData.classCode == null || requestData.classCode == ""){
           setIsLoading(false)
           return toast.error("Please provide class code")
         }
         
-        const response = await postSimulationClassCodeAndSimulation(requestData["_id"])
+        const response = await postSimulationClassCodeAndSimulation(requestData.classCode)
         if(response.code == 201){
           toast.success(response.message)
           setSimulationDetail(null)
@@ -69,6 +73,7 @@ const ModalRegister = ({ show, modalToggle }) => {
           })
           modalToggle(true)
         }else{
+          setSimulationDetail(null)
           toast.error(response.message)
           // modalToggle()
         }
@@ -102,7 +107,7 @@ const ModalRegister = ({ show, modalToggle }) => {
                             id="simulation"
                             name="simulation"
                             placeholder="Simulation Name"
-                            value={simulationDetail?.simulationName}
+                            value={simulationDetail ? simulationDetail.simulationName: ""}
                         />
                     </div>
                 </div>
@@ -112,7 +117,7 @@ const ModalRegister = ({ show, modalToggle }) => {
                     Search
                 </Button>
                 <Button variant="primary" onClick={() => submitSimulationHandler()}>
-                    Add to simulation
+                    Register
                 </Button>
             </Modal.Footer>
         </Modal>

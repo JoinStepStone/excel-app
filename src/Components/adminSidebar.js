@@ -10,7 +10,7 @@ const SidebarAdmin = () => {
       setShow(!show)
   };
     return (
-      <div className="h-100 bg-purple" style={{ width: "25%" }}>
+      <div className="h-100 bg-purple" style={{ width: "15%" }}>
         {show && <EditAdminModalScreen show={show} modalToggle={modalToggle}/>}
         <ProfileIcon modalToggle={modalToggle} />
         <div className="h-50 d-flex align-items-center justify-content-center">

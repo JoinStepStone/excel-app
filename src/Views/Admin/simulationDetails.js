@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 import { downloadFile } from "../../utilities/common";
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const SimulationDetails = () => {
     
@@ -16,6 +17,7 @@ const SimulationDetails = () => {
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [userSimulations, setUserSimulations] = useState([]);
+    const [userSimulationsToShow, setUserSimulationsToShow] = useState([]);
     const [simulation, setSimulation] = useState({});
 
     const getAllUserSimulationsHandler = async () => {
@@ -27,6 +29,7 @@ const SimulationDetails = () => {
         //   toast.success(response.message)
           setSimulation(response.data.simulationDetails)
           setUserSimulations(response.data.result)
+          setUserSimulationsToShow(response.data.result)
         }else{
           toast.error(response.message)
         //   navigate("/admin/simulation")
@@ -73,8 +76,55 @@ const SimulationDetails = () => {
         }
         setShow(!show)
     };
- 
-    return (
+    
+    const onChangeSimulationHandler = (e) => {
+        let filteretUserSimulations;
+        let { name, value } = e.target ? e.target : e;
+
+        if(!value){
+            return setUserSimulationsToShow(userSimulations)
+        }
+
+        if(name == "timeToComplete"){
+            filteretUserSimulations = userSimulations.filter(userSimulation => {
+                return calculateDurationHandler(userSimulation.endTime,userSimulation.startTime).toLowerCase().includes(value.toLowerCase())
+            });
+        }else if(name == "sharingScore"){
+            filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toString() == value );
+        }else{
+          filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toLowerCase().includes(value.toLowerCase()) );
+        }
+        setUserSimulationsToShow(filteretUserSimulations)
+    }
+
+    const onChangeUserHandler = (e) => {
+        let filteredUserSimulations;
+        let { name, value } = e.target ? e.target : e;
+        
+        if(!value){
+            return setUserSimulationsToShow(userSimulations)
+        }
+
+        filteredUserSimulations = userSimulations.filter((userSimulation) => userSimulation["userId"][name].toLowerCase().includes(value.toLowerCase()) );
+        setUserSimulationsToShow(filteredUserSimulations)
+    }
+
+    const onChangeMinMaxHandler = (e) => {
+        let { name, value } = e;
+        if(value == "Highest"){
+            const highestScoreStudent = userSimulations.reduce((prev, current) => {
+                return (current[name] > prev[name]) ? current : prev;
+            }, userSimulations[0]);
+            setUserSimulationsToShow([highestScoreStudent])
+        }else{
+            const lowestScoreStudent = userSimulations.reduce((prev, current) => {
+                return (current[name] < prev[name]) ? current : prev;
+            }, userSimulations[0]);
+            setUserSimulationsToShow([lowestScoreStudent])
+        }
+    }
+
+    return ( 
       <div className="pt-5 ">
         <ModalScreen show={show} modalToggle={modalToggle}/>
         <a className="underline-offset pointer mx-5" onClick={() => navigate("/admin/simulation")}>Simulation Home</a>
@@ -149,22 +199,64 @@ const SimulationDetails = () => {
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
                 <Table striped bordered hover responsiveness style={{ width: "150%" }}>
                     <thead>
+                    
                     <tr>
-                        <th className="text-center tablePlaceContent">Student</th>
+                        <th className="text-center tablePlaceContent"><input name="firstName" onChange={onChangeUserHandler} className="rounded px-2 py-1" placeholder={"Student"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-rank-button"} 
+                                title={"Rank"} 
+                                onSelect={(props) => onChangeMinMaxHandler({name: "rank", value: props})}
+                            >
+                                <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
+                                <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-grade-button"} 
+                                title={"Grade"} 
+                                onSelect={(props) => onChangeMinMaxHandler({name: "status", value: props})}
+                            >
+                                <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
+                                <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent"><input name="timeToComplete" onChange={onChangeSimulationHandler} className="rounded px-2 py-1" placeholder={"Time to Complete"} /></th>
+                        <th className="text-center tablePlaceContent"><input disabled name="duation" onChange={onChangeSimulationHandler} className="rounded px-2 py-1" placeholder={"Duration"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="university" onChange={onChangeUserHandler} className="rounded px-2 py-1" placeholder={"University Name"} /></th>
+                        <th className="text-center tablePlaceContent"><input name="gradYear" onChange={onChangeUserHandler} className="rounded px-2 py-1" placeholder={"Graduation Year"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            <DropdownButton 
+                                id={"dropdown-sharingScore-button"} 
+                                title={"Sharing Score"} 
+                                onSelect={(props) => onChangeSimulationHandler({name: "sharingScore", value: props})}
+                            >
+                                <Dropdown.Item eventKey={true}>Yes</Dropdown.Item>
+                                <Dropdown.Item eventKey={false}>No</Dropdown.Item>
+                            </DropdownButton>
+                        </th>
+                        <th className="text-center tablePlaceContent"><input name="fileName" onChange={onChangeSimulationHandler} className="rounded px-2 py-1" placeholder={"File Download"} /></th>
+                    </tr>
+
+                    <tr>
+                        <th className="text-center tablePlaceContent">Student Name</th>
                         <th className="text-center tablePlaceContent">Rank</th>
                         <th className="text-center tablePlaceContent">Grade</th>
                         <th className="text-center tablePlaceContent">Time to Complete</th>
                         <th className="text-center tablePlaceContent">Duration</th>
-                        <th className="text-center tablePlaceContent">University</th>
+                        <th className="text-center tablePlaceContent">University Name</th>
                         <th className="text-center tablePlaceContent">Graduation Year</th>
                         <th className="text-center tablePlaceContent">Sharing Score</th>
                         <th className="text-center tablePlaceContent">File Download</th>
                     </tr>
+
                     </thead>
+
                     <tbody>
                         {
-                            userSimulations.length ? 
-                            userSimulations.map((userSimulation) =>               
+                            userSimulationsToShow.length ? 
+                            userSimulationsToShow.map((userSimulation) =>               
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.rank}</a></td>
@@ -180,6 +272,7 @@ const SimulationDetails = () => {
                             : null
                         }
                     </tbody>
+
                 </Table>
             }
         </div>

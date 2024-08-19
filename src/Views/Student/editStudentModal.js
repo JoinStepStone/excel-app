@@ -29,7 +29,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
     "university":null,
     "gradYear":null,
     "ethnicity":"Select Ethnicity",
-    "race": "Select the races you identify with",
+    "race": "Select the Race(s) You Identify With",
     "gender": "Select Gender",
   });
 
@@ -69,7 +69,19 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
         const response = await getMeById();
         if (response.code === 201) {
           response.data["confirmPassword"] = response.data["password"]
+          
+          if(!response.data["ethnicity"]){
+            response.data["ethnicity"] = "Select Ethnicity"
+          }
+          if(!response.data["race"]){
+            response.data["race"] = "Select the Race(s) You Identify With"
+          }
+          if(!response.data["gender"]){
+            response.data["gender"] =  "Select Gender"
+          }
+
           setFormData({
+
             ...response.data,
           });
         } else {
@@ -108,7 +120,15 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
     }else{
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
-    
+      if(formData.ethnicity == "Select Ethnicity"){
+        delete formData.ethnicity;
+      }
+      if(formData.race == "Select the Race(s) You Identify With"){
+        delete formData.race;
+      }
+      if(formData.gender ==  "Select Gender"){
+        delete formData.gender;
+      }
       const response = await updateMeById(formData)
       if(response.code == 201){
         toast.success(response.message)
@@ -236,7 +256,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                       onSelect={handleSelectEthnicity}
                     >
                       <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
-                      <Dropdown.Item eventKey="Latin">Latin</Dropdown.Item>
+                      <Dropdown.Item eventKey="Latino">Latino</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton 
                       id="dropdown-race-button" 
@@ -245,10 +265,10 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                       title={formData.race} 
                       onSelect={handleSelectRace}
                     >
-                      <Dropdown.Item eventKey="Indian">American Indian or Alaska Nativ</Dropdown.Item>
+                      <Dropdown.Item eventKey="American Indian or Alaska Native">American Indian or Alaska Native</Dropdown.Item>
                       <Dropdown.Item eventKey="Asian">Asian</Dropdown.Item>
-                      <Dropdown.Item eventKey="Black">Black or African American</Dropdown.Item>
-                      <Dropdown.Item eventKey="Hawaiian">Native Hawaiian or other Pacific Islander</Dropdown.Item>
+                      <Dropdown.Item eventKey="Black or African American">Black or African American</Dropdown.Item>
+                      <Dropdown.Item eventKey="Native Hawaiian or other Pacific Islander">Native Hawaiian or other Pacific Islander</Dropdown.Item>
                       <Dropdown.Item eventKey="White">White</Dropdown.Item>
                       <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
                     </DropdownButton>

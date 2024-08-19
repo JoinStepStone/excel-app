@@ -32,8 +32,8 @@ const ProfileIcon = ({ modalToggle }) => {
           </div>
         </div>
       </div>
-      <div className="d-flex rounded align-items-center justify-content-center mt-2 w-75 pointer">
-        <h5 className="text-white">Nauman Ahmed</h5>
+      <div className="d-flex rounded align-items-center justify-content-center mt-3 mx-1 w-75  pointer">
+        <p className="text-white" style={{ fontSize: "15px" }}>Nauman</p>
       </div>
       
     </div>

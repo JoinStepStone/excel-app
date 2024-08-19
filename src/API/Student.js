@@ -81,12 +81,12 @@ export async function getSimulationClassCode(data) {
       return response.data
 }
 
-export async function postSimulationClassCodeAndSimulation(simulationId) {
+export async function postSimulationClassCodeAndSimulation(classCode) {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))
     const response = await axios.post(
         `${BASE_URL}/student/simulation/select`,
-        {"simulationId":simulationId, "userId": accessToken._id}, 
+        {"classCode":classCode, "userId": accessToken._id}, 
         {
             headers: {
                 "Content-Type": "application/json",

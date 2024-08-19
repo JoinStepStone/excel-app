@@ -79,21 +79,21 @@ export const formValidationHandler = (data) => {
     else if(data.confirmPassword !== data.password){
       return { key: "confirmPassword", msg: "Confirm password field does not match"}
     }
-    else if(data.university == null || data.university == ""){
+    else if(data.university == null || data.university == ""){ 
       return { key: "university", msg: "University field is empty"}
     }
     else if(data.gradYear == null || data.gradYear == ""){
       return { key: "gradYear", msg: "Graduation year field is empty"}
     }
-    else if(data.ethnicity == "Select Ethnicity"){
-      return { key: "ethnicity", msg: "Please select Ethnicity field"}
-    }
-    else if(data.race == "Select the races you identify with"){
-      return { key: "race", msg:"Please select race field"}
-    }
-    else if(data.gender == "Select Gender"){
-      return { key: "gender", msg: "Please select gender field"}
-    }
+    // else if(data.ethnicity == "Select Ethnicity"){
+    //   return { key: "ethnicity", msg: "Please select Ethnicity field"}
+    // }
+    // else if(data.race == "Select the Race(s) You Identify With"){
+    //   return { key: "race", msg:"Please select race field"}
+    // }
+    // else if(data.gender == "Select Gender"){
+    //   return { key: "gender", msg: "Please select gender field"}
+    // }
    
     return false
 
@@ -120,15 +120,15 @@ export const formValidationHandler = (data) => {
       else if(data.gradYear == null || data.gradYear == ""){
         return { key: "gradYear", msg: "Graduation year field is empty"}
       }
-      else if(data.ethnicity == "Select Ethnicity"){
-        return { key: "ethnicity", msg: "Please select Ethnicity field"}
-      }
-      else if(data.race == "Select the races you identify with"){
-        return { key: "race", msg:"Please select race field"}
-      }
-      else if(data.gender == "Select Gender"){
-        return { key: "gender", msg: "Please select gender field"}
-      }
+      // else if(data.ethnicity == "Select Ethnicity"){
+      //   return { key: "ethnicity", msg: "Please select Ethnicity field"}
+      // }
+      // else if(data.race == "Select the Race(s) You Identify With"){
+      //   return { key: "race", msg:"Please select race field"}
+      // }
+      // else if(data.gender == "Select Gender"){
+      //   return { key: "gender", msg: "Please select gender field"}
+      // }
      
       return false
   
