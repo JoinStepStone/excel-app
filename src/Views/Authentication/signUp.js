@@ -13,7 +13,7 @@ import SuggestionLists from "../../Components/suggestionLists";
 
 const SignUP = () => {
   
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +28,7 @@ const SignUP = () => {
     "password":null,
     "confirmPassword":null,
     "university":null,
+    "gpaScore":null,
     "gradYear":null,
     "ethnicity":"Select Ethnicity",
     "race": "Select the Race(s) You Identify With",
@@ -71,22 +72,47 @@ const SignUP = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value
     }));
 
+
     if(name == "university") {
       if (value) {
         const filteredSuggestions = uniListNames.filter((university) =>
-        university.toLowerCase().includes(value.toLowerCase())
+        university.toLowerCase().startsWith(value.toLowerCase())
         );
         setSuggestions(filteredSuggestions);
       } else {
         setSuggestions([]);
       }
+    }else if(name == "gpaScore") {
+      
+      // Regular expression to match the GPA format (x.xx)
+      const regex = /^(?!0\d)(?:[0-3](?:\.\d{0,2})?|4(?:\.0{0,2})?)$/;
+
+      // Validate the input value
+      if (value === '' || regex.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value
+        }));
+        setErrorKey({ key: null, msg: ""})
+      }else{
+        const error = { key: "gpaScore", msg: "Format is incorrect, ranges are 0.00 to 4.00"}
+        setErrorKey(error)
+        toast.error(error.msg)
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: "0"
+        }));
+      }
+
     };
-    }
+    
+  }
 
 
   useEffect(() => {
@@ -115,6 +141,7 @@ const SignUP = () => {
     }else{
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
+      formData.gpaScore = formData.gpaScore.length == 3 ? formData.gpaScore + "0" : formData.gpaScore 
       if(formData.ethnicity == "Select Ethnicity"){
         delete formData.ethnicity;
       }
@@ -219,6 +246,7 @@ const SignUP = () => {
                     <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 
                   </div>
                 </div>
+
                 <div className="">
                   <span>Confirm Password: </span>
                   <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
@@ -236,25 +264,42 @@ const SignUP = () => {
                   </div>
                 </div>
 
-                <div className=" my-1 d-flex justify-content-between align-items-center">
+                <div className="">
+                  <span>University Name: </span>
+                  <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type="text"
+                      className="form-control border-0 no-focus-outline"
+                      id="university"
+                      name="university"
+                      autocomplete="off" 
+                      placeholder="University Name"
+                      value={formData.university}
+                      onBlur={() => setTimeout(() => setSuggestions([]), 100)}
+                    />
+                    { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                  </div>
+                  <div className="position-relative">
+                    {suggestions.length > 0 && <SuggestionLists name={"university"} list={suggestions} handleSuggestionClick={handleSuggestionClick}/>}
+                  </div>
+                </div>
+                
+                <div className="d-flex justify-content-between mb-1">
                   <div>
-                    <span>University Name: </span>
-                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                      <div className="position-relative" >
+                    <span>GPA: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
                         type="text"
                         className="form-control border-0 no-focus-outline"
-                        id="university"
-                        name="university"
+                        id="gpaScore"
+                        name="gpaScore"
                         autocomplete="off" 
-                        placeholder="Enter your University"
-                        value={formData.university}
-                        onBlur={() => setTimeout(() => setSuggestions([]), 100)}
+                        placeholder="x.xx"
+                        value={formData.gpaScore}
                         />
-                      {suggestions.length > 0 && <SuggestionLists name={"university"} list={suggestions} handleSuggestionClick={handleSuggestionClick} width="200%"/>}
-                      { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
-                    </div>
+                      { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                     </div>
                   </div>
                   <div>
@@ -267,7 +312,7 @@ const SignUP = () => {
                         id="gradYear"
                         name="gradYear"
                         autocomplete="off" 
-                        placeholder="Enter your Graduation Year"
+                        placeholder="Graduation Year"
                       />
                       { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                     </div>

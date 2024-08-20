@@ -55,6 +55,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
       try {
         const response = await getAdminById();
         if (response.code === 201) {
+          response.data[0]["confirmPassword"] = response.data[0]["password"] 
           setFormData({
             ...response.data[0],
           });
@@ -94,7 +95,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
     }else{
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
-    
+      
       const response = await updateAdminById(formData)
       if(response.code == 201){
         toast.success(response.message)

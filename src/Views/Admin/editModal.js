@@ -27,6 +27,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
     // "password":null,
     // "confirmPassword":null,
     "university":null,
+    "gpaScore":null,
     "gradYear":null,
     "ethnicity":"Select Ethnicity",
     "race": "Select the Race(s) You Identify With",
@@ -60,6 +61,30 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
       ...prevData,
       [name]: value
     }));
+
+    if(name == "gpaScore") {
+      
+      // Regular expression to match the GPA format (x.xx)
+      const regex = /^(?!0\d)(?:[0-3](?:\.\d{0,2})?|4(?:\.0{0,2})?)$/;
+
+      // Validate the input value
+      if (value === '' || regex.test(value)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value
+        }));
+        setErrorKey({ key: null, msg: ""})
+      }else{
+        const error = { key: "gpaScore", msg: "Format is incorrect, ranges are 0.00 to 4.00"}
+        setErrorKey(error)
+        toast.error(error.msg)
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: "0"
+        }));
+      }
+
+    };
 
   };
 
@@ -120,7 +145,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
     }else{
       setErrorKey({ key: null, msg: ""})
       delete formData.confirmPassword;
-    
+      formData.gpaScore = formData.gpaScore.length == 3 ? formData.gpaScore + "0" : formData.gpaScore 
       const response = await updateStudentById(formData)
       if(response.code == 201){
         toast.success(response.message)
@@ -221,9 +246,22 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         name="university"
                         autocomplete="off" 
                         placeholder="Enter your University"
-                        value={formData["university"]}
+                        value={formData["university"]} 
                       />
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline"
+                        id="gpaScore"
+                        name="gpaScore"
+                        autocomplete="off" 
+                        placeholder="x.xx"
+                        value={formData["gpaScore"]}
+                      />
+                      { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                     </div>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gradYear" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input

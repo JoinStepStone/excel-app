@@ -57,7 +57,8 @@ export const formValidationHandler = (data) => {
   // Regular expression for validating an Email
     const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const hasUpperCase = /[A-Z]/;
-    const hasNumber = /\d/;
+    const regexGPA = /^(?!0\d)(?:[0-3](?:\.\d{0,2})?|4(?:\.0{0,2})?)$/;
+
     if(data.firstName == null || data.firstName == ""){
       return { key: "firstName", msg: "First name is empty"}
     }
@@ -82,9 +83,13 @@ export const formValidationHandler = (data) => {
     else if(data.university == null || data.university == ""){ 
       return { key: "university", msg: "University field is empty"}
     }
-    else if(data.gradYear == null || data.gradYear == ""){
-      return { key: "gradYear", msg: "Graduation year field is empty"}
+    else if(data.gpaScore == null || data.gpaScore == ""){
+      return { key: "gpaScore", msg: "GPA field is empty"}
     }
+    else if(!regexGPA.test(data.gpaScore)){
+      return { key: "gpaScore", msg: "Format is incorrect, ranges are 0.00 to 4.00"}
+    }
+
     // else if(data.ethnicity == "Select Ethnicity"){
     //   return { key: "ethnicity", msg: "Please select Ethnicity field"}
     // }
@@ -99,40 +104,45 @@ export const formValidationHandler = (data) => {
 
   }
 
-  export const updateFormValidationHandler = (data) => {
+export const updateFormValidationHandler = (data) => {
 
     // Regular expression for validating an Email
-      const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-      const hasUpperCase = /[A-Z]/;
-      const hasNumber = /\d/;
-      if(data.firstName == null || data.firstName == ""){
-        return { key: "firstName", msg: "First name is empty"}
-      }
-      else if(data.lastName == null || data.lastName == ""){
-        return { key: "lastName", msg: "Last name field is empty"}
-      }
-      else if(data.email == null || data.email == "" || !regex.test(data.email)){
-        return { key: "email", msg: "Email field is empty"}
-      }
-      else if(data.university == null || data.university == ""){
-        return { key: "university", msg: "University field is empty"}
-      }
-      else if(data.gradYear == null || data.gradYear == ""){
-        return { key: "gradYear", msg: "Graduation year field is empty"}
-      }
-      // else if(data.ethnicity == "Select Ethnicity"){
-      //   return { key: "ethnicity", msg: "Please select Ethnicity field"}
-      // }
-      // else if(data.race == "Select the Race(s) You Identify With"){
-      //   return { key: "race", msg:"Please select race field"}
-      // }
-      // else if(data.gender == "Select Gender"){
-      //   return { key: "gender", msg: "Please select gender field"}
-      // }
-     
-      return false
-  
+    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    const regexGPA = /^(?!0\d)(?:[0-3](?:\.\d{0,2})?|4(?:\.0{0,2})?)$/;
+    if(data.firstName == null || data.firstName == ""){
+      return { key: "firstName", msg: "First name is empty"}
     }
+    else if(data.lastName == null || data.lastName == ""){
+      return { key: "lastName", msg: "Last name field is empty"}
+    }
+    else if(data.email == null || data.email == "" || !regex.test(data.email)){
+      return { key: "email", msg: "Email field is empty"}
+    }
+    else if(data.university == null || data.university == ""){
+      return { key: "university", msg: "University field is empty"}
+    }
+    else if(data.gradYear == null || data.gradYear == ""){
+      return { key: "gradYear", msg: "Graduation year field is empty"}
+    }
+    else if(data.gpaScore == null || data.gpaScore == ""){
+      return { key: "gpaScore", msg: "GPA field is empty"}
+    }
+    else if(!regexGPA.test(data.gpaScore)){
+      return { key: "gpaScore", msg: "Format is incorrect, ranges are 0.00 to 4.00"}
+    }
+    // else if(data.ethnicity == "Select Ethnicity"){
+    //   return { key: "ethnicity", msg: "Please select Ethnicity field"}
+    // }
+    // else if(data.race == "Select the Race(s) You Identify With"){
+    //   return { key: "race", msg:"Please select race field"}
+    // }
+    // else if(data.gender == "Select Gender"){
+    //   return { key: "gender", msg: "Please select gender field"}
+    // }
+    
+    return false
+
+}
 
 export const updateAdminFormValidationHandler = (data) => {
 

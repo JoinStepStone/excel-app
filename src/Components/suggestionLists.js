@@ -8,11 +8,14 @@ const SuggestionLists = ({ name, list, handleSuggestionClick, width }) => {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)", 
           backgroundColor: "#F0F0F0", 
           border: "1px solid #ccc", 
-          marginTop: 0, position: "absolute" 
+          marginTop: 0, 
+          position: "absolute",
+          top:0,
+          maxHeight: "150px", 
+          overflowY: "auto", 
           }}
         >
         {list.map((suggestion, index) => (
-          index < 3 &&
           <li
             key={index}
             onClick={() => handleSuggestionClick(name,suggestion)}

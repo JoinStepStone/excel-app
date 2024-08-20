@@ -64,6 +64,40 @@ export async function getSimulationDetails(simulationId) {
       return response.data
 }
 
+export async function updateSharingScoreApi(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(
+        `${BASE_URL}/student/updateSharingScore`,
+        data,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+        }
+    );
+
+      return response.data
+}
+
+export async function fileDeleteHandlerAPI(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(
+        `${BASE_URL}/student/fileDeleteHandler`,
+        data,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+        }
+    );
+
+      return response.data
+}
+
 export async function getSimulationClassCode(data) {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))

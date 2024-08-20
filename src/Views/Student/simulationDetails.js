@@ -5,14 +5,18 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 import ModalUpload from "./uploadModal";
-import { getSimulationDetails } from "../../API/Student";
+import { getSimulationDetails, fileDeleteHandlerAPI, updateSharingScoreApi } from "../../API/Student";
 import { downloadFile } from "../../utilities/common";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const SimulationDetails = () => {  
     
     const navigate = useNavigate()
 
     const { id } = useParams();
+    const [edit, setEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [userDetails, setUserDetails] = useState({});
@@ -54,6 +58,9 @@ const SimulationDetails = () => {
         const endDate = moment(dateString)
         const currentDate = moment().add(2,"hours")
         const differenceInMinutes = endDate.diff(currentDate, 'minutes')
+        if(differenceInMinutes.toFixed(0) < 0 ){
+            return "0 minutes";
+        }
         return differenceInMinutes.toFixed(0) + " minutes";
     }
 
@@ -74,13 +81,37 @@ const SimulationDetails = () => {
         setShow(!show) 
     };
 
+    const fileDeleteHandler = async(obj) => {
+        setIsLoading(true)
+        const response = await fileDeleteHandlerAPI(obj)
+        if(response.code == 201){
+            getAllUserSimulationsHandler()
+        }else{
+            toast.error(response.message)
+        }
+        setIsLoading(false)
+    }
+
+    const updateSharingScore = async (obj) => {
+        setIsLoading(true)
+        const response = await updateSharingScoreApi(obj)
+        if(response.code == 201){
+            getAllUserSimulationsHandler()
+        }else{
+            toast.error(response.message)
+        }
+        setIsLoading(false)
+        setEdit(false)
+    }
+
     return (
       <div className="pt-5 ">
         <ModalUpload show={show} modalToggle={modalToggle} onClick={() => navigate("/student/simulation")} simulationId={id} simulation={simulation}/>
         <a className="underline-offset pointer mx-5" onClick={() => navigate("/student/simulation")}>Simulation Home</a>
         <div className="d-flex justify-content-center align-items-center">
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
-                <h1>{simulation.simulationName}</h1>
+                <h1>Simulation Download</h1>
+                {/* <h1>{simulation.simulationName}</h1> */}
             </div>
         </div>
         <div className="row mt-3 px-5">
@@ -139,7 +170,7 @@ const SimulationDetails = () => {
         </div>
         <div className="mt-5 px-5"> 
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
-                <Table striped bordered responsive hover style={{ width: "150%" }}>
+                <Table striped bordered responsive hover >
                     <thead>
                     <tr>
                         <th className="text-center tablePlaceContent">Student</th>
@@ -148,6 +179,7 @@ const SimulationDetails = () => {
                         <th className="text-center tablePlaceContent">Time Remaining</th>
                         <th className="text-center tablePlaceContent">Grade</th>
                         <th className="text-center tablePlaceContent">Sharing Score</th>
+                        <th className="text-center tablePlaceContent">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -161,16 +193,43 @@ const SimulationDetails = () => {
                                 <a className="underline-offset pointer" onClick={() => modalToggle()}>
                                     {userSimulation.fileName ?
                                         <>
-                                            {userSimulation.fileName} <br/> Upload Here
+                                            {userSimulation.fileName} 
                                         </>
                                         :
                                         "Upload Here"
                                     }
                                 </a>
+                                { userSimulation.fileName && 
+                                    <span className="mx-2">
+                                    {
+                                    calculateDurationHandler(simulation.endTime) !== "0 minutes" ?
+                                        <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer" onClick={() => fileDeleteHandler({_id : userSimulation._id , fileId : userSimulation.fileId})} /> 
+                                        : null
+                                    }
+                                    </span> 
+                                }
                             </td>
                             <td className="text-center tablePlaceContent">{calculateDurationHandler(simulation.endTime)}</td>
                             <td className="text-center tablePlaceContent">{userSimulation.grade}</td>
-                            <td className="text-center tablePlaceContent">{userSimulation.sharingScore ? "Yes": "No"}</td>
+                            <td className="text-center tablePlaceContent">
+                                {edit ? 
+                                    <DropdownButton 
+                                        id="dropdown-ethnicity-button" 
+                                        className="my-2" 
+                                        variant={"primary"} 
+                                        title={userSimulation.sharingScore ? "Yes": "No"} 
+                                        onSelect={(ans) => updateSharingScore({_id : userSimulation._id , sharingScore: ans == "Yes" ? true : false})}
+                                        >
+                                        <Dropdown.Item eventKey="Yes">Yes</Dropdown.Item>
+                                        <Dropdown.Item eventKey="No">No</Dropdown.Item>
+                                    </DropdownButton>
+                                    :
+                                    userSimulation.sharingScore ? "Yes": "No"
+                                }
+                            </td>
+                            <td className="text-center tablePlaceContent">
+                                <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => setEdit(!edit)} /> 
+                            </td>
                         </tr>
                         )
                         : null

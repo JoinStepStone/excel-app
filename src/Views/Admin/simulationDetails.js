@@ -105,7 +105,7 @@ const SimulationDetails = () => {
             return setUserSimulationsToShow(userSimulations)
         }
 
-        filteredUserSimulations = userSimulations.filter((userSimulation) => userSimulation["userId"][name].toLowerCase().includes(value.toLowerCase()) );
+        filteredUserSimulations = userSimulations.filter((userSimulation) => userSimulation["userId"][name].toLowerCase().startsWith(value.toLowerCase() ));
         setUserSimulationsToShow(filteredUserSimulations)
     }
 

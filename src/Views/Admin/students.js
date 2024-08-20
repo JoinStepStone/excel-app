@@ -62,11 +62,10 @@ const Student = () => {
     if(!value){
       return setStudentToShow(students)
     }
-    console.log("STUDENTS", students)
     if(name == "examTaken"){
       filteredStudents = students.filter((student) => student[name] == value );
     }else{
-      filteredStudents = students.filter((student) => student[name].toLowerCase().includes(value.toLowerCase()) );
+      filteredStudents = students.filter((student) => student[name].toLowerCase().startsWith(value.toLowerCase()) );
     }
     setStudentToShow(filteredStudents)
   }
@@ -125,7 +124,8 @@ const Student = () => {
                     <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
                   </DropdownButton>
                 </th>
-                <th className="text-center tablePlaceContent"><input name="university" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"University"} /></th>
+                <th className="text-center tablePlaceContent"><input name="university" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"University Name"} /></th>
+                <th className="text-center tablePlaceContent"><input name="gpaScore" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"x.xx"} /></th>
                 <th className="text-center tablePlaceContent"><input name="gradYear" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Graduation Year"} /></th>
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
@@ -177,6 +177,7 @@ const Student = () => {
                 <th className="text-center tablePlaceContent">Average Score</th>
                 <th className="text-center tablePlaceContent">Max Score</th>
                 <th className="text-center tablePlaceContent">University Name</th>
+                <th className="text-center tablePlaceContent">GPA</th>
                 <th className="text-center tablePlaceContent">Graduation Year</th>
                 <th className="text-center tablePlaceContent">Gender</th>
                 <th className="text-center tablePlaceContent">Race</th>
@@ -197,6 +198,7 @@ const Student = () => {
                   <td className="text-center tablePlaceContent">{student.avgScore}</td>
                   <td className="text-center tablePlaceContent">{student.avgScore}</td>
                   <td className="text-center tablePlaceContent">{student.university}</td>
+                  <td className="text-center tablePlaceContent">{student.gpaScore}</td>
                   <td className="text-center tablePlaceContent">{student.gradYear}</td>
                   <td className="text-center tablePlaceContent">{student.gender == "Select Gender" ? "" : student.gender}</td>
                   <td className="text-center tablePlaceContent">{student.race == "Select the Race(s) You Identify With" ? "" : student.race}</td>

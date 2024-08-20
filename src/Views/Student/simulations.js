@@ -75,7 +75,7 @@ const SimulationStudents = () => {
                 return moment(simulation.startTime).isSame(value, 'day');
             });
         }else{
-          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().includes(value.toLowerCase()) );
+          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().startsWith(value.toLowerCase()) );
         }
 
         setSimulationsToShow(filteredSimulations)

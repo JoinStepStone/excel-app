@@ -91,7 +91,7 @@ const Simulations = () => {
                 return moment(simulation.startTime).isSame(value, 'day');
             });
         }else{
-          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().includes(value.toLowerCase()) );
+          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().startsWith(value.toLowerCase()) );
         }
         setSimulationsToShow(filteredSimulations)
     }
@@ -153,7 +153,7 @@ const Simulations = () => {
                         simulationsToShow.length ? 
                         simulationsToShow.map((simulation) =>
                         <tr>
-                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer">{simulation.category}</a></td>
+                            <td className="text-center tablePlaceContent">{simulation.category}</td>
                             <td className="text-center tablePlaceContent" onClick={() => navigate("/admin/simulation/detail/"+simulation.id)}><a className="underline-offset pointer">{simulation.simulationName}</a></td>
                             <td className="text-center tablePlaceContent">{simulation.status ? "Active" : "Inactive"}</td>
                             <td className="text-center tablePlaceContent">{simulation.organizationName}</td>

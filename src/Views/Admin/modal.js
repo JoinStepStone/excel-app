@@ -85,7 +85,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     // Filter suggestions based on input
     if (value) {
       const filteredSuggestions = suggestionLists[name]?.filter((category) =>
-        category.toLowerCase().includes(value.toLowerCase())
+        category.toLowerCase().startsWith(value.toLowerCase())
       );
       setSuggestions((prevData) =>({
         ...prevData,
@@ -231,7 +231,9 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                             autocomplete="off"
                             onBlur={() => setTimeout(() => setSuggestions({}), 100)}
                         />
-                        {suggestions.category?.length > 0 && <SuggestionLists name={"category"} list={suggestions.category} handleSuggestionClick={handleSuggestionClick}/>}
+                        <div className="position-relative">
+                          {suggestions.category?.length > 0 && <SuggestionLists name={"category"} list={suggestions.category} handleSuggestionClick={handleSuggestionClick}/>}
+                        </div>
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
@@ -248,7 +250,9 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           placeholder="Enter name"
                           onBlur={() => setTimeout(() => setSuggestions({}), 100)}
                           />
-                      {suggestions.simulationName?.length > 0 && <SuggestionLists name={"simulationName"} list={suggestions.simulationName} handleSuggestionClick={handleSuggestionClick}/>}
+                        <div className="position-relative">
+                          {suggestions.simulationName?.length > 0 && <SuggestionLists name={"simulationName"} list={suggestions.simulationName} handleSuggestionClick={handleSuggestionClick}/>}
+                        </div>
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
@@ -265,7 +269,9 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           placeholder="Enter organization name"
                           onBlur={() => setTimeout(() => setSuggestions({}), 100)}
                           />
-                      {suggestions.organizationName?.length > 0 && <SuggestionLists name={"organizationName"} list={suggestions.organizationName} handleSuggestionClick={handleSuggestionClick}/>}
+                        <div className="position-relative">
+                          {suggestions.organizationName?.length > 0 && <SuggestionLists name={"organizationName"} list={suggestions.organizationName} handleSuggestionClick={handleSuggestionClick}/>}
+                        </div>
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
