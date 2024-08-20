@@ -140,7 +140,6 @@ const SignUP = () => {
   };
   
   const handleSuggestionClick = (key, value) => {
-    console.log("handleSuggestionClick", key, value)
     setFormData((prevData) => ({
       ...prevData,
       [key]: value
@@ -251,7 +250,7 @@ const SignUP = () => {
                         autocomplete="off" 
                         placeholder="Enter your University"
                         value={formData.university}
-                        onBlur={() => setSuggestions([])}
+                        onBlur={() => setTimeout(() => setSuggestions([]), 100)}
                         />
                       {suggestions.length > 0 && <SuggestionLists name={"university"} list={suggestions} handleSuggestionClick={handleSuggestionClick} width="200%"/>}
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
