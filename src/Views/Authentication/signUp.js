@@ -2,13 +2,14 @@ import "./authStyle.css"
 import { useEffect, useState } from "react";
 import { Modal, Button, Input, Dropdown, DropdownButton } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from "../../API/Authorization";
+import { signUp, getUniListApi } from "../../API/Authorization";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { Tooltop } from "../../Components/tooltip";
 import { formValidationHandler } from "../../utilities/common";
+import SuggestionLists from "../../Components/suggestionLists";
 
 const SignUP = () => {
   
@@ -17,6 +18,8 @@ const SignUP = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [uniListNames, setUniListNames] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [errorKey, setErrorKey] = useState({ key: null, msg: ""});
   const [formData, setFormData] = useState({
     "firstName":null,
@@ -30,6 +33,20 @@ const SignUP = () => {
     "race": "Select the Race(s) You Identify With",
     "gender": "Select Gender",
   });
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const response = await getUniListApi()
+      if(response.code == 201){
+        setUniListNames(response.data.universityName)
+      }else{
+        toast.error("Error In Getting Universities List")
+      }
+    }
+
+    fetchData()
+  }, [])
 
   const handleSelectEthnicity = (eventKey) => {
     setFormData((prevData) => ({
@@ -59,7 +76,18 @@ const SignUP = () => {
       [name]: value
     }));
 
-  };
+    if(name == "university") {
+      if (value) {
+        const filteredSuggestions = uniListNames.filter((university) =>
+        university.toLowerCase().includes(value.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+      } else {
+        setSuggestions([]);
+      }
+    };
+    }
+
 
   useEffect(() => {
     if(isFormSubmitted){
@@ -109,6 +137,15 @@ const SignUP = () => {
 
     setIsLoading(false)
 
+  };
+  
+  const handleSuggestionClick = (key, value) => {
+    console.log("handleSuggestionClick", key, value)
+    setFormData((prevData) => ({
+      ...prevData,
+      [key]: value
+    }));
+    setSuggestions([]);
   };
 
   return (
@@ -204,6 +241,7 @@ const SignUP = () => {
                   <div>
                     <span>University Name: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "university" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <div className="position-relative" >
                       <input
                         onChange={(e) => handleChange(e)}
                         type="text"
@@ -212,8 +250,12 @@ const SignUP = () => {
                         name="university"
                         autocomplete="off" 
                         placeholder="Enter your University"
-                      />
+                        value={formData.university}
+                        onBlur={() => setSuggestions([])}
+                        />
+                      {suggestions.length > 0 && <SuggestionLists name={"university"} list={suggestions} handleSuggestionClick={handleSuggestionClick} width="200%"/>}
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
                     </div>
                   </div>
                   <div>

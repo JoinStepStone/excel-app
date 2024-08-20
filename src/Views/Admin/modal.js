@@ -200,7 +200,6 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
   };
 
   const handleSuggestionClick = (key, value) => {
-    console.log("handleSuggestionClick", key, value)
     setFormData((prevData) => ({
       ...prevData,
       [key]: value
@@ -229,7 +228,8 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                             name="category"
                             value={formData.category}
                             placeholder="Enter your category"
-                            autocomplete="off" 
+                            autocomplete="off"
+                            onBlur={() => setSuggestions({})}
                         />
                         {suggestions.category?.length > 0 && <SuggestionLists name={"category"} list={suggestions.category} handleSuggestionClick={handleSuggestionClick}/>}
                       </div>
@@ -246,7 +246,8 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           value={formData.simulationName}
                           autocomplete="off" 
                           placeholder="Enter name"
-                      />
+                          onBlur={() => setSuggestions({})}
+                          />
                       {suggestions.simulationName?.length > 0 && <SuggestionLists name={"simulationName"} list={suggestions.simulationName} handleSuggestionClick={handleSuggestionClick}/>}
                       </div>
                       </div>
@@ -262,7 +263,8 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           value={formData.organizationName}
                           autocomplete="off" 
                           placeholder="Enter organization name"
-                      />
+                          onBlur={() => setSuggestions({})}
+                          />
                       {suggestions.organizationName?.length > 0 && <SuggestionLists name={"organizationName"} list={suggestions.organizationName} handleSuggestionClick={handleSuggestionClick}/>}
                       </div>
                       </div>

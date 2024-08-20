@@ -33,7 +33,7 @@ export async function deleteStudentById(data) {
 }
 
 
-export async function getSuggestionLists(data) {
+export async function getSuggestionLists() {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))
     const response = await axios.get(`${BASE_URL}/admin/getSuggestionLists`, 

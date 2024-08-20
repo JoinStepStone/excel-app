@@ -21,6 +21,19 @@ export async function checkAuth(data) {
     }
 }
 
+export async function getUniListApi() {
+
+    const response = await axios.get(`${BASE_URL}/uniListNames`, 
+    {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        
+      });
+
+      return response.data
+}
+
 export async function signUp(data) {
 
     const response = await axios.post(`${BASE_URL}/signUp`, 

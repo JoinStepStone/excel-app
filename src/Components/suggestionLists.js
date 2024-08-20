@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-const SuggestionLists = ({ name, list, handleSuggestionClick }) => {
+const SuggestionLists = ({ name, list, handleSuggestionClick, width }) => {
     return (
       <ul style={{ 
           zIndex: 1,
-          width: "100%", 
+          width: width ? width : "100%", 
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)", 
           backgroundColor: "#F0F0F0", 
           border: "1px solid #ccc", 
@@ -12,6 +12,7 @@ const SuggestionLists = ({ name, list, handleSuggestionClick }) => {
           }}
         >
         {list.map((suggestion, index) => (
+          index < 3 &&
           <li
             key={index}
             onClick={() => handleSuggestionClick(name,suggestion)}
