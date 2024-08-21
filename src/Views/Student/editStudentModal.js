@@ -188,7 +188,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="firstName"
                         name="firstName"
                         autocomplete="off" 
-                        placeholder="Enter your First Name"
+                        placeholder="First Name"
                         value={formData["firstName"]}
                       />
                       { errorKey.key == "firstName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -201,7 +201,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="lastName"
                         name="lastName"
                         autocomplete="off" 
-                        placeholder="Enter your Last Name"
+                        placeholder="Last Name"
                         value={formData["lastName"]}
                       />
                       { errorKey.key == "lastName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -214,7 +214,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="email"
                         name="email"
                         autocomplete="off" 
-                        placeholder="Enter your Email"
+                        placeholder="Email"
                         value={formData["email"]}
                       />
                       { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -227,7 +227,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="password"
                         name="password"
                         autocomplete="off" 
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         value={formData["password"]}
                       />
                       { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -241,7 +241,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="confirmPassword"
                         name="confirmPassword"
                         autocomplete="off" 
-                        placeholder="Enter your Confirm Password"
+                        placeholder="Confirm Password"
                         value={formData["confirmPassword"]}
                       />
                       { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -255,7 +255,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="university"
                         name="university"
                         autocomplete="off" 
-                        placeholder="Enter your University"
+                        placeholder="University"
                         value={formData["university"]}
                       />
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -268,7 +268,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="gpaScore"
                         name="gpaScore"
                         autocomplete="off" 
-                        placeholder="x.xx"
+                        placeholder="0.00"
                         value={formData["gpaScore"]}
                       />
                       { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -281,7 +281,7 @@ const EditStudentModalScreen = ({ show, modalToggle }) => {
                         id="gradYear"
                         name="gradYear"
                         autocomplete="off" 
-                        placeholder="Enter your Graduation Year"
+                        placeholder="Graduation Year"
                         value={formData["gradYear"]}
                       />
                       { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}

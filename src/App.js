@@ -20,13 +20,14 @@ import UpComingEvent from './Views/Student/upComingEvent';
 import Login from './Views/Authentication';
 import SignUP from './Views/Authentication/signUp';
 
-import { checkAuth } from "./API/Authorization"
+import { checkAuth, getUniListApi } from "./API/Authorization"
 import { toast } from 'react-toastify';
 
 function App() { 
 
   const [path, setPath] = useState(null); //Admin Student Not
   const [userRole, setUserRole] = useState("Not"); //Admin Student Not
+  const [uniListNames, setUniListNames] = useState([]);
   const location = useLocation();
 
   const getSession = async () => {
@@ -56,6 +57,20 @@ function App() {
     }
   },[location])
 
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const response = await getUniListApi()
+      if(response.code == 201){
+        setUniListNames(response.data.universityName)
+      }else{
+        toast.error("Error In Getting Universities List")
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className="app">
       {userRole == "Admin" && <SidebarAdmin/> }
@@ -73,7 +88,7 @@ function App() {
           <main className="content" style={{ width: "85%" }}>
           <Routes>
             <Route path="/" element={<Admin />} />
-            <Route path="/admin/students" element={<Student />} />
+            <Route path="/admin/students" element={<Student uniListNames = {uniListNames} />} />
             <Route path="/admin/simulation" element={<Simulations />} />
             <Route path="/admin/simulation/detail/:id" element={<SimulationDetails />} />
             <Route path="*" element={<NoPage />} />

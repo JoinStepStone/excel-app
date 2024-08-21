@@ -287,22 +287,6 @@ const SignUP = () => {
                 
                 <div className="d-flex justify-content-between mb-1">
                   <div>
-                    <span>GPA: </span>
-                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
-                      <input
-                        onChange={(e) => handleChange(e)}
-                        type="text"
-                        className="form-control border-0 no-focus-outline"
-                        id="gpaScore"
-                        name="gpaScore"
-                        autocomplete="off" 
-                        placeholder="x.xx"
-                        value={formData.gpaScore}
-                        />
-                      { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
-                    </div>
-                  </div>
-                  <div>
                     <span>Graduation Year: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gradYear" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
@@ -315,6 +299,22 @@ const SignUP = () => {
                         placeholder="Graduation Year"
                       />
                       { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                  </div>
+                  <div>
+                    <span>GPA: </span>
+                    <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        className="form-control border-0 no-focus-outline"
+                        id="gpaScore"
+                        name="gpaScore"
+                        autocomplete="off" 
+                        placeholder="0.00"
+                        value={formData.gpaScore}
+                        />
+                      { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                     </div>
                   </div>
                 </div>

@@ -227,7 +227,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                             id="category"
                             name="category"
                             value={formData.category}
-                            placeholder="Enter your category"
+                            placeholder="Category"
                             autocomplete="off"
                             onBlur={() => setTimeout(() => setSuggestions({}), 100)}
                         />

@@ -11,10 +11,12 @@ import moment from 'moment';
 import { Tooltop } from "../../Components/tooltip";
 import { updateFormValidationHandler } from "../../utilities/common";
 import { useNavigate } from 'react-router-dom';
+import SuggestionLists from "../../Components/suggestionLists";
 
-const EditModalScreen = ({ show, modalToggle, selectedId }) => {
+const EditModalScreen = ({ show, modalToggle, selectedId, uniListNames }) => {
   
   const navigate = useNavigate();
+  const [suggestions, setSuggestions] = useState([]);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +64,16 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
       [name]: value
     }));
 
-    if(name == "gpaScore") {
+    if(name == "university") {
+      if (value) {
+        const filteredSuggestions = uniListNames.filter((university) =>
+        university.toLowerCase().startsWith(value.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+      } else {
+        setSuggestions([]);
+      }
+    }else if(name == "gpaScore") {
       
       // Regular expression to match the GPA format (x.xx)
       const regex = /^(?!0\d)(?:[0-3](?:\.\d{0,2})?|4(?:\.0{0,2})?)$/;
@@ -160,7 +171,15 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
     setIsLoading(false)
 
   };
-      
+  
+  const handleSuggestionClick = (key, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [key]: value
+    }));
+    setSuggestions([]);
+  };
+
   return (
     <Modal show={show} onHide={modalToggle}>
         <Modal.Header closeButton>
@@ -180,7 +199,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="firstName"
                         name="firstName"
                         autocomplete="off" 
-                        placeholder="Enter your First Name"
+                        placeholder="First Name"
                         value={formData["firstName"]}
                       />
                       { errorKey.key == "firstName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -193,7 +212,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="lastName"
                         name="lastName"
                         autocomplete="off" 
-                        placeholder="Enter your Last Name"
+                        placeholder="Last Name"
                         value={formData["lastName"]}
                       />
                       { errorKey.key == "lastName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -206,7 +225,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="email"
                         name="email"
                         autocomplete="off" 
-                        placeholder="Enter your Email"
+                        placeholder="Email"
                         value={formData["email"]}
                       />
                       { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -219,7 +238,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="password"
                         name="password"
                         autocomplete="off" 
-                        placeholder="Enter your password"
+                        placeholder="password"
                       />
                       { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                       <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowPassword(!showPassword)}/> 
@@ -232,7 +251,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="confirmPassword"
                         name="confirmPassword"
                         autocomplete="off" 
-                        placeholder="Enter your Confirm Password"
+                        placeholder="Confirm Password"
                       />
                       { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
                       <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} className="mx-2 pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}/> 
@@ -245,10 +264,14 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="university"
                         name="university"
                         autocomplete="off" 
-                        placeholder="Enter your University"
+                        placeholder="University Name"
                         value={formData["university"]} 
-                      />
+                        onBlur={() => setTimeout(() => setSuggestions([]), 100)}
+                        />
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
+                    </div>
+                    <div className="position-relative">
+                      {suggestions.length > 0 && <SuggestionLists name={"university"} list={suggestions} handleSuggestionClick={handleSuggestionClick}/>}
                     </div>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
@@ -258,7 +281,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="gpaScore"
                         name="gpaScore"
                         autocomplete="off" 
-                        placeholder="x.xx"
+                        placeholder="0.00"
                         value={formData["gpaScore"]}
                       />
                       { errorKey.key == "gpaScore" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -271,7 +294,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="gradYear"
                         name="gradYear"
                         autocomplete="off" 
-                        placeholder="Enter your Graduation Year"
+                        placeholder="Graduation Year"
                         value={formData["gradYear"]}
                       />
                       { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}

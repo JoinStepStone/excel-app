@@ -9,7 +9,7 @@ import EditModalScreen from "./editModal";
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
-const Student = () => {
+const Student = ({ uniListNames }) => {
 
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +89,7 @@ const Student = () => {
 
   return (
     <div className="pt-5 ">
-      {show && <EditModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId}/>}
+      {show && <EditModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId} uniListNames={uniListNames}/>}
       <div className="d-flex justify-content-center">
         <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
           <h1>All Students</h1>
@@ -125,7 +125,7 @@ const Student = () => {
                   </DropdownButton>
                 </th>
                 <th className="text-center tablePlaceContent"><input name="university" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"University Name"} /></th>
-                <th className="text-center tablePlaceContent"><input name="gpaScore" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"x.xx"} /></th>
+                <th className="text-center tablePlaceContent"><input name="gpaScore" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"0.00"} /></th>
                 <th className="text-center tablePlaceContent"><input name="gradYear" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Graduation Year"} /></th>
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 

@@ -130,7 +130,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="firstName"
                         name="firstName"
                         autocomplete="off" 
-                        placeholder="Enter your First Name"
+                        placeholder="First Name"
                         value={formData["firstName"]}
                       />
                       { errorKey.key == "firstName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -143,7 +143,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="lastName"
                         name="lastName"
                         autocomplete="off" 
-                        placeholder="Enter your Last Name"
+                        placeholder="Last Name"
                         value={formData["lastName"]}
                       />
                       { errorKey.key == "lastName" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -156,7 +156,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="email"
                         name="email"
                         autocomplete="off" 
-                        placeholder="Enter your Email"
+                        placeholder="Email"
                         value={formData["email"]}
                       />
                       { errorKey.key == "email" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -169,7 +169,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="password"
                         name="password"
                         autocomplete="off" 
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         value={formData["password"]}
                       />
                       { errorKey.key == "password" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -183,7 +183,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="confirmPassword"
                         name="confirmPassword"
                         autocomplete="off" 
-                        placeholder="Enter your Confirm Password"
+                        placeholder="Confirm Password"
                         value={formData["confirmPassword"]}
                       />
                       { errorKey.key == "confirmPassword" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -197,7 +197,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="university"
                         name="university"
                         autocomplete="off" 
-                        placeholder="Enter your University"
+                        placeholder="University"
                         value={formData["university"]}
                       />
                       { errorKey.key == "university" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
@@ -210,7 +210,7 @@ const EditAdminModalScreen = ({ show, modalToggle, selectedId }) => {
                         id="gradYear"
                         name="gradYear"
                         autocomplete="off" 
-                        placeholder="Enter your Graduation Year"
+                        placeholder="Graduation Year"
                         value={formData["gradYear"]}
                       />
                       { errorKey.key == "gradYear" && <Tooltop msg={errorKey.msg} className = {"icon-color pointer"} />}
