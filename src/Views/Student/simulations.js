@@ -8,6 +8,8 @@ import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { getAllSimulations } from "../../API/Student";
 import MetricDisplay from "../../Components/metric";
 import ModalRegister from "./registerModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash, faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 const SimulationStudents = () => {
 
@@ -16,6 +18,7 @@ const SimulationStudents = () => {
     const [userSimulations, setUserSimulations] = useState([]);
     const [simulations, setSimulations] = useState([]);
     const [simulationsToShow, setSimulationsToShow] = useState([]);
+    const [filters, setFilters] = useState({}); // State to store all filter conditions
 
     const getAllSimulationsHandler = async () => {
         setIsLoading(true)
@@ -63,38 +66,79 @@ const SimulationStudents = () => {
             return setSimulationsToShow(simulations)
         }
         
-        if(name == "participants"){
-          filteredSimulations = simulations.filter((simulation) => simulation[name] == value );
-        }else if(name == "status"){
-            filteredSimulations = simulations.filter((simulation) => simulation[name].toString() == value );
-        }else if(name == "duration"){
-            filteredSimulations = simulations.filter((simulation) => getDurationHandler(simulation[name]).toLowerCase().includes(value.toLowerCase()) );
-        }else if(name == "startTime" || name == "endTime"){
-            // Filter function using moment.js
-            filteredSimulations = simulations.filter(simulation => {
-                return moment(simulation.startTime).isSame(value, 'day');
-            });
-        }else{
-          filteredSimulations = simulations.filter((simulation) => simulation[name].toLowerCase().startsWith(value.toLowerCase()) );
-        }
+        const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+        setFilters(newFilters);
+        applyFilters(newFilters); // Reapply filters
+        
+        
+        // setSimulationsToShow(filteredSimulations)
+    }
+
+    const onChangeMinMaxHandler = (e) => { 
+        let { name, value } = e;
+        
+        const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+        setFilters(newFilters);
+        applyFilters(newFilters); // Reapply filters
+
+        // if(value == "Highest"){
+        //     const highestScoreStudent = simulations.reduce((prev, current) => {
+        //         const currSum = current[name] || 0
+        //         const prevSum = prev[name] || 0
+        //         return (currSum > prevSum) ? current : prev;
+        //     }, simulations[0]);
+        //     setSimulationsToShow([highestScoreStudent])
+        // }else{
+        //     const lowestScoreStudent = simulations.reduce((prev, current) => {
+        //         const currSum = current[name] || 0
+        //         const prevSum = prev[name] || 0
+        //         return (currSum < prevSum) ? current : prev;
+        //     }, simulations[0]);
+        //     setSimulationsToShow([lowestScoreStudent])
+        // }
+    }
+
+    const applyFilters = (activeFilters) => {
+        let filteredSimulations = simulations;
+
+        Object.keys(activeFilters).forEach((key) => {
+            if(key == "simulationName"  || key == "status" || key == "startTime" || key == "endTime"){
+                if(key == "duration"){
+                    filteredSimulations = filteredSimulations.filter((simulation) => getDurationHandler(simulation[key]).toLowerCase().includes(activeFilters[key].toLowerCase()) );
+                }else if(key == "startTime" || key == "endTime"){
+                    // Filter function using moment.js
+                    filteredSimulations = filteredSimulations.filter(simulation => {
+                        return moment(simulation.startTime).isSame(activeFilters[key], 'day');
+                    });
+                }else if(key == "status"){
+                    filteredSimulations = filteredSimulations.filter(simulation => {
+                        return simulation[key].toString() === activeFilters[key];
+                    });
+                }else{
+                    filteredSimulations = filteredSimulations.filter((simulation) => simulation[key].toLowerCase().startsWith(activeFilters[key].toLowerCase()) );
+                }
+          
+            }else if(key == "grade" ){
+                if(activeFilters[key] == "Highest"){
+                    const highestScoreStudent = simulations.reduce((prev, current) => {
+                        const currSum = current[key] || 0
+                        const prevSum = prev[key] || 0
+                        return (currSum > prevSum) ? current : prev;
+                    }, simulations[0]);
+                    filteredSimulations = [highestScoreStudent]
+                }else{
+                    const lowestScoreStudent = simulations.reduce((prev, current) => {
+                        const currSum = current[key] || 0
+                        const prevSum = prev[key] || 0
+                        return (currSum < prevSum) ? current : prev;
+                    }, simulations[0]);
+                    filteredSimulations = [lowestScoreStudent]
+                }
+            }
+        });
 
         setSimulationsToShow(filteredSimulations)
-    }
-
-    const onChangeMinMaxHandler = (e) => {
-        let { name, value } = e;
-        if(value == "Highest"){
-            const highestScoreStudent = simulations.reduce((prev, current) => {
-                return (current[name] > prev[name]) ? current : prev;
-            }, simulations[0]);
-            setSimulationsToShow([highestScoreStudent])
-        }else{
-            const lowestScoreStudent = simulations.reduce((prev, current) => {
-                return (current[name] < prev[name]) ? current : prev;
-            }, simulations[0]);
-            setSimulationsToShow([lowestScoreStudent])
-        }
-    }
+      };
 
     return (
       <div className="pt-5 ">
@@ -126,7 +170,7 @@ const SimulationStudents = () => {
                             <DropdownButton 
                                 id={"dropdown-grade-button"} 
                                 title={"Grade"} 
-                                onSelect={(props) => onChangeMinMaxHandler({name: "status", value: props})}
+                                onSelect={(props) => onChangeMinMaxHandler({name: "grade", value: props})}
                             >
                                 <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
                                 <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>

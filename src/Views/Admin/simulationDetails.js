@@ -8,6 +8,8 @@ import { Spin } from "antd";
 import moment from 'moment';
 import { downloadFile } from "../../utilities/common";
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 const SimulationDetails = () => {
     
@@ -19,6 +21,7 @@ const SimulationDetails = () => {
     const [userSimulations, setUserSimulations] = useState([]);
     const [userSimulationsToShow, setUserSimulationsToShow] = useState([]);
     const [simulation, setSimulation] = useState({});
+    const [filters, setFilters] = useState({}); // State to store all filter conditions
 
     const getAllUserSimulationsHandler = async () => {
         setIsLoading(true)
@@ -84,45 +87,91 @@ const SimulationDetails = () => {
         if(!value){
             return setUserSimulationsToShow(userSimulations)
         }
-
-        if(name == "timeToComplete"){
-            filteretUserSimulations = userSimulations.filter(userSimulation => {
-                return calculateDurationHandler(userSimulation.endTime,userSimulation.startTime).toLowerCase().includes(value.toLowerCase())
-            });
-        }else if(name == "sharingScore"){
-            filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toString() == value );
-        }else{
-          filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toLowerCase().includes(value.toLowerCase()) );
-        }
-        setUserSimulationsToShow(filteretUserSimulations)
+        const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+        setFilters(newFilters);
+        applyFilters(newFilters); // Reapply filters
+        
+        // if(name == "timeToComplete"){
+        //     filteretUserSimulations = userSimulations.filter(userSimulation => {
+        //         return calculateDurationHandler(userSimulation.endTime,userSimulation.startTime).toLowerCase().includes(value.toLowerCase())
+        //     });
+        // }else if(name == "sharingScore"){
+        //     filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toString() == value );
+        // }else{
+        //   filteretUserSimulations = userSimulations.filter((userSimulation) => userSimulation[name].toLowerCase().includes(value.toLowerCase()) );
+        // }
+        // setUserSimulationsToShow(filteretUserSimulations)
     }
 
     const onChangeUserHandler = (e) => {
         let filteredUserSimulations;
         let { name, value } = e.target ? e.target : e;
-        
         if(!value){
             return setUserSimulationsToShow(userSimulations)
         }
 
-        filteredUserSimulations = userSimulations.filter((userSimulation) => userSimulation["userId"][name].toLowerCase().startsWith(value.toLowerCase() ));
-        setUserSimulationsToShow(filteredUserSimulations)
+        const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+        setFilters(newFilters);
+        applyFilters(newFilters); // Reapply filters
+        
+        // filteredUserSimulations = userSimulations.filter((userSimulation) => userSimulation["userId"][name].toLowerCase().startsWith(value.toLowerCase() ));
+        // setUserSimulationsToShow(filteredUserSimulations)
     }
 
     const onChangeMinMaxHandler = (e) => {
         let { name, value } = e;
-        if(value == "Highest"){
-            const highestScoreStudent = userSimulations.reduce((prev, current) => {
-                return (current[name] > prev[name]) ? current : prev;
-            }, userSimulations[0]);
-            setUserSimulationsToShow([highestScoreStudent])
-        }else{
-            const lowestScoreStudent = userSimulations.reduce((prev, current) => {
-                return (current[name] < prev[name]) ? current : prev;
-            }, userSimulations[0]);
-            setUserSimulationsToShow([lowestScoreStudent])
-        }
+        const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+        setFilters(newFilters);
+        applyFilters(newFilters); // Reapply filters
+
+        // if(value == "Highest"){
+        //     const highestScoreStudent = userSimulations.reduce((prev, current) => {
+        //         return (current[name] > prev[name]) ? current : prev;
+        //     }, userSimulations[0]);
+        //     setUserSimulationsToShow([highestScoreStudent])
+        // }else{
+        //     const lowestScoreStudent = userSimulations.reduce((prev, current) => {
+        //         return (current[name] < prev[name]) ? current : prev;
+        //     }, userSimulations[0]);
+        //     setUserSimulationsToShow([lowestScoreStudent])
+        // }
     }
+
+    const applyFilters = (activeFilters) => {
+        let filteredUserSimulations = userSimulations;
+
+        Object.keys(activeFilters).forEach((key) => {
+            if(key == "rank" || key == "status"){
+                if(activeFilters[key] == "Highest"){
+                    const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
+                        return (current[key] || 0) > (prev[key] || 0) ? current : prev;
+                    }, filteredUserSimulations[0]);
+                    filteredUserSimulations = [filteredUserSimulationsDummy]
+                }else{
+                    const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
+                        return (current[key] || 0) < (prev[key] || 0) ? current : prev;
+                    }, filteredUserSimulations[0]);
+                    filteredUserSimulations = [filteredUserSimulationsDummy]
+                }
+            }else if(key == "firstName" || key == "university" || key == "gradYear"){
+                console.log("2")
+                filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation["userId"][key].toLowerCase().startsWith(activeFilters[key].toLowerCase() ));
+            }else if(key == "fileName" || key == "sharingScore" || key == "duation" || key == "timeToComplete"){
+                console.log("3")
+                if(key == "timeToComplete"){
+                    filteredUserSimulations = filteredUserSimulations.filter(userSimulation => {
+                        return calculateDurationHandler(userSimulation.endTime,userSimulation.startTime).toLowerCase().includes(activeFilters[key].toLowerCase())
+                    });
+                }else if(key == "sharingScore"){
+                    filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation[key].toString() == activeFilters[key] );
+                }else{
+                    filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation[key].toLowerCase().includes(activeFilters[key].toLowerCase()) );
+                }
+            }
+        });
+
+        setUserSimulationsToShow(filteredUserSimulations)
+      };
 
     return ( 
       <div className="pt-5 ">
@@ -201,6 +250,10 @@ const SimulationDetails = () => {
                     <thead>
                     
                     <tr>
+                        <th className="text-center tablePlaceContent">
+                            Reset
+                            <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => {setUserSimulationsToShow(userSimulations); setFilters({})}} />
+                        </th>
                         <th className="text-center tablePlaceContent"><input name="firstName" onChange={onChangeUserHandler} className="rounded px-2 py-1" placeholder={"Student"} /></th>
                         <th className="text-center tablePlaceContent">
                             <DropdownButton 
@@ -240,6 +293,7 @@ const SimulationDetails = () => {
                     </tr>
 
                     <tr>
+                        <th className="text-center tablePlaceContent"></th>
                         <th className="text-center tablePlaceContent">Student Name</th>
                         <th className="text-center tablePlaceContent">Rank</th>
                         <th className="text-center tablePlaceContent">Grade</th>
@@ -258,6 +312,7 @@ const SimulationDetails = () => {
                             userSimulationsToShow.length ? 
                             userSimulationsToShow.map((userSimulation) =>               
                             <tr>
+                                <td className="text-center tablePlaceContent"></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.rank}</a></td>
                                 <td className="text-center tablePlaceContent">{userSimulation.grade}</td>

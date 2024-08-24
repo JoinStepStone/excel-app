@@ -111,7 +111,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
   const handleSelectStatus = (event) => {
     setFormData((prevData) => ({
       ...prevData,
-      "status": event
+      "status": event == "true" ? true : false
     }));
   };
 
@@ -219,7 +219,6 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
 
   return (
     <Modal show={show} onHide={modalToggle} >
-      {console.log("FORM DATA", formData)}
         <Modal.Header closeButton>
             <Modal.Title>Simulation Details</Modal.Title>
         </Modal.Header>
