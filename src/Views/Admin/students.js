@@ -74,10 +74,8 @@ const Student = ({ uniListNames }) => {
     let { name, value } = e;
     if(value == "Highest"){
       const highestScoreStudent = students.reduce((prev, current) => {
-          console.log("onChangeMinMaxHandler", current[name])
           return (current[name] > prev[name]) ? current : prev;
       }, students[0]);
-      console.log("highestScoreStudent", highestScoreStudent)
       setStudentToShow([highestScoreStudent])
     }else{
       const lowestScoreStudent = students.reduce((prev, current) => {
@@ -100,10 +98,24 @@ const Student = ({ uniListNames }) => {
           <Table striped bordered hover responsive style={{ width: "150%" }}>
             <thead>
               <tr>
+                
                 <th className="text-center tablePlaceContent"><input name="firstName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"First Name"} /></th>
+                
                 <th className="text-center tablePlaceContent"><input name="lastName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Last Name"} /></th>
+                
                 <th className="text-center tablePlaceContent"><input name="email" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Email"} /></th>
-                <th className="text-center tablePlaceContent"><input name="examTaken" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Exams Taken"} /></th>
+                
+                <th className="text-center tablePlaceContent">
+                  <DropdownButton 
+                    id={"dropdown-ethnicity-button"} 
+                    title={"High/Low"} 
+                    onSelect={(props) => onChangeMinMaxHandler({name: "examTaken", value: props})}
+                  >
+                    <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
+                    <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
+                  </DropdownButton>
+                </th>
+                
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
                     id={"dropdown-avgScore-button"} 
@@ -114,6 +126,7 @@ const Student = ({ uniListNames }) => {
                     <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
                   </DropdownButton>
                 </th>
+
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
                     id={"dropdown-maxScore-button"} 
@@ -124,9 +137,22 @@ const Student = ({ uniListNames }) => {
                     <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
                   </DropdownButton>
                 </th>
+                
                 <th className="text-center tablePlaceContent"><input name="university" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"University Name"} /></th>
-                <th className="text-center tablePlaceContent"><input name="gpaScore" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"0.00"} /></th>
+                
+                <th className="text-center tablePlaceContent">
+                  <DropdownButton 
+                    id={"dropdown-ethnicity-button"} 
+                    title={"High/Low"} 
+                    onSelect={(props) => onChangeMinMaxHandler({name: "gpaScore", value: props})}
+                  >
+                    <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
+                    <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
+                  </DropdownButton>
+                </th>
+                
                 <th className="text-center tablePlaceContent"><input name="gradYear" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Graduation Year"} /></th>
+                
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
                     id={"dropdown-gender-button"} 
@@ -138,6 +164,7 @@ const Student = ({ uniListNames }) => {
                     <Dropdown.Item eventKey={"Male"}>Male</Dropdown.Item>
                   </DropdownButton>
                 </th>
+
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
                     style={{ zIndex: 1 }}
@@ -153,6 +180,7 @@ const Student = ({ uniListNames }) => {
                     <Dropdown.Item eventKey={"Other"}>Other</Dropdown.Item>
                   </DropdownButton>
                 </th>
+
                 <th className="text-center tablePlaceContent">
                   <DropdownButton 
                     id={"dropdown-ethnicity-button"} 
@@ -161,8 +189,10 @@ const Student = ({ uniListNames }) => {
                   >
                     <Dropdown.Item eventKey={"Hispanic"}>Hispanic</Dropdown.Item>
                     <Dropdown.Item eventKey={"Latino"}>Latino</Dropdown.Item>
+                    <Dropdown.Item eventKey={"Not Applicable"}>Not Applicable</Dropdown.Item>
                   </DropdownButton>
                 </th>
+
                 <th className="text-center tablePlaceContent">
                   Reset
                   <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setStudentToShow(students)}/> 

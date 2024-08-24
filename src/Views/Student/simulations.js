@@ -134,8 +134,10 @@ const SimulationStudents = () => {
                         </th>
                         <th className="text-center tablePlaceContent"><input name="startTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Start Time"} /></th>
                         <th className="text-center tablePlaceContent"><input name="endTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"End Time"} /></th>
-                        <th className="text-center tablePlaceContent"><input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /></th>
-                        <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
+                        <th className="text-center tablePlaceContent">
+                            {/* <input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /> */}
+                        </th>
+                        {/* <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th> */}
                         {/* <th className="text-center tablePlaceContent">
                             Reset
                             <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setSimulationsToShow(simulations)}/> 
@@ -149,7 +151,7 @@ const SimulationStudents = () => {
                         <th className="text-center tablePlaceContent">Date Administered</th>
                         <th className="text-center tablePlaceContent">Date Closed</th>
                         <th className="text-center tablePlaceContent">Duration</th>
-                        <th className="text-center tablePlaceContent">Student Participated</th>
+                        {/* <th className="text-center tablePlaceContent">Student Participated</th> */}
                         {/* <th className="text-center tablePlaceContent"></th> */}
                     </tr>
 
@@ -166,7 +168,7 @@ const SimulationStudents = () => {
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.startTime)}</td>
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.endTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
-                                <td className="text-center tablePlaceContent">{simulation.participants}</td>
+                                {/* <td className="text-center tablePlaceContent">{simulation.participants}</td> */}
                                 {/* <td className="text-center tablePlaceContent"><a className="underline-offset pointer">Start</a></td> */}
                             </tr>
                         )

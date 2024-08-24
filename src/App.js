@@ -101,7 +101,7 @@ function App() {
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student/simulation" element={<SimulationStudents />} />
             <Route path="/student/simulation/detail/:id" element={<SimulationDetailsStudents />} />
-            <Route path="/student/upComingEvents" element={<UpComingEvent />} />
+            {/* <Route path="/student/upComingEvents" element={<UpComingEvent />} /> */}
             <Route path="*" element={<NoPage />} />
           </Routes>
           </main>

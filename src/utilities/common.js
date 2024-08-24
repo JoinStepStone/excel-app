@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import { BASE_URL } from '../API';
 export function getMinutes(dateString) {
   // Create a Date object from the date string
   const date = new Date(dateString);
@@ -221,28 +223,42 @@ export const registerModalalidationHandler = (data) => {
 
   }
 
-  export const downloadFile = (id) => {
+  export const downloadFile = (id, simulationId = false) => {
     // Open a new window
-    const downloadWindow = window.open(
-      "http://127.0.0.1:5000/admin/downloadSimulationFile/"+id,
-      "_blank"
-    );
-
-    // Check if the window opened successfully
-    if (downloadWindow) {
-      // Poll the window for its 'closed' status
-      const interval = setInterval(() => {
-        // If the window is closed, clear the interval
-        if (downloadWindow.closed) {
-          clearInterval(interval);
-        }
-      }, 1000);
-
-      // Close the window after a brief delay (assuming the download has started)
-      setTimeout(() => {
-        downloadWindow.close();
-      }, 3000); // 3000ms (3 seconds) is usually enough time for the download to start
-    } else {
-      console.error("Failed to open the download window.");
+    try {
+      let downloadWindow;
+      if(simulationId){
+        console.log("UPDATED", id._id, id.fileId)
+        downloadWindow = window.open(
+          BASE_URL+"/student/downloadSimulationFile/"+id._id+","+id.fileId,
+          "_blank"
+        );
+      }else{
+        downloadWindow = window.open(
+          BASE_URL+"/admin/downloadSimulationFile/"+id,
+          "_blank"
+        );
+      }
+  
+      // Check if the window opened successfully
+      if (downloadWindow) {
+        // Poll the window for its 'closed' status
+        const interval = setInterval(() => {
+          // If the window is closed, clear the interval
+          if (downloadWindow.closed) {
+            clearInterval(interval);
+          }
+        }, 1000);
+  
+        // Close the window after a brief delay (assuming the download has started)
+        setTimeout(() => {
+          downloadWindow.close();
+        }, 3000); // 3000ms (3 seconds) is usually enough time for the download to start
+      } else {
+        console.error("Failed to open the download window.");
+      }
+    } catch (error) {
+      toast.error("Simulation is inactive")
     }
+
   };

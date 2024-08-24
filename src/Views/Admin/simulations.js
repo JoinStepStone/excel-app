@@ -126,7 +126,7 @@ const Simulations = () => {
                         <th className="text-center tablePlaceContent"><input name="startTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Start Time"} /></th>
                         <th className="text-center tablePlaceContent"><input name="endTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"End Time"} /></th>
                         <th className="text-center tablePlaceContent"><input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /></th>
-                        <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
+                        <th className="text-center tablePlaceContent"><input disabled name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
                         <th className="text-center tablePlaceContent"><input name="fileName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"File Name"} /></th>
                         <th className="text-center tablePlaceContent">
                             Reset
@@ -142,7 +142,7 @@ const Simulations = () => {
                         <th className="text-center tablePlaceContent">Date Administered</th>
                         <th className="text-center tablePlaceContent">Date Closed</th>
                         <th className="text-center tablePlaceContent">Duration</th>
-                        <th className="text-center tablePlaceContent">Student Participated</th>
+                        <th className="text-center tablePlaceContent">Participants</th>
                         <th className="text-center tablePlaceContent">Download File</th>
                         <th className="text-center tablePlaceContent">Actions</th>
                     </tr>

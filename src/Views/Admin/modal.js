@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Modal, Button, Input } from 'react-bootstrap';
+import { Modal, Button, Input, Dropdown, DropdownButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { generateRandomCode } from '../../utilities/common';
@@ -24,6 +24,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
       organizationName: '',
       startTime: '',
       endTime: '',
+      status: false
     });
   const [suggestions, setSuggestions] = useState({});
   const [suggestionLists, setSuggestionLists] = useState({});
@@ -107,6 +108,13 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     }
   };
 
+  const handleSelectStatus = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      "status": event
+    }));
+  };
+
   const handleSubmitForm = async () => { 
     setIsLoading(true)
     setIsFormSubmitted(true)
@@ -119,6 +127,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     requestData.append('startTime', formData["startTime"]);
     requestData.append('endTime', formData["endTime"]);
     requestData.append('classCode', code);
+    requestData.append('status', formData["status"]);
     requestData.append('file', file);
     
     const error = registerModalalidationHandler(formData)
@@ -167,6 +176,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
     requestData.append('fileId', formData["fileId"]);
     requestData.append('fileName', formData["fileName"]);
     requestData.append('participants', formData["participants"]);
+    requestData.append('status', formData["status"]);
     requestData.append('file', file);
     
     const error = registerModalalidationHandler(formData)
@@ -209,6 +219,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
 
   return (
     <Modal show={show} onHide={modalToggle} >
+      {console.log("FORM DATA", formData)}
         <Modal.Header closeButton>
             <Modal.Title>Simulation Details</Modal.Title>
         </Modal.Header>
@@ -300,7 +311,19 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           placeholder="Enter Close Date/Time"
                       />
                       </div>
-                    
+                      <div className="d-flex align-items-center justify-content-between px-3">
+                        <span className="mb-2 mx-2">Simulation Status:</span>
+                        <DropdownButton 
+                          style={{ width: "50%" }}
+                          id={"dropdown-ethnicity-button"} 
+                          className="my-2 p-0" 
+                          title={formData?.status ? "Yes" : "No"} 
+                          onSelect={handleSelectStatus}
+                        >
+                          <Dropdown.Item eventKey={true}>Yes</Dropdown.Item>
+                          <Dropdown.Item eventKey={false}>No</Dropdown.Item>
+                        </DropdownButton>
+                      </div>
                     </div>
                 </div>
                 <div className="h-25 row mt-25 ">

@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MetricDisplay from "../../Components/metric";
+import { useNavigate } from "react-router-dom";
 
 const DashboardStudent = () => {
+    const navigate = useNavigate();
+    
+    useEffect(() => {navigate('/student/simulation')}, [])
+
     return (
       <div className="pt-5 ">
         <div className="d-flex justify-content-center">

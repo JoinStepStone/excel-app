@@ -308,6 +308,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId, uniListNames }) => {
                     >
                       <Dropdown.Item eventKey="Hispanic">Hispanic</Dropdown.Item>
                       <Dropdown.Item eventKey="Latino">Latino</Dropdown.Item>
+                      <Dropdown.Item eventKey="Not Applicable">Not Applicable</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton 
                       id="dropdown-race-button" 

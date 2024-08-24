@@ -188,7 +188,7 @@ const SimulationDetails = () => {
                         userSimulations.map((userSimulation) =>        
                         <tr>
                             <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
-                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(simulation.fileId)}>{getFilePathHandler(simulation.fileName)}</a></td>
+                            <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(simulation, true)}>{getFilePathHandler(simulation.fileName)}</a></td>
                             <td className="text-center tablePlaceContent">
                                 <a className="underline-offset pointer" onClick={() => modalToggle()}>
                                     {userSimulation.fileName ?
