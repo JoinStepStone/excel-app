@@ -68,18 +68,26 @@ const Student = ({ uniListNames }) => {
 
   const applyFilters = (activeFilters) => {
     let filteredStudents = students;
-    
+    console.log("Apply filters", activeFilters)
     Object.keys(activeFilters).forEach((key) => {
       if (activeFilters[key]) {
         if (key === "examTaken" || key === "avgScore" || key === "maxScore" || key === "gpaScore") {
-          if (activeFilters[key] === "Highest") {
-            filteredStudents = [filteredStudents.reduce((prev, current) => {
-              return (current[key] || 0) > (prev[key] || 0) ? current : prev;
-            }, filteredStudents[0])];
-          } else if (activeFilters[key] === "Lowest") {
-            filteredStudents = [filteredStudents.reduce((prev, current) => {
-              return (current[key] || 0) < (prev[key] || 0) ? current : prev;
-            }, filteredStudents[0])];
+          if(key === "avgScore" || key === "maxScore"){
+            if (activeFilters[key] === "Highest") {
+              filteredStudents = [filteredStudents.reduce((prev, current) => {
+                return (current[key] || 0) > (prev[key] || 0) ? current : prev;
+              }, filteredStudents[0])];
+            } else if (activeFilters[key] === "Lowest") {
+              filteredStudents = [filteredStudents.reduce((prev, current) => {
+                return (current[key] || 0) < (prev[key] || 0) ? current : prev;
+              }, filteredStudents[0])];
+            }
+          }else{
+            if (activeFilters[key] === "Highest") {
+              filteredStudents = filteredStudents.sort((a, b) => parseFloat(b.gpaScore) - parseFloat(a.gpaScore));
+            } else if (activeFilters[key] === "Lowest") {
+              filteredStudents = filteredStudents.sort((a, b) => parseFloat(a.gpaScore) - parseFloat(b.gpaScore));
+            }
           }
         } else {
           filteredStudents = filteredStudents.filter((student) => {
