@@ -73,15 +73,13 @@ const Student = ({ uniListNames }) => {
       if (activeFilters[key]) {
         if (key === "examTaken" || key === "avgScore" || key === "maxScore" || key === "gpaScore") {
           if (activeFilters[key] === "Highest") {
-            const filteredStudentsDummy = [filteredStudents.reduce((prev, current) => {
+            filteredStudents = [filteredStudents.reduce((prev, current) => {
               return (current[key] || 0) > (prev[key] || 0) ? current : prev;
             }, filteredStudents[0])];
-            filteredStudents = [filteredStudentsDummy]
           } else if (activeFilters[key] === "Lowest") {
-            const filteredStudentsDummy = [filteredStudents.reduce((prev, current) => {
+            filteredStudents = [filteredStudents.reduce((prev, current) => {
               return (current[key] || 0) < (prev[key] || 0) ? current : prev;
             }, filteredStudents[0])];
-            filteredStudents = [filteredStudentsDummy]
           }
         } else {
           filteredStudents = filteredStudents.filter((student) => {

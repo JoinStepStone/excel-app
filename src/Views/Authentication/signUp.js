@@ -332,7 +332,7 @@ const SignUP = () => {
                     >
                       <Dropdown.Item className="custom-dropdown-item" eventKey="Hispanic">Hispanic</Dropdown.Item>
                       <Dropdown.Item className="custom-dropdown-item" eventKey="Latino">Latino</Dropdown.Item>
-                      <Dropdown.Item eventKey="Not Applicable">Not Applicable</Dropdown.Item>
+                      <Dropdown.Item className="custom-dropdown-item" eventKey="Not Applicable">Not Applicable</Dropdown.Item>
                     </DropdownButton>
                     <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setFormData((prevData) => ({...prevData, "ethnicity": "Select Ethnicity"}))}/> 
                   </div>
