@@ -141,7 +141,7 @@ const SimulationDetails = () => {
         let filteredUserSimulations = userSimulations;
 
         Object.keys(activeFilters).forEach((key) => {
-            if(key == "rank" || key == "status"){
+            if(key == "rank" || key == "grade"){
                 if(activeFilters[key] == "Highest"){
                     const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
                         return (current[key] || 0) > (prev[key] || 0) ? current : prev;
@@ -154,7 +154,6 @@ const SimulationDetails = () => {
                     filteredUserSimulations = [filteredUserSimulationsDummy]
                 }
             }else if(key == "firstName" || key == "university" || key == "gradYear"){
-                console.log("2")
                 filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation["userId"][key].toLowerCase().startsWith(activeFilters[key].toLowerCase() ));
             }else if(key == "fileName" || key == "sharingScore" || key == "duation" || key == "timeToComplete"){
                 console.log("3")
@@ -269,7 +268,7 @@ const SimulationDetails = () => {
                             <DropdownButton 
                                 id={"dropdown-grade-button"} 
                                 title={"Grade"} 
-                                onSelect={(props) => onChangeMinMaxHandler({name: "status", value: props})}
+                                onSelect={(props) => onChangeMinMaxHandler({name: "grade", value: props})}
                             >
                                 <Dropdown.Item eventKey="Highest">Highest</Dropdown.Item>
                                 <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
