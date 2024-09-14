@@ -142,25 +142,29 @@ const SimulationDetails = () => {
 
         Object.keys(activeFilters).forEach((key) => {
             if(key == "rank" || key == "grade"){
-                if(activeFilters[key] == "Highest"){
-                    const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
-                        return (current[key] || 0) > (prev[key] || 0) ? current : prev;
-                    }, filteredUserSimulations[0]);
-                    filteredUserSimulations = [filteredUserSimulationsDummy]
-                }else{
-                    const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
-                        return (current[key] || 0) < (prev[key] || 0) ? current : prev;
-                    }, filteredUserSimulations[0]);
-                    filteredUserSimulations = [filteredUserSimulationsDummy]
+                if (activeFilters[key] === "Highest") {
+                    filteredUserSimulations = filteredUserSimulations.sort((a, b) => parseFloat(b[key]) - parseFloat(a[key]));
+                } else if (activeFilters[key] === "Lowest") {
+                    filteredUserSimulations = filteredUserSimulations.sort((a, b) => parseFloat(a[key]) - parseFloat(b[key]));
                 }
+                // if(activeFilters[key] == "Highest"){
+                //     const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
+                //         return (current[key] || 0) > (prev[key] || 0) ? current : prev;
+                //     }, filteredUserSimulations[0]);
+                //     filteredUserSimulations = [filteredUserSimulationsDummy]
+                // }else{
+                //     const filteredUserSimulationsDummy = filteredUserSimulations.reduce((prev, current) => {
+                //         return (current[key] || 0) < (prev[key] || 0) ? current : prev;
+                //     }, filteredUserSimulations[0]);
+                //     filteredUserSimulations = [filteredUserSimulationsDummy]
+                // }
             }else if(key == "firstName" || key == "university" || key == "gradYear"){
                 filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation["userId"][key].toLowerCase().startsWith(activeFilters[key].toLowerCase() ));
             }else if(key == "fileName" || key == "sharingScore" || key == "duation" || key == "timeToComplete"){
-                console.log("3")
                 if(key == "timeToComplete"){
                     filteredUserSimulations = filteredUserSimulations.filter(userSimulation => {
                         return calculateDurationHandler(userSimulation.endTime,userSimulation.startTime).toLowerCase().includes(activeFilters[key].toLowerCase())
-                    });
+                });
                 }else if(key == "sharingScore"){
                     filteredUserSimulations = filteredUserSimulations.filter((userSimulation) => userSimulation[key].toString() == activeFilters[key] );
                 }else{

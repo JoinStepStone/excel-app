@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { getRandomNumber } from '../../utilities/common';
 import ExcelPreview from "../../Components/PreviewExcel";
-import { postSimulationsData } from "../../API/Student";
+import { postSimulationsData, getScore } from "../../API/Student";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 
-const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
+const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFileid }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [fileName, setFileName] = useState("Upload File...");
     const [sharingScore, setSharingScore] = useState(false);
@@ -37,13 +37,27 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
       };
       
 
-      const handleFileChange = (event) => {
+      const handleFileChange = async (event) => {
         if (event.target.files.length > 0) {
+          setIsLoading(true)
+          const requestData = new FormData();
+          requestData.append('file', event.target.files[0]);
+          requestData.append('original_file_id', simulation.fileId);
+
           setFileName(event.target.files[0].name);
           setFile(event.target.files[0])
-          setGrade(getRandomNumber(50, 98))
-        }
-      };
+
+          const response = await getScore(requestData)
+          // const response = JSON.parse(resp)
+          console.log("Response: ", response)
+          if(response.code == 201){
+            setGrade(response.data.score)
+          }else{
+              toast.error(response.message)
+          }
+          setIsLoading(false)
+        };
+      }
 
       const handleSubmitForm = async () => { 
         setIsLoading(true)
@@ -81,6 +95,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
             </Modal.Header>
             <Modal.Body>
                 <div>
+                  {isLoading ? <div className="d-flex position-absolute justify-content-center align-items-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}><Spin size="large"/> </div> : null}
                     <div className="h-75 row my-5">
                         <div className="col-6 m-auto ">
                             <div 
@@ -93,7 +108,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
                                 {/* {file && <ExcelPreview file={file}/>} */}
                                 {"Upload File"}
                             </div>
-                            <input className="d-none" type="file" accept=".csv, .xlsx" ref={fileInput} onChange={handleFileChange}/>
+                            <input className="d-none" type="file" accept=".xlsm" ref={fileInput} onChange={handleFileChange}/>
                             <div className="mt-2">
                                 <span className="mx-3 w-75">File Name: {fileName} </span>
                                 <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => {setFileName(""); setFile(null);}}/> 
@@ -132,7 +147,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation }) => {
                 <Button variant="secondary" onClick={modalToggle}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => handleSubmitForm()}>
+                <Button disabled={isLoading} variant="primary" onClick={() => handleSubmitForm()}>
                     Save Changes
                 </Button>
             </Modal.Footer>

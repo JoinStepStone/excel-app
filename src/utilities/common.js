@@ -228,7 +228,6 @@ export const registerModalalidationHandler = (data) => {
     try {
       let downloadWindow;
       if(simulationId){
-        console.log("UPDATED", id._id, id.fileId)
         downloadWindow = window.open(
           BASE_URL+"/student/downloadSimulationFile/"+id._id+","+id.fileId,
           "_blank"

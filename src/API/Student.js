@@ -2,6 +2,22 @@
 import axios from "axios"
 import { BASE_URL } from ".";
 
+export async function getScore(data) {
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    const response = await axios.post(
+        `${BASE_URL}/student/simulation/score`,
+        data, 
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${accessToken.token}`,
+            },
+        }
+    );
+
+    return response.data
+}
 
 export async function updateMeById(data) {
 
@@ -148,3 +164,4 @@ export async function postSimulationsData(data) {
 
       return response.data
 }
+

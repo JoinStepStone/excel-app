@@ -17,6 +17,7 @@ const SimulationStudents = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [userSimulations, setUserSimulations] = useState([]);
     const [simulations, setSimulations] = useState([]);
+    const [firstName, setFirstName] = useState(null);
     const [simulationsToShow, setSimulationsToShow] = useState([]);
     const [filters, setFilters] = useState({}); // State to store all filter conditions
 
@@ -35,6 +36,8 @@ const SimulationStudents = () => {
 
     useEffect(() => {
         getAllSimulationsHandler()
+        const details = JSON.parse(localStorage.getItem("accessToken"))
+        setFirstName(details.name)
     },[])
 
     const formatDateTimeHandler = (dateString) => {
@@ -141,11 +144,12 @@ const SimulationStudents = () => {
       };
 
     return (
+
       <div className="pt-5 ">
         <ModalRegister show={show} modalToggle={modalToggle}/>
         <div className="d-flex justify-content-center align-items-center">
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
-                <h1>John's Simulation Dashboard</h1>
+                {firstName &&  <h1>{firstName}'s Simulation Dashboard</h1>}
             </div>
             <button type="button" class="btn btn-primary h-25 mx-5" onClick={() => modalToggle()}>Register</button>
         </div>

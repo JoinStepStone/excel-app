@@ -316,11 +316,11 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           style={{ width: "50%" }}
                           id={"dropdown-ethnicity-button"} 
                           className="my-2 p-0" 
-                          title={formData?.status ? "Yes" : "No"} 
+                          title={formData?.status ? "Active" : "Inactive"} 
                           onSelect={handleSelectStatus}
                         >
-                          <Dropdown.Item eventKey={true}>Yes</Dropdown.Item>
-                          <Dropdown.Item eventKey={false}>No</Dropdown.Item>
+                          <Dropdown.Item eventKey={true}>Active</Dropdown.Item>
+                          <Dropdown.Item eventKey={false}>Inactive</Dropdown.Item>
                         </DropdownButton>
                       </div>
                     </div>
@@ -343,7 +343,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                           {/* {file && <ExcelPreview file={file}/>} */}
                           {"Upload File"}
                       </div>
-                      <input className="d-none" type="file" accept=".csv, .xlsx" ref={fileInput} onChange={handleFileChange}/>
+                      <input className="d-none" type="file" accept=".xlsm" ref={fileInput} onChange={handleFileChange}/>
                       <div className="mt-3 d-flex justify-content-around align-items-center">
                           <span className="mx-3 w-75">File Name: {fileName} </span>
                           <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => setFileName("")}/> 

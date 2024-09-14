@@ -54,25 +54,25 @@ const Student = ({ uniListNames }) => {
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target ? e.target : e;
-    const newFilters = { ...filters, [name]: value }; // Update filters with the new condition
+    const newFilters = { ...filters, [name]: value };
     setFilters(newFilters);
-    applyFilters(newFilters); // Reapply filters
+    applyFilters(newFilters); 
   };
 
   const onChangeMinMaxHandler = (e) => {
     const { name, value } = e;
-    const newFilters = { ...filters, [name]: value }; // Update filters with min/max condition
+    const newFilters = { ...filters, [name]: value };
     setFilters(newFilters);
-    applyFilters(newFilters); // Reapply filters
+    applyFilters(newFilters); 
   };
 
   const applyFilters = (activeFilters) => {
     let filteredStudents = students;
-    console.log("Apply filters", activeFilters)
+
     Object.keys(activeFilters).forEach((key) => {
       if (activeFilters[key]) {
         if (key === "examTaken" || key === "avgScore" || key === "maxScore" || key === "gpaScore") {
-          if(key === "avgScore" || key === "maxScore"){
+          if(key === "avgScofre" || key === "maxfScore"){
             if (activeFilters[key] === "Highest") {
               filteredStudents = [filteredStudents.reduce((prev, current) => {
                 return (current[key] || 0) > (prev[key] || 0) ? current : prev;
@@ -84,15 +84,21 @@ const Student = ({ uniListNames }) => {
             }
           }else{
             if (activeFilters[key] === "Highest") {
-              filteredStudents = filteredStudents.sort((a, b) => parseFloat(b.gpaScore) - parseFloat(a.gpaScore));
+              filteredStudents = filteredStudents.sort((a, b) => parseFloat(b[key]) - parseFloat(a[key]));
             } else if (activeFilters[key] === "Lowest") {
-              filteredStudents = filteredStudents.sort((a, b) => parseFloat(a.gpaScore) - parseFloat(b.gpaScore));
+              filteredStudents = filteredStudents.sort((a, b) => parseFloat(a[key]) - parseFloat(b[key]));
             }
           }
         } else {
-          filteredStudents = filteredStudents.filter((student) => {
-            return student[key] && student[key].toString().toLowerCase().includes(activeFilters[key].toLowerCase());
-          });
+          if(key == "gender"){
+            filteredStudents = filteredStudents.filter((student) => {
+              return student[key] && student[key].toString().toLowerCase() == activeFilters[key].toLowerCase();
+            });
+          }else{
+            filteredStudents = filteredStudents.filter((student) => {
+              return student[key] && student[key].toString().toLowerCase().includes(activeFilters[key].toLowerCase());
+            });
+          }
         }
       }
     });

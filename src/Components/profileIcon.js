@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +6,13 @@ import { faEdit, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 const ProfileIcon = ({ modalToggle }) => {
 
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState(null);
 
-  
+  useEffect(() => {
+    const details = JSON.parse(localStorage.getItem("accessToken"))
+    setFirstName(details.name)
+},[])
+
   return (
     <div className="d-flex rounded align-items-center justify-content-center border-purple-dark p-3 m-4">
       <div className="w-25 profile-icon d-flex justify-content-center flex-column position-relative pointer" >
@@ -33,7 +38,7 @@ const ProfileIcon = ({ modalToggle }) => {
         </div>
       </div>
       <div className="d-flex rounded align-items-center justify-content-center mt-3 mx-1 w-75  pointer">
-        <p className="text-white" style={{ fontSize: "15px" }}>Nauman</p>
+        <p className="text-white" style={{ fontSize: "15px" }}>{firstName}</p>
       </div>
       
     </div>
