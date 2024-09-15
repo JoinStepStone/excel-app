@@ -123,7 +123,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
                           <div className="h-75 row">
                               <div className="col-4">
                                 <div className="border border-dark text-center rounded pointer p-2" > 
-                                    {grade ? grade : "Score"}
+                                    {grade !== null ? grade : "Score"}
                                 </div>
                               </div>
                               <div className="col-4 m-auto">
