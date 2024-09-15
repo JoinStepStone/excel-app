@@ -51,7 +51,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
           // const response = JSON.parse(resp)
           console.log("Response: ", response)
           if(response.code == 201){
-            setGrade(response.data.score)
+            setGrade(response.data)
           }else{
               toast.error(response.message)
           }
