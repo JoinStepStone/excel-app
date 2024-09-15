@@ -15,6 +15,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
     const [sharingScore, setSharingScore] = useState(false);
     const [grade, setGrade] = useState(null);
     const [file, setFile] = useState(null);
+    const [fileInBytes, setFileInBytes] = useState(null);
     const [formData, setFormData] = useState({
         category: '',
         name: '',
@@ -51,7 +52,8 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
           // const response = JSON.parse(resp)
           console.log("Response: ", response)
           if(response.code == 201){
-            setGrade(response.data)
+            setGrade(response.data.score)
+            setFileInBytes(response.data.file)
           }else{
               toast.error(response.message)
           }
@@ -72,6 +74,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
         requestData.append('startTime', simulation.startTime);
         requestData.append('endTime', moment().subtract(2, 'hours'));
         requestData.append('file', file);
+        requestData.append('file_in_byte', fileInBytes);
         
         const response = await postSimulationsData(requestData)
         if(response.code == 201){
