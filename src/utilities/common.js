@@ -247,12 +247,12 @@ export const registerModalalidationHandler = (data) => {
           if (downloadWindow.closed) {
             clearInterval(interval);
           }
-        }, 1000);
+        }, 4000);
   
         // Close the window after a brief delay (assuming the download has started)
         setTimeout(() => {
           downloadWindow.close();
-        }, 3000); // 3000ms (3 seconds) is usually enough time for the download to start
+        }, 5000); // 3000ms (3 seconds) is usually enough time for the download to start
       } else {
         console.error("Failed to open the download window.");
       }
