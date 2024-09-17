@@ -13,6 +13,7 @@ import SuggestionLists from "../../Components/suggestionLists";
 
 const ModalScreen = ({ show, modalToggle, selectedId }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState(null);
   const [errorKey, setErrorKey] = useState({ key: null, msg: ""});
@@ -116,6 +117,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
   };
 
   const handleSubmitForm = async () => { 
+    setDisable(true)
     setIsLoading(true)
     setIsFormSubmitted(true)
     
@@ -158,9 +160,11 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
 
     handleGenerateCode()
     setIsLoading(false)
+    setDisable(false)
   };
 
   const handleUpdateSubmitForm = async () => { 
+    setDisable(true)
     setIsLoading(true)
     setIsFormSubmitted(true)
     
@@ -207,6 +211,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
 
     // handleGenerateCode()
     setIsLoading(false)
+    setDisable(false)
   };
 
   const handleSuggestionClick = (key, value) => {
@@ -356,7 +361,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
             <Button variant="secondary" onClick={modalToggle}>
                 Close
             </Button>
-            <Button variant="primary" onClick={() => {selectedId ? handleUpdateSubmitForm() : handleSubmitForm()}}>
+            <Button variant="primary" disabled={disable} onClick={() => {selectedId ? handleUpdateSubmitForm() : handleSubmitForm()}}>
                 Save Changes
             </Button>
         </Modal.Footer>
