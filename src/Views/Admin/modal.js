@@ -233,7 +233,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                     <div className="col-12 p-4">
                         
                       <div className="d-flex align-items-center justify-content-between px-3">
-                      <span className="mb-2 mx-2">Category: </span>
+                      <span className="mb-2 mx-2 font-semi-bold">Category: </span>
                       <div className="position-relative" style={{ width: "50%" }}>
                         <input
                             onChange={(e) => handleChange(e)}
@@ -252,7 +252,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
-                      <span className="mb-2 mx-2">Simulation(s): </span>
+                      <span className="mb-2 mx-2 font-semi-bold">Simulation(s): </span>
                       <div className="position-relative" style={{ width: "50%" }}>
                       <input
                           onChange={(e) => handleChange(e)}
@@ -271,7 +271,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
-                      <span className="mb-2 mx-2">Organization: </span>
+                      <span className="mb-2 mx-2 font-semi-bold">Organization: </span>
                       <div className="position-relative" style={{ width: "50%" }}>
                       <input
                           onChange={(e) => handleChange(e)}
@@ -290,7 +290,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       </div>
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
-                      <span className="mb-2 mx-2">Start Time: </span>
+                      <span className="mb-2 mx-2 font-semi-bold">Start Time: </span>
                       <input
                           style={{ width: "50%" }}
                           onChange={(e) => handleChange(e)}
@@ -303,7 +303,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       />
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
-                      <span className="mb-2 mx-2">End Time: </span>
+                      <span className="mb-2 mx-2 font-semi-bold">End Time: </span>
                       <input
                           style={{ width: "50%" }}
                           onChange={(e) => handleChange(e)}
@@ -316,7 +316,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       />
                       </div>
                       <div className="d-flex align-items-center justify-content-between px-3">
-                        <span className="mb-2 mx-2">Simulation Status:</span>
+                        <span className="mb-2 mx-2 font-semi-bold">Simulation Status:</span>
                         <DropdownButton 
                           style={{ width: "50%" }}
                           id={"dropdown-ethnicity-button"} 
@@ -333,7 +333,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                 <div className="h-25 row mt-25 ">
                   <div className="col-6 ">
                     <div className="d-flex justify-content-around align-items-center">
-                        <span className="mx-3 ">Class Code: {code}</span>
+                        <span className="mx-3 font-semi-bold">Class Code: {code}</span>
                         <FontAwesomeIcon icon={faSync} className="pointer" onClick={() => { handleGenerateCode()}}/> 
                     </div>  
                   </div>
@@ -350,7 +350,7 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
                       </div>
                       <input className="d-none" type="file" accept=".xlsm" ref={fileInput} onChange={handleFileChange}/>
                       <div className="mt-3 d-flex justify-content-around align-items-center">
-                          <span className="mx-3 w-75">File Name: {fileName} </span>
+                          <span className="mx-3 w-75 font-semi-bold">File Name: {fileName} </span>
                           <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => setFileName("")}/> 
                       </div>                            
                   </div>
@@ -358,10 +358,10 @@ const ModalScreen = ({ show, modalToggle, selectedId }) => {
             </div>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={modalToggle}>
+            <Button variant="secondary" className="border-raduis-zero" onClick={modalToggle}>
                 Close
             </Button>
-            <Button variant="primary" disabled={disable} onClick={() => {selectedId ? handleUpdateSubmitForm() : handleSubmitForm()}}>
+            <Button variant="primary" className="border-raduis-zero" disabled={disable} onClick={() => {selectedId ? handleUpdateSubmitForm() : handleSubmitForm()}}>
                 Save Changes
             </Button>
         </Modal.Footer>

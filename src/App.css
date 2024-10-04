@@ -5,12 +5,29 @@ body,
 .content {
   height: 100%;
   width: 100%;
+  background-color: #fefdfd !important;
 }
 
 body {
   font-family: 'Poppins', sans-serif !important;
+  color: #3a3153 !important;
+  background-color: #fefdfd !important;
   /* Or you can use Roboto */
   /* font-family: 'Roboto', sans-serif; */
+}
+
+.content-authorization {
+  height: 100%;
+  width: 100%;
+  background-color: #af93d7 !important;
+}
+
+.font-semi-bold{
+  font-weight: 600;
+}
+
+.border-raduis-zero{
+  border-radius: 0px !important;
 }
 
 .triangle {
@@ -21,22 +38,25 @@ body {
   border-bottom: 20px solid white;
 }
 
+.button-color{
+  background-color: #6513EF !important;
+}
 .app {
   display: flex;
   position: relative;
 }
 
 .bg-purple {
-  background-color: purple;
+  background-color: #3a3153;
 }
 
 .border-purple-dark {
-  border-color: rgb(83, 1, 83);
+  border-color: #1d172d;
   border-style: solid;
 }
 
-.bg-white {
-  background-color: white;
+.bg-button-color {
+  background-color: #b1aebb !important;
 }
 
 .modal-content {
@@ -62,6 +82,10 @@ body {
   scroll-behavior: auto;
 }
 
+.underline-offset-none {
+  text-decoration: none; /* Remove default underline */
+}
+
 .underline-offset {
   text-decoration: none; /* Remove default underline */
   border-bottom: 2px solid rgb(13,110,253); /* Custom underline */
@@ -74,7 +98,7 @@ body {
 
 #dropdown-ethnicity-button-purple{
   width: 100%;
-  background-color: purple ;
+  background-color: #6513EF !important ;
   color: white ;
   border-color: purple ;
 }
@@ -85,7 +109,7 @@ body {
 
 #dropdown-race-button-purple{
   width: 100%;
-  background-color: purple ;
+  background-color: #6513EF !important ;
   color: white ;
   border-color: purple ;
 }
@@ -96,7 +120,7 @@ body {
 
 #dropdown-gender-button-purple{
   width: 100%;
-  background-color: purple ;
+  background-color: #6513EF !important ;
   color: white ;
   border-color: purple ;
 }

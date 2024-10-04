@@ -147,10 +147,10 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={modalToggle}>
+                <Button variant="secondary" className="border-raduis-zero" onClick={modalToggle}>
                     Close
                 </Button>
-                <Button disabled={isLoading} variant="primary" onClick={() => handleSubmitForm()}>
+                <Button disabled={isLoading} className="border-raduis-zero" variant="primary" onClick={() => handleSubmitForm()}>
                     Save Changes
                 </Button>
             </Modal.Footer>

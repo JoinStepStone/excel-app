@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-const Logout = () => {
+const Logout = ({ margin, icon }) => {
 
   const navigate = useNavigate();
 
@@ -11,8 +11,9 @@ const Logout = () => {
   }
   
   return (
-    <div className="border border-dark rounded text-center p-2 m-2 bg-white pointer" onClick={() => naavigationHandler()}>
+    <div className={margin ? "border border-dark  text-center p-2 mt-2 bg-button-color pointer" : "border border-dark  text-center p-2 m-2 bg-button-color pointer"} onClick={() => naavigationHandler()}>
       Logout
+      {icon && icon}
     </div>
   );
   };

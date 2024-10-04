@@ -28,7 +28,7 @@ const ProfileIcon = ({ modalToggle }) => {
         >
           <div className="triangle" style={{ marginTop: "30px", }}/>
           <div 
-            className="bg-white pointer px-2 d-flex align-items-center"
+            className="bg-button-color pointer px-2 d-flex align-items-center"
             style={{ width: "max-content" }}
             onClick={modalToggle}
           >

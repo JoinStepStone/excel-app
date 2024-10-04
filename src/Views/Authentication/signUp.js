@@ -175,7 +175,7 @@ const SignUP = () => {
   };
 
   return (
-      <div className="h-100 m-0 d-flex justify-content-center align-items-center"> 
+      <div className="h-100 m-0 d-flex justify-content-center align-items-center bg-white"> 
         <div class="w-75 h-75">
           <div className="row" style={{ marginTop: "-50px" }}>
             <div className="col-5 mx-auto">
@@ -183,7 +183,7 @@ const SignUP = () => {
 
                 <div className="d-flex justify-content-between mb-1">
                   <div className="">
-                    <span>First Name: </span>
+                    <span className="font-semi-bold">First Name<span style={{ color:"red" }}>*</span>: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "firstName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
@@ -198,7 +198,7 @@ const SignUP = () => {
                     </div>
                   </div>
                   <div className="">
-                    <span>Last Name: </span>
+                    <span className="font-semi-bold">Last Name<span style={{ color:"red" }}>*</span>: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "lastName" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
@@ -215,7 +215,7 @@ const SignUP = () => {
                 </div>
 
                 <div className=" my-1">
-                  <span>Email: </span>
+                  <span className="font-semi-bold">Email<span style={{ color:"red" }}>*</span>: </span>
                   <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "email" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                     <input
                       onChange={(e) => handleChange(e)}
@@ -231,7 +231,7 @@ const SignUP = () => {
                 </div>
 
                 <div className="">
-                  <span>Password: </span>
+                  <span className="font-semi-bold">Password<span style={{ color:"red" }}>*</span>: </span>
                   <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "password" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                     <input
                       onChange={(e) => handleChange(e)}
@@ -248,7 +248,7 @@ const SignUP = () => {
                 </div>
 
                 <div className="">
-                  <span>Confirm Password: </span>
+                  <span className="font-semi-bold">Confirm Password<span style={{ color:"red" }}>*</span>: </span>
                   <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                     <input
                       onChange={(e) => handleChange(e)}
@@ -265,7 +265,7 @@ const SignUP = () => {
                 </div>
 
                 <div className="">
-                  <span>University Name: </span>
+                  <span className="font-semi-bold">University Name<span style={{ color:"red" }}>*</span>: </span>
                   <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "confirmPassword" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                     <input
                       onChange={(e) => handleChange(e)}
@@ -287,7 +287,7 @@ const SignUP = () => {
                 
                 <div className="d-flex justify-content-between mb-1">
                   <div>
-                    <span>Graduation Year: </span>
+                    <span className="font-semi-bold">Graduation Year<span style={{ color:"red" }}>*</span>: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gradYear" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
@@ -302,7 +302,7 @@ const SignUP = () => {
                     </div>
                   </div>
                   <div>
-                    <span>GPA: </span>
+                    <span className="font-semi-bold">GPA<span style={{ color:"red" }}>*</span>: </span>
                     <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "gpaScore" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                       <input
                         onChange={(e) => handleChange(e)}
@@ -320,12 +320,12 @@ const SignUP = () => {
                 </div>
 
                 <div className=" my-1">
-                  <span>Select Ethnicity: </span>
+                  <span className="font-semi-bold">Select Ethnicity: </span>
                   <div className="d-flex align-items-center">
                     <DropdownButton 
                       style={{ width: "95%" }}
                       id={errorKey.key === "ethnicity" ? "dropdown-ethnicity-button" : "dropdown-ethnicity-button-purple"} 
-                      className="my-2 p-0" 
+                      className="my-2 p-0 border-raduis-zero" 
                       variant={errorKey.key === "ethnicity" ? "danger" : undefined} 
                       title={formData.ethnicity} 
                       onSelect={handleSelectEthnicity}
@@ -338,12 +338,12 @@ const SignUP = () => {
                   </div>
                 </div>
                 <div className=" my-1">
-                  <span>Select the Race(s) You Identify With: </span>
+                  <span className="font-semi-bold">Select the Race(s) You Identify With: </span>
                   <div className="d-flex align-items-center">
                     <DropdownButton 
                       style={{ width: "95%" }}
                       id={errorKey.key === "race" ? "dropdown-race-button" : "dropdown-race-button-purple"} 
-                      className="my-2 " 
+                      className="my-2 border-raduis-zero" 
                       variant={errorKey.key == "race" ? "danger" : "primary"} 
                       title={formData.race} 
                       onSelect={handleSelectRace}
@@ -359,12 +359,12 @@ const SignUP = () => {
                   </div>
                 </div>
                 <div className=" my-1">
-                    <span>Select Gender: </span>
+                    <span className="font-semi-bold">Select Gender: </span>
                     <div className="d-flex align-items-center">
                       <DropdownButton 
                         style={{ width: "95%" }}
                         id={errorKey.key === "gender" ? "dropdown-gender-button" : "dropdown-gender-button-purple"} 
-                        className="my-2 w-100" 
+                        className="my-2 w-100 border-raduis-zero" 
                         variant={errorKey.key == "gender" ? "danger" : "primary"} 
                         title={formData.gender} 
                         onSelect={handleSelectGender}
@@ -382,7 +382,7 @@ const SignUP = () => {
           <div className="row">
             <div className="my-2 col-6 mx-auto">
               <div className="d-flex justify-content-around">
-                  <Button variant="secondary" className="w-50" onClick={() => handleSubmitForm()}>
+                  <Button variant="secondary" className="w-50 border-raduis-zero button-color" onClick={() => handleSubmitForm()}>
                     {isLoading ? <Spin size="small" className="custom-spin"/> : "Sign Up"}
                   </Button> 
               </div>
@@ -391,7 +391,7 @@ const SignUP = () => {
           <div className="row ">
               <div className="my-2 col-6 mx-auto">
                 <div className="d-flex justify-content-around">
-                    <Button variant="secondary" className="w-50"  onClick={() => navigate('/login')}>
+                    <Button variant="secondary" className="w-50 border-raduis-zero button-color"  onClick={() => navigate('/login')}>
                       Login
                     </Button>
                 </div>

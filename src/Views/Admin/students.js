@@ -230,8 +230,8 @@ const Student = ({ uniListNames }) => {
                     <td className="text-center tablePlaceContent">{student.lastName}</td>
                     <td className="text-center tablePlaceContent">{student.email}</td>
                     <td className="text-center tablePlaceContent">{student.examTaken}</td>
-                    <td className="text-center tablePlaceContent">{student.avgScore}</td>
-                    <td className="text-center tablePlaceContent">{student.maxScore}</td>
+                    <td className="text-center tablePlaceContent">{student.avgScore}%</td>
+                    <td className="text-center tablePlaceContent">{student.maxScore}%</td>
                     <td className="text-center tablePlaceContent">{student.university}</td>
                     <td className="text-center tablePlaceContent">{student.gpaScore}</td>
                     <td className="text-center tablePlaceContent">{student.gradYear}</td>

@@ -188,7 +188,7 @@ const SimulationDetails = () => {
         <div className="row mt-3 px-5">
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                    <h5>Status</h5>
+                    <h5 className="font-semi-bold">Status</h5>
                 </div>
                 <div>
                     {simulation.status ? "Active": "Inactive"}
@@ -196,7 +196,7 @@ const SimulationDetails = () => {
             </div>
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                    <h5>Date Closed</h5>
+                    <h5 className="font-semi-bold">Date Closed</h5>
                 </div>
                 <div>
                     {formatDateTimeHandler(simulation.endTime)}
@@ -204,7 +204,7 @@ const SimulationDetails = () => {
             </div>
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                  <h5>Class Code</h5>
+                  <h5 className="font-semi-bold">Class Code</h5>
                 </div>
                 <div>
                     {simulation.classCode}
@@ -214,7 +214,7 @@ const SimulationDetails = () => {
         <div className="row mt-1 px-5">
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                  <h5>Organization</h5>
+                  <h5 className="font-semi-bold">Organization</h5>
                 </div>
                 <div>
                     {simulation.organizationName}
@@ -222,7 +222,7 @@ const SimulationDetails = () => {
             </div>
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                  <h5>Duration</h5>
+                  <h5 className="font-semi-bold">Duration</h5>
                 </div>
                 <div>
                     {getDurationHandler(simulation.duration)}
@@ -232,7 +232,7 @@ const SimulationDetails = () => {
         <div className="row mt-1 px-5">
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                  <h5>Date Administered</h5>
+                  <span className="font-semi-bold">Date Administered</span>
                 </div>
                 <div>
                     {formatDateTimeHandler(simulation.startTime)}
@@ -240,7 +240,7 @@ const SimulationDetails = () => {
             </div>
             <div  className="col-4 d-flex justify-content-between">
                 <div>
-                  <h5>Student Participated</h5>
+                  <h5 className="font-semi-bold">Student Participated</h5>
                 </div>
                 <div>
                     {simulation.participants}
@@ -318,7 +318,7 @@ const SimulationDetails = () => {
                                 <td className="text-center tablePlaceContent"></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.rank}</a></td>
-                                <td className="text-center tablePlaceContent">{userSimulation.grade}</td>
+                                <td className="text-center tablePlaceContent">{userSimulation.grade}%</td>
                                 <td className="text-center tablePlaceContent">{calculateDurationHandler(userSimulation.endTime,userSimulation.startTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
                                 <td className="text-center tablePlaceContent">{userSimulation.userId.university}</td>

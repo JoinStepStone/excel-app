@@ -151,11 +151,11 @@ const SimulationStudents = () => {
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
                 {firstName &&  <h1>{firstName}'s Simulation Dashboard</h1>}
             </div>
-            <button type="button" class="btn btn-primary h-25 mx-5" onClick={() => modalToggle()}>Register</button>
+            <button type="button" class="btn btn-primary h-25 mx-5 border-raduis-zero" onClick={() => modalToggle()}>Register</button>
         </div>
         <div className="mt-5 px-5">
             {isLoading ? <div className="d-flex justify-content-center"><Spin size="large"/> </div>:
-                <Table striped bordered responsive hover style={{ width: "120%" }}> 
+                <Table striped bordered responsive hover style={{ width: "100%" }}> 
                     <thead>
 
                     <tr>
@@ -212,7 +212,7 @@ const SimulationStudents = () => {
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset pointer" href={`/student/simulation/detail/${simulation._id}`}>{simulation.simulationName}</a></td>
                                 <td className="text-center tablePlaceContent">{simulation.status ? "Active" : "Inactive"}</td>
-                                <td className="text-center tablePlaceContent">{simulation.grade}</td>
+                                <td className="text-center tablePlaceContent">{simulation.grade}%</td>
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.startTime)}</td>
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.endTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>

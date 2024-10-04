@@ -72,11 +72,11 @@ const Login = () => {
 
   return (
     <div className="pt-5 h-100 m-0 d-flex justify-content-center  align-items-center"> 
-      <div class="w-50 h-50">
+      <div class="h-50 bg-white p-5" style={{ width: "30%" }}>
         <div className="row">
-          <div className="col-6 mx-auto">
+          <div className="col-12 mx-auto">
             <div className="d-flex flex-column justify-content-around">
-              <span>Email: </span>
+              <span className="font-semi-bold">Email: </span>
               <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "email" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                 <input
                   onChange={(e) => handleChange(e)}
@@ -93,7 +93,7 @@ const Login = () => {
             </div>
 
             <div className="mt-2 d-flex flex-column justify-content-around">
-              <span>Password: </span>
+              <span className="font-semi-bold">Password: </span>
               <div className={`border border-solid rounded-2 my-1 ${errorKey.key == "password" ? "form-border-error-color" : "form-border-color"}  d-flex px-2 align-items-center`}>
                 <input
                   onChange={(e) => handleChange(e)}
@@ -112,19 +112,19 @@ const Login = () => {
           </div>
         </div>
         <div className="row">
-          <div className="my-2 col-6 mx-auto">
+          <div className="my-2 col-12 mx-auto">
             <div className="d-flex justify-content-around">
-                <Button variant="primary" className="w-50" onClick={() => handleSubmitForm()}>
+                <Button variant="primary" className="w-50 border-raduis-zero button-color" onClick={() => handleSubmitForm()}>
                   {isLoading ? <Spin size="small" className="custom-spin"/> : "Login"}
                 </Button>
             </div>
           </div>
         </div>
         <div className="row">
-          <div className="my-2 col-6 mx-auto">
-            <div className="d-flex justify-content-around">
-                <a className="underline-offset pointer" style={{ fontSize: "13px" }}>Forgot your password?</a>
-                <a className="underline-offset pointer" style={{ fontSize: "13px" }} onClick={() => navigate('/signUp')} >Create an account</a>
+          <div className="my-2 col-12 mx-auto">
+            <div className="d-grid justify-content-start">
+                <a className="underline-offset-none pointer font-semi-bold" style={{ fontSize: "13px" }}>Forgot your password?</a>
+                <a className="underline-offset-none pointer font-semi-bold" style={{ fontSize: "13px" }} onClick={() => navigate('/signUp')} >Create an account</a>
             </div>
           </div>
         </div>

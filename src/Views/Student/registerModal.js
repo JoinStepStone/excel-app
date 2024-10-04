@@ -113,10 +113,10 @@ const ModalRegister = ({ show, modalToggle }) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => submitSearchHandler()}>
+                {/* <Button variant="secondary" className="border-raduis-zero" onClick={() => submitSearchHandler()}>
                     Search
-                </Button>
-                <Button variant="primary" onClick={() => submitSimulationHandler()}>
+                </Button> */}
+                <Button variant="primary" className="border-raduis-zero" onClick={() => submitSimulationHandler()}>
                     Register
                 </Button>
             </Modal.Footer>

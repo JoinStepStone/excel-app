@@ -76,7 +76,7 @@ function App() {
       {userRole == "Admin" && <SidebarAdmin/> }
       {userRole == "Student" && <SidebarStudent/> }
         {userRole == "Not" &&
-          <main className="content">
+          <main className="content-authorization">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUP />} />
