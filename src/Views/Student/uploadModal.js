@@ -12,7 +12,7 @@ import moment from 'moment';
 const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFileid }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [fileName, setFileName] = useState("Upload File...");
-    const [sharingScore, setSharingScore] = useState(false);
+    const [sharingScore, setSharingScore] = useState(true);
     const [grade, setGrade] = useState(null);
     const [file, setFile] = useState(null);
     const [fileInBytes, setFileInBytes] = useState(null);
@@ -129,13 +129,19 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
                               <div className="col-4 m-auto">
                                 <div className="row min-content-width">
                                   <div className="border border-dark text-center w-100 rounded pointer p-2" > 
-                                      Share score with Employees
+                                    Score Visible to Employers?
                                   </div>
                                   <div className="d-flex min-content-width justify-content-around mt-2">
-                                    <div className={`border border-dark text-center pointer px-3 py-1 mx-3 ${sharingScore ? " bg-primary text-white": ""}`} onClick={() => setSharingScore(true)}> 
+                                    <div className={`border border-dark text-center pointer px-3 py-1 mx-3 flex-grow-1 ${sharingScore ? " bg-primary text-white": ""}`} 
+                                      onClick={() => setSharingScore(true)}
+                                      style={{ minWidth: '35%' }}
+                                    > 
                                         Yes
                                     </div>
-                                    <div className={`border border-dark text-center pointer px-3 py-1 mx-3 ${sharingScore ? "": " bg-primary text-white"}`} onClick={() => setSharingScore(false)}> 
+                                    <div className={`border border-dark text-center pointer px-3 py-1 mx-3 flex-grow-1 ${sharingScore ? "": " bg-primary text-white"}`} 
+                                      onClick={() => setSharingScore(false)}
+                                      style={{ minWidth: '35%' }}
+                                    > 
                                         No
                                     </div>
                                   </div>

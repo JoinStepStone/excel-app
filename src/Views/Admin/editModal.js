@@ -186,7 +186,7 @@ const EditModalScreen = ({ show, modalToggle, selectedId, uniListNames }) => {
             <Modal.Title>Student Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="m-auto overflow-auto" > 
+          <div className="m-auto" > 
             <div class="">
               <div className="row">
                 <div className="col-6 mx-auto">

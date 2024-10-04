@@ -158,7 +158,7 @@ const SimulationStudents = () => {
                 <Table striped bordered responsive hover style={{ width: "100%" }}> 
                     <thead>
 
-                    <tr>
+                    {/* <tr>
                         <th className="text-center tablePlaceContent"><input name="simulationName" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Simulation Name"} /></th>
                         <th className="text-center tablePlaceContent">
                             <DropdownButton 
@@ -183,14 +183,14 @@ const SimulationStudents = () => {
                         <th className="text-center tablePlaceContent"><input name="startTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Start Time"} /></th>
                         <th className="text-center tablePlaceContent"><input name="endTime" type="date" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"End Time"} /></th>
                         <th className="text-center tablePlaceContent">
-                            {/* <input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} /> */}
+                            <input name="duration" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Duration"} />
                         </th>
-                        {/* <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th> */}
-                        {/* <th className="text-center tablePlaceContent">
+                        <th className="text-center tablePlaceContent"><input name="participants" onChange={onChangeHandler} className="rounded px-2 py-1" placeholder={"Participants"} /></th>
+                        <th className="text-center tablePlaceContent">
                             Reset
                             <FontAwesomeIcon icon={faRefresh} className="mx-2 pointer" onClick={() => setSimulationsToShow(simulations)}/> 
-                        </th> */}
-                    </tr>
+                        </th>
+                    </tr> */}
 
                     <tr>
                         <th className="text-center tablePlaceContent">Simulations</th>
