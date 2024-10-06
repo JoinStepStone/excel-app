@@ -144,6 +144,9 @@ const SimulationStudents = () => {
 
       <div className="pt-5 ">
         <ModalRegister show={show} modalToggle={modalToggle}/>
+        <div className="d-flex justify-content-center mb-2 mt-1" >
+          <img src="/Artboard 2.png" width={300} />
+        </div>
         <div className="d-flex justify-content-center align-items-center">
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
                 {firstName &&  <h1>{firstName}'s Simulation Dashboard</h1>}
