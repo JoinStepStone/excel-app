@@ -1,5 +1,17 @@
 import { toast } from 'react-toastify';
 import { BASE_URL } from '../API';
+import moment from 'moment';
+
+export function showGradeNow(dateString) {
+  const endDate = moment(dateString)
+  const currentDate = moment()
+  const differenceInMinutes = endDate.diff(currentDate, 'minutes')
+  if(differenceInMinutes.toFixed(0) < 0 ){
+      return true;
+  }
+  return false;
+}
+
 export function getMinutes(dateString) {
   // Create a Date object from the date string
   const date = new Date(dateString);

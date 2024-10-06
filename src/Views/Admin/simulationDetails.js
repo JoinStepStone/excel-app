@@ -46,19 +46,16 @@ const SimulationDetails = () => {
 
     const formatDateTimeHandler = (dateString) => { 
 
-        // Parse the date string using moment
-        const date = moment(dateString).subtract(2, 'hours');
-
-        // Format the result to display the updated time
+        const date = moment(dateString)
         const updatedDate = date.format("M/D/YYYY h:mm:ss A");
-
         return updatedDate
+
     }
 
     const calculateDurationHandler = (endDate,startDate) => { 
         // Create a Date object from the date string
-        const endDateDummy = moment(endDate).subtract(2, 'hours')
-        const currentDate = moment(startDate).subtract(2, 'hours')
+        const endDateDummy = moment(endDate)
+        const currentDate = moment(startDate)
         const differenceInMinutes = endDateDummy.diff(currentDate, 'minutes');
         return Math.abs(differenceInMinutes.toFixed(0)) + " minutes";
     }

@@ -9,6 +9,7 @@ import { loginFormValidationHandler } from "../../utilities/common";
 import { Tooltop } from "../../Components/tooltip";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FaHome } from "react-icons/fa";
 
 const Login = () => {
 
@@ -73,6 +74,13 @@ const Login = () => {
   return (
     <div className="pt-5 h-100 m-0 d-flex justify-content-center  align-items-center"> 
       <div class="h-50 bg-white p-5" style={{ width: "30%" }}>
+        <div className="d-flex justify-content-start align-items-center" style={{ marginTop: "-20px", marginBottom: "20px"}}>
+          <FaHome />
+          <a className="underline-offset pointer" style={{ fontSize: "7px", marginLeft: "5px" }} href="https://joinstepstone.com/">Return to StepStone Home</a>
+        </div>
+        <div className="d-flex justify-content-center mb-2 mt-1" >
+          <img src="/Artboard 2.png" width={100} />
+        </div>
         <div className="row">
           <div className="col-12 mx-auto">
             <div className="d-flex flex-column justify-content-around">

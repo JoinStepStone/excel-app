@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSync } from '@fortawesome/free-solid-svg-icons';
 import { getRandomNumber } from '../../utilities/common';
 import ExcelPreview from "../../Components/PreviewExcel";
-import { postSimulationsData, getScore } from "../../API/Student";
+import { postSimulationsData, getScore, updateSharingScoreApi } from "../../API/Student";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 
-const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFileid }) => {
+const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFileid, userSimulationUpdate }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [fileName, setFileName] = useState("Upload File...");
     const [sharingScore, setSharingScore] = useState(true);
@@ -50,7 +50,6 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
 
           const response = await getScore(requestData)
           // const response = JSON.parse(resp)
-          console.log("Response: ", response)
           if(response.code == 201){
             setGrade(response.data.score)
             setFileInBytes(response.data.file)
@@ -63,30 +62,39 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
 
       const handleSubmitForm = async () => { 
         setIsLoading(true)
-        const accessToken = JSON.parse(localStorage.getItem("accessToken"))
-        const requestData = new FormData();
-        // Append form data
-        requestData.append('status', "true");
-        requestData.append('sharingScore', sharingScore);
-        requestData.append('grade', grade);
-        requestData.append("userId", accessToken._id);
-        requestData.append('simulationId', simulationId);
-        requestData.append('startTime', simulation.startTime);
-        requestData.append('endTime', moment().subtract(2, 'hours'));
-        requestData.append('file', file);
-        requestData.append('file_in_byte', fileInBytes);
-        
-        const response = await postSimulationsData(requestData)
-        if(response.code == 201){
-          toast.success(response.message)
-          setSharingScore(false)
-          setGrade(null)
-          setFile(null)
-          setFileName("Upload File...")
-          modalToggle(true)
-      }else{
-          toast.error(response.message)
-          // modalToggle()
+        if(!fileInBytes){
+          const responsee = await updateSharingScoreApi({...userSimulationUpdate, sharingScore:sharingScore})
+          if(responsee.code == 201){
+            modalToggle(true)
+          }else{
+              toast.error(responsee.message)
+          }
+        }else{
+          const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+          const requestData = new FormData();
+          // Append form data
+          requestData.append('status', "true");
+          requestData.append('sharingScore', sharingScore);
+          requestData.append('grade', Math.floor(grade * 100) / 100);
+          requestData.append("userId", accessToken._id);
+          requestData.append('simulationId', simulationId);
+          requestData.append('startTime', moment(simulation.startTime));
+          requestData.append('endTime', moment());
+          requestData.append('file', file);
+          requestData.append('file_in_byte', fileInBytes);
+          
+          const response = await postSimulationsData(requestData)
+          if(response.code == 201){
+            toast.success(response.message)
+            setSharingScore(false)
+            setGrade(null)
+            setFile(null)
+            setFileName("Upload File...")
+            modalToggle(true)
+        }else{
+            toast.error(response.message)
+            // modalToggle()
+          }
         }
         setIsLoading(false)
       };
@@ -121,11 +129,11 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
                     <div className="h-75 row">
                         <div className="col-6 m-auto ">
                           <div className="h-75 row">
-                              <div className="col-4">
+                              {/* <div className="col-4">
                                 <div className="border border-dark text-center rounded pointer p-2" > 
                                     {grade !== null ? grade : "Score"}
                                 </div>
-                              </div>
+                              </div> */}
                               <div className="col-4 m-auto">
                                 <div className="row min-content-width">
                                   <div className="border border-dark text-center w-100 rounded pointer p-2" > 

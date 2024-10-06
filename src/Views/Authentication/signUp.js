@@ -178,9 +178,10 @@ const SignUP = () => {
       <div className="h-100 m-0 d-flex justify-content-center align-items-center bg-white"> 
         <div class="w-75 h-75">
           <div className="row" style={{ marginTop: "-50px" }}>
+            <div className="d-flex justify-content-center mb-2 mt-1" >
+              <img src="/Artboard 2.png" width={300} />
+            </div>
             <div className="col-5 mx-auto">
-              
-
                 <div className="d-flex justify-content-between mb-1">
                   <div className="">
                     <span className="font-semi-bold">First Name<span style={{ color:"red" }}>*</span>: </span>

@@ -39,7 +39,7 @@ const Simulations = () => {
     }, []);
 
     const formatDateTimeHandler = (dateString) => { 
-        const date = moment(dateString).subtract(2, 'hours');
+        const date = moment(dateString);
         return date.format("M/D/YYYY h:mm:ss A");
     };
 

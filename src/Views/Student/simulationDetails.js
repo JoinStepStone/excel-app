@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Table } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import moment from 'moment';
 import ModalUpload from "./uploadModal";
 import { getSimulationDetails, fileDeleteHandlerAPI, updateSharingScoreApi } from "../../API/Student";
-import { downloadFile } from "../../utilities/common";
+import { downloadFile, showGradeNow } from "../../utilities/common";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -16,6 +16,7 @@ const SimulationDetails = () => {
     const navigate = useNavigate()
 
     const { id } = useParams();
+    const userSimulationUpdate = useRef(null);
     const [edit, setEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -44,28 +45,25 @@ const SimulationDetails = () => {
 
     const formatDateTimeHandler = (dateString) => {
 
-        // Parse the date string using moment
-        const date = moment(dateString).subtract(2, 'hours');
-
-        // Format the result to display the updated time
+        const date = moment(dateString)
         const updatedDate = date.format("M/D/YYYY h:mm:ss A");
-
         return updatedDate
+
     }
 
     const calculateDurationHandler = (dateString) => { 
-        // Create a Date object from the date string
+
         const endDate = moment(dateString)
-        const currentDate = moment().add(2,"hours")
+        const currentDate = moment()
         const differenceInMinutes = endDate.diff(currentDate, 'minutes')
         if(differenceInMinutes.toFixed(0) < 0 ){
             return "0 minutes";
         }
         return differenceInMinutes.toFixed(0) + " minutes";
+
     }
 
     const getDurationHandler = (dateString) => { 
-        
         return moment.duration(dateString).asMinutes() + " minutes";
     }
 
@@ -106,7 +104,12 @@ const SimulationDetails = () => {
 
     return (
       <div className="pt-5 ">
-        <ModalUpload show={show} modalToggle={modalToggle} onClick={() => navigate("/student/simulation")} simulationId={id} simulation={simulation}/>
+        <ModalUpload 
+            show={show} 
+            modalToggle={modalToggle} 
+            onClick={() => navigate("/student/simulation")} simulationId={id} simulation={simulation}
+            userSimulationUpdate={userSimulationUpdate.current}
+        />
         <a className="underline-offset pointer mx-5" onClick={() => navigate("/student/simulation")}>Simulation Home</a>
         <div className="d-flex justify-content-center align-items-center">
             <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
@@ -190,13 +193,15 @@ const SimulationDetails = () => {
                             <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(simulation, true)}>{getFilePathHandler(simulation.fileName)}</a></td>
                             <td className="text-center tablePlaceContent">
-                                <a className="underline-offset pointer" onClick={() => modalToggle()}>
+                                <a className="underline-offset" 
+                                // onClick={() => modalToggle()}
+                                >
                                     {userSimulation.fileName ?
                                         <>
                                             {userSimulation.fileName} 
                                         </>
                                         :
-                                        "Upload Here"
+                                        "Upload File"
                                     }
                                 </a>
                                 { userSimulation.fileName && 
@@ -210,7 +215,7 @@ const SimulationDetails = () => {
                                 }
                             </td>
                             <td className="text-center tablePlaceContent">{calculateDurationHandler(simulation.endTime)}</td>
-                            <td className="text-center tablePlaceContent">{userSimulation.grade}%</td>
+                            <td className="text-center tablePlaceContent">{showGradeNow(simulation.endTime) ? userSimulation.grade+"%" : "Active Simulation"}</td>
                             <td className="text-center tablePlaceContent">
                                 {edit ? 
                                     <DropdownButton 
@@ -228,7 +233,7 @@ const SimulationDetails = () => {
                                 }
                             </td>
                             <td className="text-center tablePlaceContent">
-                                <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => setEdit(!edit)} /> 
+                                <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => { userSimulationUpdate.current = {_id : userSimulation._id}; modalToggle();}} /> 
                             </td>
                         </tr>
                         )

@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,26 +25,26 @@ import { toast } from 'react-toastify';
 
 function App() { 
 
-  const [path, setPath] = useState(null); //Admin Student Not
+  const path = useRef(null); //Admin Student Not
   const [userRole, setUserRole] = useState("Not"); //Admin Student Not
   const [uniListNames, setUniListNames] = useState([]);
   const location = useLocation();
 
   const getSession = async () => {
     try {
-      // const response = await checkAuth()
-      // if(response.code == 201){
+      const response = await checkAuth()
+      if(response.code == 201){
         const role = JSON.parse(localStorage.getItem("accessToken"))
-        setPath(location.pathname)
+        path.current = location.pathname
         if(role){
           setUserRole(role.role)
         }else{
           setUserRole("Not")
         }
-      // }else{
-      //   // toast.error(response.message)
-      //   setUserRole("Not")
-      // }
+      }else{
+        toast.error(response.message)
+        setUserRole("Not")
+      }
       
     } catch (error) {
       console.log(error);
@@ -52,7 +52,7 @@ function App() {
   };
 
   useEffect(() => {
-    if(path !== location.pathname){
+    if(path.current !== location.pathname){
       getSession()
     }
   },[location])
@@ -80,7 +80,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUP />} />
-            <Route path="*" element={<NoPage />} />
+            <Route path="*" element={<Login />} />
           </Routes>
           </main>
         }

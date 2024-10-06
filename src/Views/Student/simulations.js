@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-
+import { showGradeNow } from "../../utilities/common";
 import { getAllSimulations } from "../../API/Student";
 import MetricDisplay from "../../Components/metric";
 import ModalRegister from "./registerModal";
@@ -42,13 +42,10 @@ const SimulationStudents = () => {
 
     const formatDateTimeHandler = (dateString) => {
 
-        // Parse the date string using moment
-        const date = moment(dateString).subtract(2, 'hours');
-
-        // Format the result to display the updated time
+        const date = moment(dateString);
         const updatedDate = date.format("M/D/YYYY h:mm:ss A");
-
         return updatedDate
+
     }
 
     const getDurationHandler = (dateString) => {
@@ -212,7 +209,8 @@ const SimulationStudents = () => {
                             <tr>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset pointer" href={`/student/simulation/detail/${simulation._id}`}>{simulation.simulationName}</a></td>
                                 <td className="text-center tablePlaceContent">{simulation.status ? "Active" : "Inactive"}</td>
-                                <td className="text-center tablePlaceContent">{simulation.grade}%</td>
+                                {console.log("Testung", showGradeNow(simulation.endTime))}
+                                <td className="text-center tablePlaceContent">{showGradeNow(simulation.endTime) ? simulation.grade+"%" : "Active Simulation"}</td>
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.startTime)}</td>
                                 <td className="text-center tablePlaceContent">{formatDateTimeHandler(simulation.endTime)}</td>
                                 <td className="text-center tablePlaceContent">{getDurationHandler(simulation.duration)}</td>
