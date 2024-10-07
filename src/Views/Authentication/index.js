@@ -10,10 +10,12 @@ import { Tooltop } from "../../Components/tooltip";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FaHome } from "react-icons/fa";
+import ModalRegister from "./forgetModal";
 
 const Login = () => {
 
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorKey, setErrorKey] = useState({ key: null, msg: ""});
@@ -71,8 +73,13 @@ const Login = () => {
 
   };
 
+  const modalToggle = () => {
+    setShow(!show)
+};
+
   return (
     <div className="pt-5 h-100 m-0 d-flex justify-content-center  align-items-center"> 
+      <ModalRegister show={show} modalToggle={modalToggle}/>
       <div class="h-50 bg-white p-5" style={{ width: "30%" }}>
         <div className="d-flex justify-content-start align-items-center" style={{ marginTop: "-20px", marginBottom: "20px"}}>
           <FaHome />
@@ -131,7 +138,7 @@ const Login = () => {
         <div className="row">
           <div className="my-2 col-12 mx-auto">
             <div className="d-grid justify-content-start">
-                <a className="underline-offset-none pointer font-semi-bold" style={{ fontSize: "13px" }}>Forgot your password?</a>
+                <a className="underline-offset-none pointer font-semi-bold" style={{ fontSize: "13px" }} onClick={() => modalToggle()} >Forgot your password?</a>
                 <a className="underline-offset-none pointer font-semi-bold" style={{ fontSize: "13px" }} onClick={() => navigate('/signUp')} >Create an account</a>
             </div>
           </div>
