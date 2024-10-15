@@ -6,7 +6,7 @@ import ModalScreen from "./modal";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
-import { downloadFile } from "../../utilities/common";
+import { downloadFile, capitalizeFirstLetter } from "../../utilities/common";
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
@@ -313,7 +313,7 @@ const SimulationDetails = () => {
                             userSimulationsToShow.map((userSimulation) =>               
                             <tr>
                                 <td className="text-center tablePlaceContent"></td>
-                                <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.userId.firstName} {userSimulation.userId.lastName}</a></td>
+                                <td className="text-center tablePlaceContent"><a className="underline-offset">{capitalizeFirstLetter(userSimulation.userId.firstName)} {capitalizeFirstLetter(userSimulation.userId.lastName)}</a></td>
                                 <td className="text-center tablePlaceContent"><a className="underline-offset">{userSimulation.rank}</a></td>
                                 <td className="text-center tablePlaceContent">{userSimulation.grade}%</td>
                                 <td className="text-center tablePlaceContent">{calculateDurationHandler(userSimulation.endTime,userSimulation.startTime)}</td>

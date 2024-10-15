@@ -1,6 +1,64 @@
 import { toast } from 'react-toastify';
 import { BASE_URL } from '../API';
 import moment from 'moment';
+import {
+  Button,
+  Col,
+  Form,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
+} from "reactstrap";
+import { useEffect } from 'react';
+
+export const WarningModal = ({deleteModal, setDeleteModal, message, dataToBeDeleted, functionToUse}) => {
+  
+  useEffect(()=>{console.log("Modal 2", deleteModal)},[deleteModal])
+
+  return(
+    <>
+    <Modal isOpen={deleteModal} centered={true} size="md" >
+        <ModalHeader>Warning</ModalHeader>
+        <Form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            functionToUse(dataToBeDeleted)
+            setDeleteModal(false)
+          }}
+        >
+          <ModalBody>
+            <Row >
+              <Col xl="12" sm="12" className="p-2">
+                {message}
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" type="submit" >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                setDeleteModal(false)
+              }}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
+      </>
+  )
+}
+
+
+export const capitalizeFirstLetter = (str) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
 export function showGradeNow(dateString) {
   const endDate = moment(dateString)

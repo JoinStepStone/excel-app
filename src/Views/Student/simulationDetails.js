@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import moment from 'moment';
 import ModalUpload from "./uploadModal";
 import { getSimulationDetails, fileDeleteHandlerAPI, updateSharingScoreApi } from "../../API/Student";
-import { downloadFile, showGradeNow } from "../../utilities/common";
+import { downloadFile, showGradeNow, capitalizeFirstLetter } from "../../utilities/common";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -190,7 +190,7 @@ const SimulationDetails = () => {
                         userSimulations.length ? 
                         userSimulations.map((userSimulation) =>        
                         <tr>
-                            <td className="text-center tablePlaceContent">{userDetails.firstName} {userDetails.lastName}</td>
+                            <td className="text-center tablePlaceContent">{capitalizeFirstLetter(userDetails.firstName)} {capitalizeFirstLetter(userDetails.lastName)}</td>
                             <td className="text-center tablePlaceContent"><a className="underline-offset pointer" onClick={() => downloadFile(simulation, true)}>{getFilePathHandler(simulation.fileName)}</a></td>
                             <td className="text-center tablePlaceContent">
                                 <a className="underline-offset" 

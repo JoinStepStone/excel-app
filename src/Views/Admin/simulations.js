@@ -6,7 +6,7 @@ import { getAllSimulations, deleteSimulationById } from "../../API/Admin";
 import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
-import { downloadFile } from "../../utilities/common";
+import { downloadFile, WarningModal } from "../../utilities/common";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -14,6 +14,8 @@ import { Dropdown, DropdownButton } from 'react-bootstrap';
 const Simulations = () => {
 
     const navigate = useNavigate();
+    const deleteClientDetails = useRef()
+    const [deleteModal, setDeleteModal] = useState(false);
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [simulations, setSimulations] = useState([]);
@@ -56,6 +58,7 @@ const Simulations = () => {
     };
     
     const deleteSimulationHandler = async (id = null) => {
+
         const response = await deleteSimulationById({ "simulationId": id });
         if (response.code === 201) {
             toast.success(response.message);
@@ -102,6 +105,13 @@ const Simulations = () => {
 
     return (
         <div className="pt-5 ">
+            <WarningModal 
+                deleteModal={deleteModal} 
+                setDeleteModal={setDeleteModal} 
+                message={"Are you sure, you want to delete this simulation?"}
+                dataToBeDeleted={deleteClientDetails.current}
+                functionToUse={deleteSimulationHandler}
+            />
             {show && <ModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId.current}/>}
             <div className="d-flex justify-content-center align-items-center">
                 <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center ">
@@ -166,7 +176,7 @@ const Simulations = () => {
                                         <td className="text-center tablePlaceContent" onClick={() => downloadFile(simulation.fileId)}><a className="underline-offset pointer">{simulation.fileName}</a></td>
                                         <td className="text-center tablePlaceContent">
                                             <FontAwesomeIcon icon={faEdit} className="mx-2 pointer" onClick={() => modalToggle(false, simulation.id)} /> 
-                                            <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer" onClick={() => deleteSimulationHandler(simulation.id)} /> 
+                                            <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer" onClick={() => { deleteClientDetails.current = simulation.id; setDeleteModal(true);}} /> 
                                         </td>
                                     </tr>
                                 )

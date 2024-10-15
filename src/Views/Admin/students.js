@@ -7,9 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import EditModalScreen from "./editModal";
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { capitalizeFirstLetter, WarningModal } from "../../utilities/common";
 
 const Student = ({ uniListNames }) => {
 
+  const deleteClientDetails = useRef()
+  const [deleteModal, setDeleteModal] = useState(false);
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [studentToShow, setStudentToShow] = useState([]);
@@ -108,6 +111,13 @@ const Student = ({ uniListNames }) => {
 
   return (
     <div className="pt-5">
+      <WarningModal 
+        deleteModal={deleteModal} 
+        setDeleteModal={setDeleteModal} 
+        message={"Are you sure, you want to delete this student?"}
+        dataToBeDeleted={deleteClientDetails.current}
+        functionToUse={deleteStudentHandler}
+    />
       {show && <EditModalScreen show={show} modalToggle={modalToggle} selectedId={selectedId} uniListNames={uniListNames} />}
       <div className="d-flex justify-content-center">
         <div className="mx-0 border border-dark rounded px-5 py-2 w-50 text-center">
@@ -226,8 +236,8 @@ const Student = ({ uniListNames }) => {
               {studentToShow.length ?
                 studentToShow.map((student, index) =>
                   <tr key={index}>
-                    <td className="text-center tablePlaceContent">{student.firstName}</td>
-                    <td className="text-center tablePlaceContent">{student.lastName}</td>
+                    <td className="text-center tablePlaceContent">{capitalizeFirstLetter(student.firstName)}</td>
+                    <td className="text-center tablePlaceContent">{capitalizeFirstLetter(student.lastName)}</td>
                     <td className="text-center tablePlaceContent">{student.email}</td>
                     <td className="text-center tablePlaceContent">{student.examTaken}</td>
                     <td className="text-center tablePlaceContent">{student.avgScore}%</td>
@@ -248,7 +258,7 @@ const Student = ({ uniListNames }) => {
                         <FontAwesomeIcon
                           icon={faTrash}
                           className="mx-2 icon-color pointer"
-                          onClick={() => deleteStudentHandler(student.id)}
+                          onClick={() => { deleteClientDetails.current = student.id; setDeleteModal(true);}}
                         />
                       </div>
                     </td>
