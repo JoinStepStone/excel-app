@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { Spin } from "antd";
 import moment from 'moment';
 
-const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFileid, userSimulationUpdate }) => {
+const ModalScreen = ({ show, modalToggle, simulationId, simulation, durationEnded, userSimulationUpdate }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [fileName, setFileName] = useState("Upload File...");
     const [sharingScore, setSharingScore] = useState(true);
@@ -119,7 +119,7 @@ const ModalScreen = ({ show, modalToggle, simulationId, simulation, simulationFi
                                 {/* {file && <ExcelPreview file={file}/>} */}
                                 {"Upload File"}
                             </div>
-                            <input className="d-none" type="file" accept=".xlsm" ref={fileInput} onChange={handleFileChange}/>
+                            <input className="d-none" type="file" accept=".xlsm" ref={fileInput} disabled={!simulation.status || durationEnded} onChange={handleFileChange}/>
                             <div className="mt-2">
                                 <span className="mx-3 w-75">File Name: {fileName} </span>
                                 <FontAwesomeIcon icon={faTrash} className="pointer" onClick={() => {setFileName(""); setFile(null);}}/> 

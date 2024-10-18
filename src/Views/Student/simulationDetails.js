@@ -17,6 +17,7 @@ const SimulationDetails = () => {
 
     const { id } = useParams();
     const userSimulationUpdate = useRef(null);
+    const durationEnded = useRef(false);
     const [edit, setEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,7 @@ const SimulationDetails = () => {
         const currentDate = moment()
         const differenceInMinutes = endDate.diff(currentDate, 'minutes')
         if(differenceInMinutes.toFixed(0) < 0 ){
+            durationEnded.current = true
             return "0 minutes";
         }
         return differenceInMinutes.toFixed(0) + " minutes";
@@ -109,6 +111,7 @@ const SimulationDetails = () => {
             modalToggle={modalToggle} 
             onClick={() => navigate("/student/simulation")} simulationId={id} simulation={simulation}
             userSimulationUpdate={userSimulationUpdate.current}
+            durationEnded = {durationEnded.current}
         />
         <a className="underline-offset pointer mx-5" onClick={() => navigate("/student/simulation")}>Simulation Home</a>
         <div className="d-flex justify-content-center align-items-center">
@@ -207,9 +210,9 @@ const SimulationDetails = () => {
                                 { userSimulation.fileName && 
                                     <span className="mx-2">
                                     {
-                                    calculateDurationHandler(simulation.endTime) !== "0 minutes" ?
+                                    calculateDurationHandler(simulation.endTime) === "0 minutes" || !simulation.status?
+                                        null : 
                                         <FontAwesomeIcon icon={faTrash} className="mx-2 icon-color pointer" onClick={() => fileDeleteHandler({_id : userSimulation._id , fileId : userSimulation.fileId})} /> 
-                                        : null
                                     }
                                     </span> 
                                 }
