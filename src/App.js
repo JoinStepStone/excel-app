@@ -10,7 +10,6 @@ import Student from './Views/Admin/students';
 import Simulations from './Views/Admin/simulations';
 import SimulationDetails from './Views/Admin/simulationDetails';
 import NoPage from './Components/noPage';
-
 import SidebarStudent from './Components/studentSidebar';
 import StudentDashboard from "./Views/Student"
 import SimulationStudents from './Views/Student/simulations';
