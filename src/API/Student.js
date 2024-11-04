@@ -83,6 +83,7 @@ export async function getSimulationDetails(simulationId) {
 export async function updateSharingScoreApi(data) {
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"))
+    
     const response = await axios.post(
         `${BASE_URL}/student/updateSharingScore`,
         data,
